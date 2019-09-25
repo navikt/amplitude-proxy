@@ -1,0 +1,43 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  labels:
+    team: {{team}}
+  name: amplitude-proxy
+  namespace: default
+spec:
+  image: navikt/amplitude-proxy:{{version}}
+  port: 4242
+  team: {{team}}
+  liveness:
+    path: /health/is-alive
+    initialDelay: 10
+    timeout: 1
+    periodSeconds: 5
+    failureThreshold: 3
+  readiness:
+    path: /health/is-ready
+    initialDelay: 10
+    timeout: 1
+  replicas:
+    min: 1
+    max: 1
+    cpuThresholdPercentage: 100
+  resources:
+    limits:
+      cpu: 500m
+      memory: 64Mi
+    requests:
+      cpu: 200m
+      memory: 32Mi
+  ingresses:
+    - "https://amplitude.nav.no"
+  logformat: accesslog
+  logtransform: dns_loglevel
+  webproxy: false
+  vault:
+    enabled: false
+  env:
+    - name: APP_VERSION
+      value: {{version}}
+

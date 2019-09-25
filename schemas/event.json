@@ -1,0 +1,266 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/event.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "device_id",
+    "user_id",
+    "timestamp",
+    "event_id",
+    "session_id",
+    "event_type",
+    "version_name",
+    "platform",
+    "os_name",
+    "os_version",
+    "device_model",
+    "language",
+    "api_properties",
+    "event_properties",
+    "user_properties",
+    "uuid",
+    "library",
+    "sequence_number",
+    "groups",
+    "group_properties",
+    "user_agent"
+  ],
+  "properties": {
+    "device_id": {
+      "$id": "#/properties/device_id",
+      "type": "string",
+      "title": "The Device_id Schema",
+      "default": "",
+      "examples": [
+        "6fc4f5bf-05cd-4605-bd6c-7211b6805c0aR"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "user_id": {
+      "$id": "#/properties/user_id",
+      "type": "null",
+      "title": "The User_id Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "timestamp": {
+      "$id": "#/properties/timestamp",
+      "type": "integer",
+      "title": "The Timestamp Schema",
+      "default": 0,
+      "examples": [
+        1568984110457
+      ]
+    },
+    "event_id": {
+      "$id": "#/properties/event_id",
+      "type": "integer",
+      "title": "The Event_id Schema",
+      "default": 0,
+      "examples": [
+        4
+      ]
+    },
+    "session_id": {
+      "$id": "#/properties/session_id",
+      "type": "integer",
+      "title": "The Session_id Schema",
+      "default": 0,
+      "examples": [
+        1568981102098
+      ]
+    },
+    "event_type": {
+      "$id": "#/properties/event_type",
+      "type": "string",
+      "title": "The Event_type Schema",
+      "default": "",
+      "examples": [
+        "start game"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "version_name": {
+      "$id": "#/properties/version_name",
+      "type": "null",
+      "title": "The Version_name Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "platform": {
+      "$id": "#/properties/platform",
+      "type": "string",
+      "title": "The Platform Schema",
+      "default": "",
+      "examples": [
+        "Web"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "os_name": {
+      "$id": "#/properties/os_name",
+      "type": "string",
+      "title": "The Os_name Schema",
+      "default": "",
+      "examples": [
+        "Chrome"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "os_version": {
+      "$id": "#/properties/os_version",
+      "type": "string",
+      "title": "The Os_version Schema",
+      "default": "",
+      "examples": [
+        "76"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "device_model": {
+      "$id": "#/properties/device_model",
+      "type": "string",
+      "title": "The Device_model Schema",
+      "default": "",
+      "examples": [
+        "Mac"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "language": {
+      "$id": "#/properties/language",
+      "type": "string",
+      "title": "The Language Schema",
+      "default": "",
+      "examples": [
+        "en-GB"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "api_properties": {
+      "$id": "#/properties/api_properties",
+      "type": "object",
+      "title": "The Api_properties Schema",
+      "required": [
+        "tracking_options"
+      ],
+      "properties": {
+        "tracking_options": {
+          "$id": "#/properties/api_properties/properties/tracking_options",
+          "type": "object",
+          "title": "The Tracking_options Schema",
+          "required": [
+            "city",
+            "ip_address"
+          ],
+          "properties": {
+            "city": {
+              "$id": "#/properties/api_properties/properties/tracking_options/properties/city",
+              "type": "boolean",
+              "title": "The City Schema",
+              "default": false,
+              "examples": [
+                false
+              ]
+            },
+            "ip_address": {
+              "$id": "#/properties/api_properties/properties/tracking_options/properties/ip_address",
+              "type": "boolean",
+              "title": "The Ip_address Schema",
+              "default": false,
+              "examples": [
+                false
+              ]
+            }
+          }
+        }
+      }
+    },
+    "event_properties": {
+      "$id": "#/properties/event_properties",
+      "type": "object",
+      "title": "The Event_properties Schema"
+    },
+    "user_properties": {
+      "$id": "#/properties/user_properties",
+      "type": "object",
+      "title": "The User_properties Schema"
+    },
+    "uuid": {
+      "$id": "#/properties/uuid",
+      "type": "string",
+      "title": "The Uuid Schema",
+      "default": "",
+      "examples": [
+        "ec53a0a6-74ce-4777-953f-5fec92471a54"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "library": {
+      "$id": "#/properties/library",
+      "type": "object",
+      "title": "The Library Schema",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "$id": "#/properties/library/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "amplitude-js"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "version": {
+          "$id": "#/properties/library/properties/version",
+          "type": "string",
+          "title": "The Version Schema",
+          "default": "",
+          "examples": [
+            "5.3.1"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "sequence_number": {
+      "$id": "#/properties/sequence_number",
+      "type": "integer",
+      "title": "The Sequence_number Schema",
+      "default": 0,
+      "examples": [
+        4
+      ]
+    },
+    "groups": {
+      "$id": "#/properties/groups",
+      "type": "object",
+      "title": "The Groups Schema"
+    },
+    "group_properties": {
+      "$id": "#/properties/group_properties",
+      "type": "object",
+      "title": "The Group_properties Schema"
+    },
+    "user_agent": {
+      "$id": "#/properties/user_agent",
+      "type": "string",
+      "title": "The User_agent Schema",
+      "default": "",
+      "examples": [
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+      ],
+      "pattern": "^(.*)$"
+    }
+  }
+}
