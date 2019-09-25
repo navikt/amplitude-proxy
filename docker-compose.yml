@@ -1,0 +1,12 @@
+version: '3'
+services:
+  server:
+    restart: unless-stopped
+    build: .
+    environment:
+      GATEWAY_URL: http://echo-server
+    ports:
+      - '4242:4242'
+  echo-server:
+    image: mendhak/http-https-echo
+
