@@ -8,7 +8,12 @@ const validate = ajv.compile(require('./schemas/event'));
 fastify.get('/', async (request, reply) => {
   return {hello: 'world'};
 });
-
+fastify.get('/health/is-alive', async (request, reply) => {
+  return {is: 'alive'};
+});
+fastify.get('/health/is-ready', async (request, reply) => {
+  return {is: 'ready'};
+});
 fastify.addSchema({
   $id: 'collect',
   type: 'object',

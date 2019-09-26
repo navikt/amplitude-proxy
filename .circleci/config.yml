@@ -85,7 +85,6 @@ jobs:
       - run:
           name: Unpack variables
           command: cp /tmp/workspace/.netrc ~/.netrc
-      - checkout
       - run:
           name: Publish Docker Image to Dockerhub
           command: |
@@ -110,7 +109,7 @@ jobs:
             --cluster=prod-gcp \
             --repository=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME \
             --appid=${GITHUB_APP_ID} \
-            --team=teamforeldrepenger \
+            --team=dataplattform \
             --var version=${VERSION} \
             --key=/tmp/workspace/github.key.pem \
             --resource=/tmp/workspace/nais.io/app.yaml
