@@ -4,8 +4,17 @@ metadata:
   labels:
     team: {{team}}
   name: amplitude-proxy
-  namespace: default
+  namespace: foreldrepenger
 spec:
+  accessPolicy:
+    outbound:
+      external:
+        - host: api.amplitude.com
+      rules : []
+    inbound:
+      rules:
+        - application: istio-ingressgateway
+          namespace: istio-system
   image: navikt/amplitude-proxy:{{version}}
   port: 4242
   team: {{team}}
@@ -34,9 +43,6 @@ spec:
     - "https://amplitude.nav.no"
   logformat: accesslog
   logtransform: dns_loglevel
-  webproxy: false
-  vault:
-    enabled: false
   env:
     - name: APP_VERSION
       value: {{version}}
