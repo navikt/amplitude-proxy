@@ -15,7 +15,7 @@ spec:
       rules:
         - application: istio-ingressgateway
           namespace: istio-system
-  image: navikt/amplitude-proxy:{{version}}
+  image: {{version}}
   port: 4242
   team: {{team}}
   liveness:
@@ -43,6 +43,8 @@ spec:
     - "https://amplitude.nav.no"
   logformat: accesslog
   logtransform: dns_loglevel
+  secrets:
+    - name: amplitude-secrets
   env:
     - name: APP_VERSION
       value: {{version}}
