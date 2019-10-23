@@ -1,53 +1,18 @@
-// Require the framework and instantiate it
+require('dotenv').config()
 const fastify = require('fastify')({logger: true});
-const Ajv = require('ajv');
-const ajv = new Ajv();
 fastify.register(require('fastify-formbody'));
-const validate = ajv.compile(require('./schemas/event'));
-// Declare a route
-fastify.get('/', async (request, reply) => {
-  return {hello: 'world'};
-});
-fastify.get('/health/is-alive', async (request, reply) => {
-  return {is: 'alive'};
-});
-fastify.get('/health/is-ready', async (request, reply) => {
-  return {is: 'ready'};
-});
-fastify.addSchema({
-  $id: 'collect',
-  type: 'object',
-  properties: {
-    e: {'type': 'string'},
-    checksum: {'type': 'string'},
-    client: {'type': 'string'},
-    upload_time: {'type': 'integer'},
-    v: {'type': 'integer'},
-  },
-});
-
+fastify.addSchema(require('./schemas/collect'));
+fastify.get('/', async () => ({hello: 'world'}));
+fastify.get('/health/is-alive', async () => ({is: 'alive'}));
+fastify.get('/health/is-ready', async () => ({is: 'ready'}));
 fastify.route({
   method: 'POST',
   url: '/collect',
   schema: {
     body: 'collect#',
   },
-  handler: (request, reply) => {
-    const jsonContent = JSON.parse(request.body.e);
-    const errors = [];
-    jsonContent.forEach(event => {
-      const result = validate(event);
-      if (!result) errors.push(validate.errors);
-    });
-    if (errors.length > 0) {
-      reply.send(errors);
-    } else {
-      reply.send('ok');
-    }
-  },
+  handler: require('./src/collect'),
 });
-
-// Run the server!
 const start = async () => {
   try {
     const port = process.env.PORT || 4242;

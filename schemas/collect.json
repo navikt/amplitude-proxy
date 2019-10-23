@@ -1,0 +1,21 @@
+{
+  "$id": "collect",
+  "type": "object",
+  "properties": {
+    "e": {
+      "type": "string"
+    },
+    "checksum": {
+      "type": "string"
+    },
+    "client": {
+      "type": "string"
+    },
+    "upload_time": {
+      "type": "integer"
+    },
+    "v": {
+      "type": "integer"
+    }
+  }
+}
