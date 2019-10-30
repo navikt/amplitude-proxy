@@ -1,6 +1,9 @@
 require('dotenv').config()
 const fastify = require('fastify')({logger: true});
 fastify.register(require('fastify-formbody'));
+fastify.register(require('fastify-cors'), {
+  origin: '*',
+});
 fastify.addSchema(require('./schemas/collect'));
 fastify.get('/', async () => ({hello: 'world'}));
 fastify.get('/health/is-alive', async () => ({is: 'alive'}));
