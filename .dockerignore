@@ -1,6 +1,7 @@
 *
 !examples
-!schemas
-!src
-!serve.*
 !package.*
+!public
+!schemas
+!serve.*
+!src
