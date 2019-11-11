@@ -1,11 +1,11 @@
 require('dotenv').config()
 const fastify = require('fastify')({logger: true});
+const path = require('path');
 fastify.register(require('fastify-formbody'));
 fastify.register(require('fastify-cors'), {
   origin: '*',
 });
 fastify.addSchema(require('./schemas/collect'));
-fastify.get('/', async () => ({hello: 'world'}));
 fastify.get('/health/is-alive', async () => ({is: 'alive'}));
 fastify.get('/health/is-ready', async () => ({is: 'ready'}));
 fastify.route({
@@ -16,6 +16,12 @@ fastify.route({
   },
   handler: require('./src/collect'),
 });
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, 'public'),
+});
+fastify.get('/', function (req, reply) {
+  reply.sendFile('index.txt')
+})
 const start = async () => {
   try {
     const port = process.env.PORT || 4242;
