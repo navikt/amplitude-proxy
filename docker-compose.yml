@@ -4,9 +4,12 @@ services:
     restart: unless-stopped
     build: .
     environment:
-      GATEWAY_URL: http://echo-server
+      AMPLITUDE_URL: http://echo-server
+      PORT: 4243
     ports:
-      - '4242:4242'
+      - '4243:4243'
   echo-server:
     image: mendhak/http-https-echo
+    ports:
+      - '8484:80'
 
