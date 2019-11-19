@@ -35,10 +35,10 @@ spec:
   resources:
     limits:
       cpu: 500m
-      memory: 64Mi
+      memory: 512Mi
     requests:
       cpu: 200m
-      memory: 32Mi
+      memory: 256Mi
   ingresses:
     - "https://amplitude.nav.no"
   logformat: accesslog
