@@ -6,7 +6,7 @@
   "author": "NAV",
   "license": "MIT",
   "scripts": {
-    "serve": "nodemon -r dotenv/config",
+    "serve": "nodemon",
     "test": "mocha src/**/*.spec.js",
     "start-echo-server": "nohup node test-utils/echo-server.js &",
     "up": "docker-compose up -d --build"
@@ -14,7 +14,6 @@
   "dependencies": {
     "ajv": "latest",
     "axios": "^0.19.0",
-    "dotenv": "^6.2.0",
     "fastify": "^2.8.0",
     "fastify-cors": "^2.1.3",
     "fastify-formbody": "^3.1.0",

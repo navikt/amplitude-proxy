@@ -1,0 +1,5 @@
+{
+  "env": {
+    "AMPLITUDE_URL": "https://api.amplitude.com"
+  }
+}

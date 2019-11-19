@@ -1,7 +1,5 @@
 *
-!examples
 !package.*
 !public
-!schemas
 !serve.*
 !src
