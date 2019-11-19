@@ -1,6 +1,6 @@
 const Ajv = require('ajv');
 const ajv = new Ajv();
-const validateEvent = ajv.compile(require('../schemas/event'));
+const validateEvent = ajv.compile(require('./schemas/event'));
 
 module.exports = function(events) {
   const errors = [];

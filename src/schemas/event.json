@@ -24,8 +24,7 @@
     "library",
     "sequence_number",
     "groups",
-    "group_properties",
-    "user_agent"
+    "group_properties"
   ],
   "properties": {
     "device_id": {
@@ -147,26 +146,21 @@
       "$id": "#/properties/api_properties",
       "type": "object",
       "title": "The Api_properties Schema",
-      "required": [
-        "tracking_options"
-      ],
+      "required": [],
       "properties": {
         "tracking_options": {
           "$id": "#/properties/api_properties/properties/tracking_options",
           "type": "object",
           "title": "The Tracking_options Schema",
-          "required": [
-            "city",
-            "ip_address"
-          ],
+          "required": [],
           "properties": {
             "city": {
               "$id": "#/properties/api_properties/properties/tracking_options/properties/city",
-              "type": "boolean",
+              "type": ["string", "boolean"],
               "title": "The City Schema",
               "default": false,
               "examples": [
-                false
+                "Oslo"
               ]
             },
             "ip_address": {
