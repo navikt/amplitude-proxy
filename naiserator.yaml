@@ -10,6 +10,7 @@ spec:
     outbound:
       external:
         - host: api.amplitude.com
+        - host: cdn.amplitude.com
       rules : []
     inbound:
       rules:
