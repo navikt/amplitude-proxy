@@ -6,6 +6,7 @@ fastify.register(require('fastify-cors'), {origin: '*'});
 fastify.register(require('fastify-static'), {root: path.join(__dirname, '..', 'public')});
 fastify.addSchema(require('./schemas/collect'));
 fastify.get('/', require('./routes/index'));
+fastify.get('/libs/*', require('./routes/libs'));
 fastify.get(paths.ITS_ALIVE, async () => ({is: 'alive'}));
 fastify.get(paths.ITS_READY, async () => ({is: 'ready'}));
 fastify.route(require('./routes/collect'));
