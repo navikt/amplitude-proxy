@@ -1,5 +1,6 @@
 # amplitude-proxy
-Application that whitelists and forwards traffic to amplitudes servers.
+Application that whitelists and forwards traffic to amplitudes servers. 
+This improves privacy concerns related to tracking user behavior events.
 
 # Prerequisites
 - Install node.js
