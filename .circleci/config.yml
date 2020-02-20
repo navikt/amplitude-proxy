@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  nais: navikt/nais-deployment@dev:master
+  nais: navikt/nais-deployment@3.2.1
   env: christeredvartsen/persist-env@0.0.4
 
 executors:
