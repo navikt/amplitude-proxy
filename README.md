@@ -1,6 +1,10 @@
 # amplitude-proxy
 Application that whitelists and forwards traffic to amplitudes servers.
 
+# Prerequisites
+- Install node.js
+- Install homebrew(for Mac)
+
 ## **Install**
 
 `npm install`
