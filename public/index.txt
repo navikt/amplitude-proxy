@@ -8,5 +8,5 @@ identifiserende informasjon før den sendes videre til tredjeparts verktøy. Kan
 viktigst av alt fjerner vi IP-adressen din og evt. tredjepartscookies som vi ikke
 har kontroll over. For å lese mer om hvordan NAV håndterer personvern og sikkerhet
 på nav.no og tilhørende undersider, les her:
-https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/Personvern+og+sikkerhet+p%C3%A5+nav.no
+https://www.nav.no/no/nav-og-samfunn/om-nav/personvern-i-arbeids-og-velferdsetaten/personvern-og-sikkerhet-pa-nav.no
 
