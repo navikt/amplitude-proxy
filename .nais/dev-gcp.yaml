@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   labels:
-    team: {{team}}
+    team: dataplattform
   name: amplitude-proxy
-  namespace: foreldrepenger
+  namespace: dataplattform
 spec:
   accessPolicy:
     outbound:
@@ -16,9 +16,8 @@ spec:
       rules:
         - application: istio-ingressgateway
           namespace: istio-system
-  image: {{version}}
+  image: {{image}}
   port: 4242
-  team: {{team}}
   liveness:
     path: /health/is-alive
     initialDelay: 10
@@ -31,8 +30,8 @@ spec:
     timeout: 1
   replicas:
     min: 1
-    max: 1
-    cpuThresholdPercentage: 100
+    max: 2
+    cpuThresholdPercentage: 75
   resources:
     limits:
       cpu: 500m
@@ -41,14 +40,12 @@ spec:
       cpu: 200m
       memory: 256Mi
   ingresses:
-    - "https://amplitude.nav.no"
+    - "https://amplitude.dev-nav.no"
   logformat: accesslog
   logtransform: dns_loglevel
-  secrets:
-    - name: amplitude-secrets
   env:
     - name: APP_VERSION
-      value: {{version}}
+      value: {{image}}
     - name: AMPLITUDE_URL
       value: https://api.amplitude.com
 
