@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - master
-  page_build:
   release:
     types:
       - created
@@ -77,8 +76,8 @@ jobs:
   # Deployer til Prod-GCP på "release" fra github
   deploy-prod-gcp:
     name: Deploy to nais prod-gcp
-    needs: build
-    if: github.ref == 'refs/heads/master' && github.event_name == 'release'
+    needs: test
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
