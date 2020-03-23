@@ -11,6 +11,9 @@ describe('normalize-events', function() {
       assert.strictEqual(event.api_properties.tracking_options.city, 'Oslo');
       assert.notStrictEqual(event.user_agent, exampleEvent.user_agent);
       assert.notStrictEqual(event.os_version, exampleEvent.os_version);
+
+      assert.strictEqual(event.user_properties.initial_referrer, 'https://www.nav.no/initial/masked-id');
+      assert.strictEqual(event.user_properties.referrer, 'https://www.nav.no/masked-id');
     });
   });
 });

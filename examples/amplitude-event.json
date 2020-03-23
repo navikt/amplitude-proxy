@@ -18,7 +18,12 @@
     }
   },
   "event_properties": {},
-  "user_properties": {},
+  "user_properties": {
+    "initial_referrer": "https://www.nav.no/initial/00408048-7268-41d0-a82d-08d6e6f95189",
+    "referrer": "https://www.nav.no/21521311222",
+    "referring_domain": "www.nav.no",
+    "initial_referring_domain": "www.nav.no"
+  },
   "uuid": "ec53a0a6-74ce-4777-953f-5fec92471a54",
   "library": {
     "name": "amplitude-js",
