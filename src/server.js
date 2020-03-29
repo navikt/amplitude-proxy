@@ -1,5 +1,6 @@
 const fastify = require('fastify')({logger: false});
 const path = require('path');
+const logger = require('pino')();
 const paths = require('./paths');
 fastify.register(require('fastify-formbody'));
 fastify.register(require('fastify-cors'), {origin: '*'});
@@ -13,9 +14,9 @@ fastify.route(require('./routes/collect'));
 module.exports = async (port) => {
   try {
     await fastify.listen(port, '0.0.0.0');
-    fastify.log.info(`server listening on ${fastify.server.address().port}`);
+    logger.info(`server listening on ${fastify.server.address().port}`);
   } catch (err) {
-    fastify.log.error(err);
+    logger.error(err);
     process.exit(1);
   }
   return fastify;
