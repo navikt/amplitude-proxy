@@ -41,8 +41,6 @@ spec:
       memory: 256Mi
   ingresses:
     - "https://amplitude.dev-nav.no"
-  logformat: accesslog
-  logtransform: dns_loglevel
   env:
     - name: APP_VERSION
       value: {{image}}
