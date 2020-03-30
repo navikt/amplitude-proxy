@@ -18,6 +18,9 @@ spec:
           namespace: istio-system
   image: {{image}}
   port: 4242
+  prometheus:
+    enabled: true
+    path: /metrics
   liveness:
     path: /health/is-alive
     initialDelay: 10

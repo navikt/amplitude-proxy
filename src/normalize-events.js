@@ -11,7 +11,7 @@ module.exports = function(inputEvents, ip) {
     cloneEvent.api_properties.tracking_options = getTrackingOptions(ip);
     cloneEvent.user_agent = null;
     cloneEvent.os_version = null;
-    cloneEvent.user_properties = cleanReffererUrls(cloneEvent.user_properties || {})
+    cloneEvent.user_properties = cleanReffererUrls(cloneEvent.user_properties || {});
     outputEvents.push(cloneEvent);
   });
   return outputEvents;

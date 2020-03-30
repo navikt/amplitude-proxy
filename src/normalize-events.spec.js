@@ -4,8 +4,8 @@ const exampleEvent = require('../examples/amplitude-event');
 describe('normalize-events', function() {
   it('should add tracking options', function() {
     const cloneEvent = Object.assign({}, exampleEvent);
-    let events = [cloneEvent, cloneEvent]
-    events[0].user_properties.initial_referrer = 'https://www.nav.no/initial/1000Ro2Fi'
+    let events = [cloneEvent, cloneEvent];
+    events[0].user_properties.initial_referrer = 'https://www.nav.no/initial/1000Ro2Fi';
     const result = normalizeEvents(events, '155.55.51.185');
     assert.strictEqual(result.length, 2);
     result.forEach(event => {
