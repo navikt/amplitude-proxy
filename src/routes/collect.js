@@ -4,7 +4,7 @@ const forwardEvents = require('../forward-events');
 const isBot = require('isbot');
 const paths = require('../paths');
 const constants = require('../constants');
-const logger = require('pino')();
+const logger = require('../logger');
 
 const handler = function(request, reply) {
   const events = JSON.parse(request.body.e);
