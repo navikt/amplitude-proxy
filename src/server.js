@@ -17,7 +17,7 @@ module.exports = async (port) => {
   try {
     await fastify.listen(port, '0.0.0.0');
     promClient.collectDefaultMetrics();
-    logger.info(`server listening on ${fastify.server.address().port}`);
+    logger.info(`Server listening on ${fastify.server.address().port}`);
   } catch (err) {
     logger.error(err);
     process.exit(1);
