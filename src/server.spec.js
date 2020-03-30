@@ -41,7 +41,7 @@ describe('test end to end', async () => {
     const clonedConfig = Object.assign({}, config);
     clonedConfig.headers['user-agent'] = COMMON_USER_AGENT;
     const result = await axios.post(collectUrl, qs.stringify(requestBody), clonedConfig);
-    if(result.data.code !==200){
+    if (result.data.code !== 200) {
       console.error(result.data);
     }
     assert.strictEqual(result.status, 200);

@@ -156,7 +156,10 @@
           "properties": {
             "city": {
               "$id": "#/properties/api_properties/properties/tracking_options/properties/city",
-              "type": ["string", "boolean"],
+              "type": [
+                "string",
+                "boolean"
+              ],
               "title": "The City Schema",
               "default": false,
               "examples": [

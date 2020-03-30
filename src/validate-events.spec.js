@@ -5,7 +5,7 @@ describe('validate-events', function() {
   it('should not experience error on example event', function() {
     const cloneEvent = Object.assign({}, exampleEvent);
     const result = validateEvents([cloneEvent]);
-    if(result.length>0){
+    if (result.length > 0) {
       console.log(result);
     }
     assert.strictEqual(result.length, 0);
