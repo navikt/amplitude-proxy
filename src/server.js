@@ -1,6 +1,6 @@
 const fastify = require('fastify')({logger: false});
 const path = require('path');
-const logger = require('pino')();
+const logger = require('./logger');
 const paths = require('./paths');
 fastify.register(require('fastify-formbody'));
 fastify.register(require('fastify-cors'), {origin: '*'});
