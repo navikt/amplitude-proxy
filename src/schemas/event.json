@@ -85,7 +85,10 @@
     },
     "version_name": {
       "$id": "#/properties/version_name",
-      "type": "null",
+      "type": [
+        "string",
+        "null"
+      ],
       "title": "The Version_name Schema",
       "default": null,
       "examples": [
@@ -94,7 +97,10 @@
     },
     "platform": {
       "$id": "#/properties/platform",
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "title": "The Platform Schema",
       "default": "",
       "examples": [
@@ -104,7 +110,10 @@
     },
     "os_name": {
       "$id": "#/properties/os_name",
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "title": "The Os_name Schema",
       "default": "",
       "examples": [
@@ -114,7 +123,10 @@
     },
     "os_version": {
       "$id": "#/properties/os_version",
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "title": "The Os_version Schema",
       "default": "",
       "examples": [
@@ -124,7 +136,10 @@
     },
     "device_model": {
       "$id": "#/properties/device_model",
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "title": "The Device_model Schema",
       "default": "",
       "examples": [
