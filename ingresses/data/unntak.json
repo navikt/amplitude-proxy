@@ -1,0 +1,18 @@
+[
+  {
+    "appname": "enonicxp",
+    "team": "enonic",
+    "namespace": "enonic",
+    "version": "latest",
+    "context": "enonic",
+    "ingress": "https://www.nav.no/no"
+  },
+  {
+    "appname": "enonicxp",
+    "team": "enonic",
+    "namespace": "enonic",
+    "version": "latest",
+    "context": "enonic",
+    "ingress": "https://www.nav.no/en"
+  }
+]

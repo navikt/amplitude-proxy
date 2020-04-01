@@ -62,3 +62,4 @@ typings/
 *.out
 .idea
 cache
+ingresses/tmp

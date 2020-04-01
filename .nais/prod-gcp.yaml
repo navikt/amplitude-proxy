@@ -11,7 +11,9 @@ spec:
       external:
         - host: api.amplitude.com
         - host: cdn.amplitude.com
-      rules : []
+      rules:
+        - application: amplitude-data
+          namespace: dataplattform
     inbound:
       rules:
         - application: istio-ingressgateway
