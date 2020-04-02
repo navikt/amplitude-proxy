@@ -12,4 +12,8 @@ services:
     image: mendhak/http-https-echo
     ports:
       - '8484:80'
+  data:
+    build: ./ingresses
+    ports:
+      - '2424:80'
 

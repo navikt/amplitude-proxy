@@ -4,7 +4,7 @@ const forwardEvents = require('../forward-events');
 const isBot = require('isbot');
 const paths = require('../paths');
 const constants = require('../constants');
-const logger = require('../logger');
+const logger = require('../utils/logger');
 const promClient = require('prom-client');
 
 const collectCounter = new promClient.Counter({
@@ -35,13 +35,12 @@ const handler = function(request, reply) {
     forwardEvents(normalizedEvents, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
       if (response.data.code !== 200 || request.query.debug) {
+        collectCounter.labels('failed_ingesting_events', shortApiKey).inc();
         reply.send(response.data);
       } else {
         collectCounter.labels('success',shortApiKey).inc();
         reply.send(constants.SUCCESS);
       }
-      collectCounter.labels(response.data.code === 200
-          ? 'success' : 'failed_ingesting_events', shortApiKey).inc();
     }).catch(function(error) {
       logger.error({
         msg: error.message,
