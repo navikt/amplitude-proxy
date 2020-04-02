@@ -1,0 +1,37 @@
+{
+  "device_id": "6fc4f5bf-05cd-4605-bd6c-7211b6805c0aR",
+  "user_id": null,
+  "timestamp": 1568984110457,
+  "event_id": 4,
+  "session_id": 1568981102098,
+  "event_type": "start game",
+  "version_name": null,
+  "platform": "https://arbeidsgiver.nav.no/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds",
+  "os_name": "Chrome",
+  "os_version": "76",
+  "device_model": "Mac",
+  "language": "en-GB",
+  "api_properties": {
+    "tracking_options": {
+      "city": false,
+      "ip_address": false
+    }
+  },
+  "event_properties": {},
+  "user_properties": {
+    "initial_referrer": "https://www.nav.no/initial/00408048-7268-41d0-a82d-08d6e6f95189",
+    "referrer": "https://www.nav.no/21521311222",
+    "referring_domain": "www.nav.no",
+    "initial_referring_domain": "www.nav.no"
+  },
+  "uuid": "ec53a0a6-74ce-4777-953f-5fec92471a54",
+  "library": {
+    "name": "amplitude-js",
+    "version": "5.3.1"
+  },
+  "sequence_number": 4,
+  "groups": {},
+  "group_properties": {},
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+}
+

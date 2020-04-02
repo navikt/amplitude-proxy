@@ -1,4 +1,4 @@
-const fetchUrl = require('../fetch-url');
+const fetchUrl = require('../utils/fetch-url');
 const cached = {};
 module.exports = async function(req, reply) {
   const url = 'https://cdn.amplitude.com' + req.raw.url;
