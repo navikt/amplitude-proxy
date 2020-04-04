@@ -1,5 +1,5 @@
 const startTime = new Date();
-const getIngressData = require('../../src/get-ingress-data');
+const getIngressData = require('../../src/data/get-ingress-data');
 const fs = require('fs');
 const path = require('path');
 const parentDir = path.resolve(__dirname, '..');

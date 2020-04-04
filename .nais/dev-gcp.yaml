@@ -53,7 +53,5 @@ spec:
       value: https://api.amplitude.com
     - name: INGRESSES_URL
       value: http://amplitude-data/ingresses.json
-    - name: AUTO_TRACK_KEY
-      value: nav
     - name: PROJECT_KEY_MAPPINGS
       value: "{\"55477baea93c5227d8c0f6b813653615\":\"*\"}"

@@ -10,12 +10,10 @@ const checkEnvVars = (envVars) => {
   if (!validUrl(envVars['INGRESSES_URL'])) {
     throw Error('INGRESSES_URL is not configured correct.');
   }
-  if (!envVars['AUTO_TRACK_KEY'] || envVars['AUTO_TRACK_KEY'].length <= 2) {
-    throw Error('AUTO_TRACK_KEY is not configured correct.');
-  }
   if (!envVars['PROJECT_KEY_MAPPINGS'] || !transposeKeyString(envVars['PROJECT_KEY_MAPPINGS']).has("*")) {
     throw Error('PROJECT_KEY_MAPPINGS is not configured correct.');
   }
+  return true
 };
 
 module.exports = checkEnvVars;

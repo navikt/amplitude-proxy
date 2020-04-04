@@ -1,6 +1,7 @@
-const allEntries = require('../cache/ingresses.json');
+const getIngressesPath = require('./ingresses-path');
+const allEntries = require(getIngressesPath());
 const lookupFunction = require('./lookup-function');
-const logger = require('./utils/logger');
+const logger = require('../utils/logger');
 const entryMap = new Map();
 /**
  * This map will be staic and not recalculated untill server restart.
@@ -8,7 +9,7 @@ const entryMap = new Map();
 allEntries.forEach(entry => {
   entryMap.set(entry.ingress, entry);
 });
-logger.info("Entrymap loaded with " + entryMap.size + " entries.");
+logger.info("IngressMap is loaded with " + entryMap.size + " entries.");
 const getIngressData = (url) => {
   return lookupFunction(url, entryMap);
 };

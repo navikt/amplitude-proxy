@@ -4,16 +4,22 @@ services:
     restart: unless-stopped
     build: .
     environment:
-      AMPLITUDE_URL: http://echo-server
+      AMPLITUDE_URL: http://echo
+      NAIS_CLUSTER_NAME: local
       PORT: 4243
+      INGRESSES_URL: http://data/ingresses.json
+      PROJECT_KEY_MAPPINGS: "{\"55477baea93c5227d8c0f6b813653615\":\"*\"}"
     ports:
       - '4243:4243'
-  echo-server:
+    depends_on:
+      - echo
+      - data
+  echo:
     image: mendhak/http-https-echo
     ports:
       - '8484:80'
   data:
     build: ./ingresses
     ports:
-      - '2424:80'
+      - '2525:80'
 

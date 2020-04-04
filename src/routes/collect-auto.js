@@ -1,7 +1,7 @@
 const validateEvents = require('../validate-events');
 const validUrl = require('../utils/valid-url');
 const normalizeEvents = require('../normalize-events');
-const getIngressData = require('../get-ingress-data');
+const getIngressData = require('../data/get-ingress-data');
 const addClusterData = require('../add-cluster-data');
 const forwardEvents = require('../forward-events');
 const isBot = require('isbot');
@@ -18,6 +18,7 @@ const collectCounter = new promClient.Counter({
 });
 const apiKeyMap = transposeKeyString(process.env.PROJECT_KEY_MAPPINGS);
 const handler = function(request, reply) {
+
   const events = JSON.parse(request.body.e);
   const apiKey = request.body.client;
   const errors = validateEvents(events);
@@ -34,7 +35,8 @@ const handler = function(request, reply) {
   const realApiKey = apiKeyMap.has(appContext)
       ? apiKeyMap.get(appContext)
       : apiKeyMap.get('*');
-  if (apiKey !== process.env.AUTO_TRACK_KEY) {
+  const autoTrackKey = process.env.AUTO_TRACK_KEY || 'default';
+  if (apiKey !== autoTrackKey) {
     collectCounter.labels('wrong_api_key', appName, teamName).inc();
     reply.code(400).send('Apikey is wrong... need do match the AUTO_TRACK_KEY.');
 
