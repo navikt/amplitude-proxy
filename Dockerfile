@@ -1,8 +1,7 @@
 FROM node:alpine
 WORKDIR /app
 COPY . .
-RUN yarn install --ignore-optional --ignore-scripts --no-progress --production
-ENV PORT=4242
-EXPOSE 4242
-RUN chmod +x ./*.sh
+RUN find . -name "*.spec.js" -type f -delete && \
+    npm install --ignore-optional --ignore-scripts --no-progress --production && \
+    chmod +x ./*.sh
 CMD ./serve.sh

@@ -6,27 +6,31 @@
   "author": "NAV",
   "license": "MIT",
   "scripts": {
+    "e2e": "yarn up && mocha test-utils/e2e-test.js",
     "serve": "nodemon",
-    "test": "mocha src/**/*.spec.js",
-    "start-echo-server": "nohup node test-utils/echo-server.js &",
+    "test": "mocha \"src/**/*.spec.js\"",
     "up": "docker-compose up -d --build"
   },
   "dependencies": {
     "ajv": "^6.12.0",
     "axios": "^0.19.2",
     "fastify": "^2.13.0",
-    "fastify-cors": "^2.2.0",
+    "fastify-cors": "^3.0.3",
     "fastify-formbody": "^3.1.0",
     "fastify-static": "^2.6.0",
     "geoip-lite": "^1.4.1",
     "isbot": "^2.5.7",
     "json-schema-library": "^4.1.2",
-    "pino": "^6.0.0",
+    "pino": "^6.1.1",
     "prom-client": "^12.0.0"
   },
   "devDependencies": {
-    "mocha": "^6.2.3",
+    "faker-es6": "^5.0.0",
+    "mocha": "^7.1.1",
     "moxios": "^0.4.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "pino-pretty": "^4.0.0",
+    "uuid": "^7.0.3",
+    "wait-on": "^4.0.1"
   }
 }

@@ -2,7 +2,6 @@ const assert = require('assert');
 const ignoredHost = require('./ignored-host');
 
 describe('ignored-hosts', function() {
-
   it('should ignore localhost and heroku', function() {
     [
       'http://localhost:8080/sdfsa',

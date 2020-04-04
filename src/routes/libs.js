@@ -1,5 +1,6 @@
 const fetchUrl = require('../utils/fetch-url');
 const cached = {};
+const logger = require('../utils/logger');
 module.exports = async function(req, reply) {
   const url = 'https://cdn.amplitude.com' + req.raw.url;
   const hostname = req.hostname;
@@ -10,6 +11,7 @@ module.exports = async function(req, reply) {
     }
     reply.header('Content-Type', 'text/javascript; charset=utf-8').send(cached[hostname]);
   } catch (e) {
+    logger.error(e.message)
     reply.code(500).send(e);
   }
 };

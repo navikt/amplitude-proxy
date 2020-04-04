@@ -3,12 +3,15 @@ const path = require('path');
 const logger = require('./utils/logger');
 const checkEnvVars = require('./utils/check-env-vars');
 const paths = require('./paths');
-const fetchIngresses = require('./fetch-ingresses');
+const fetchIngresses = require('./data/fetch-ingresses');
 const promClient = require('prom-client');
 module.exports = async (port) => {
   try {
-    checkEnvVars(process.env)
-    await fetchIngresses();
+    promClient.collectDefaultMetrics();
+    if(checkEnvVars(process.env)){
+      logger.info("Environment vars is ok.")
+    }
+    await fetchIngresses(process.env.INGRESSES_URL);
     fastify.register(require('fastify-formbody'));
     fastify.register(require('fastify-cors'), {origin: '*'});
     fastify.register(require('fastify-static'), {root: path.join(__dirname, '..', 'public')});
@@ -20,8 +23,8 @@ module.exports = async (port) => {
     fastify.get(paths.METRICS, require('./routes/metrics'));
     fastify.route(require('./routes/collect'));
     fastify.route(require('./routes/collect-auto'));
+    logger.info(`Server is starting...`);
     await fastify.listen(port, '0.0.0.0');
-    promClient.collectDefaultMetrics();
     logger.info(`Server listening on ${fastify.server.address().port}`);
   } catch (err) {
     logger.error(err);
