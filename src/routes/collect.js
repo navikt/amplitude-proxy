@@ -1,5 +1,6 @@
 const validateEvents = require('../validate-events');
 const normalizeEvents = require('../normalize-events');
+const addProxyData = require('../add-proxy-data');
 const forwardEvents = require('../forward-events');
 const isBot = require('isbot');
 const paths = require('../paths');
@@ -31,7 +32,8 @@ const handler = function(request, reply) {
     });
     reply.send(constants.IGNORED);
   } else {
-    const normalizedEvents = normalizeEvents(events, request.ip);
+    const eventsWithProxyData = addProxyData(events, process.env.NAIS_APP_IMAGE)
+    const normalizedEvents = normalizeEvents(eventsWithProxyData, request.ip);
     forwardEvents(normalizedEvents, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
       if (response.data.code !== 200 || request.query.debug) {
