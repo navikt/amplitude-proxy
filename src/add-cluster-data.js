@@ -12,8 +12,6 @@ const addClusterData = (inputEvents, getIngressData) => {
       Object.keys(ingressData).forEach(key => {
         cloneEvent.event_properties[key] = ingressData[key];
       });
-    } else {
-
     }
     outputEvents.push(cloneEvent);
   });

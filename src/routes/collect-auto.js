@@ -18,7 +18,6 @@ const collectCounter = new promClient.Counter({
 });
 const apiKeyMap = transposeKeyString(process.env.PROJECT_KEY_MAPPINGS);
 const handler = function(request, reply) {
-
   const events = JSON.parse(request.body.e);
   const apiKey = request.body.client;
   const errors = validateEvents(events);
@@ -27,7 +26,8 @@ const handler = function(request, reply) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
     }
   });
-  const eventsWithClusterData = addClusterData(events, getIngressData);
+  const eventsWithProxyData = addProxyData(events, process.env.NAIS_APP_IMAGE)
+  const eventsWithClusterData = addClusterData(eventsWithProxyData, getIngressData);
   const appName = eventsWithClusterData[0].event_properties.app;
   const teamName = eventsWithClusterData[0].event_properties.team;
   const eventUrl = eventsWithClusterData[0].event_properties.url;
