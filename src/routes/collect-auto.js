@@ -1,16 +1,19 @@
+const addClusterData = require('../filters/add-cluster-data');
+const addGeoData = require('../filters/add-geo-data');
+const addProxyData = require('../filters/add-proxy-data');
+const cleanEventUrls = require('../filters/clean-event-urls');
+const constants = require('../constants');
+const forwardEvents = require('../forward-events');
+const getIngressData = require('../data/get-ingress-data');
+const ignoredHost = require('../utils/ignored-host');
+const isBot = require('isbot');
+const logger = require('../utils/logger');
+const paths = require('../paths');
+const promClient = require('prom-client');
+const transposeKeyString = require('../utils/transpose-key-string');
 const validateEvents = require('../validate-events');
 const validUrl = require('../utils/valid-url');
-const normalizeEvents = require('../normalize-events');
-const getIngressData = require('../data/get-ingress-data');
-const addClusterData = require('../add-cluster-data');
-const forwardEvents = require('../forward-events');
-const isBot = require('isbot');
-const paths = require('../paths');
-const constants = require('../constants');
-const logger = require('../utils/logger');
-const promClient = require('prom-client');
-const ignoredHost = require('../utils/ignored-host');
-const transposeKeyString = require('../utils/transpose-key-string');
+
 const collectCounter = new promClient.Counter({
   name: 'collect_auto_endpoint',
   help: 'Count of requests received to the auto collect endpoint',
@@ -26,8 +29,7 @@ const handler = function(request, reply) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
     }
   });
-  const eventsWithProxyData = addProxyData(events, process.env.NAIS_APP_IMAGE)
-  const eventsWithClusterData = addClusterData(eventsWithProxyData, getIngressData);
+  const eventsWithClusterData = addClusterData(events, getIngressData);
   const appName = eventsWithClusterData[0].event_properties.app;
   const teamName = eventsWithClusterData[0].event_properties.team;
   const eventUrl = eventsWithClusterData[0].event_properties.url;
@@ -60,10 +62,12 @@ const handler = function(request, reply) {
     reply.send('success, but request ignored as test-traffic so its not forwarded.');
 
   } else {
-    const normalizedEvents = normalizeEvents(eventsWithClusterData, request.ip);
+    const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
+    const eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
 
 
-    forwardEvents(normalizedEvents, realApiKey, process.env.AMPLITUDE_URL).then(function(response) {
+    forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
       if (response.data.code !== 200) {
         collectCounter.labels('failed_ingesting_events', appName, teamName).inc();

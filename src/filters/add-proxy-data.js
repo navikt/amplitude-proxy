@@ -1,4 +1,4 @@
-const constants = require('./constants');
+const constants = require('../constants');
 const addProxyData = (inputEvents, dockerImagePath) => {
   let proxyVersion = constants.UNKNOWN;
   if (typeof dockerImagePath == 'string') {

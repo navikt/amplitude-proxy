@@ -1,5 +1,5 @@
 const assert = require('assert');
-const exampleEvent = require('../examples/amplitude-event');
+const exampleEvent = require('../../examples/amplitude-event.json');
 const addClusterData = require('./add-cluster-data');
 
 describe('add-cluster-data', function() {
