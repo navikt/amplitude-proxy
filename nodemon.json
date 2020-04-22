@@ -1,8 +1,8 @@
 {
   "env": {
     "AMPLITUDE_URL": "https://api.amplitude.com",
-    "INGRESSES_URL": "http://localhost:2424/ingresses.json",
-    "AUTO_TRACK_KEY": "nav",
+    "INGRESSES_URL": "http://localhost:2525/ingresses.json",
+    "AUTO_TRACK_KEY": "default",
     "PROJECT_KEY_MAPPINGS": "{\"55477baea93c5227d8c0f6b813653615\":\"*\"}"
   }
 }

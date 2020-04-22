@@ -1,7 +1,7 @@
 const assert = require('assert');
-const exampleEvent = require('../examples/amplitude-event');
+const exampleEvent = require('../../examples/amplitude-event.json');
 const addProxyData = require('./add-proxy-data');
-const constants = require('./constants');
+const constants = require('../constants');
 describe('add-proxy-data', function() {
   it('should work with simple', function() {
     const testEvent = JSON.parse(JSON.stringify(exampleEvent));

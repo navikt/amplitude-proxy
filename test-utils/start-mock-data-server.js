@@ -8,7 +8,7 @@ module.exports = async (port, data) => {
       reply.send(usingData)
     });
     await fastify.listen(port, '0.0.0.0');
-    logger.info("Started, test ingress server with " + usingData.length + " entries.");
+    logger.info("Started, test ingress server with " + usingData.length + " entries on port "+port);
   } catch (err) {
     logger.error(err);
     process.exit(1);

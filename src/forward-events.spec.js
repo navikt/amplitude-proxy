@@ -1,15 +1,15 @@
 const assert = require('assert');
-const axios = require('axios');
 const moxios = require('moxios');
 const forwardEvents = require('./forward-events');
 const paths = require('./paths');
+
 describe('forward-events', function() {
   beforeEach(() => moxios.install());
   afterEach(() => moxios.uninstall());
 
   it('should be forwarded', function(done) {
     const events = [];
-    const api_key = 'cbad9041839e9b37e65453ef99127c2f';
+    const api_key = Math.random().toString(36).substr(2);
     const amplitudeUrl = 'http://localhost:4242';
     moxios.wait(function() {
       let request = moxios.requests.mostRecent();

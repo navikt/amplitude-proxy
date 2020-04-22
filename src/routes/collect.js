@@ -1,12 +1,14 @@
-const validateEvents = require('../validate-events');
-const normalizeEvents = require('../normalize-events');
-const addProxyData = require('../add-proxy-data');
-const forwardEvents = require('../forward-events');
-const isBot = require('isbot');
-const paths = require('../paths');
+const addGeoData = require('../filters/add-geo-data');
+const addProxyData = require('../filters/add-proxy-data');
+const cleanEventUrls = require('../filters/clean-event-urls');
 const constants = require('../constants');
+const forwardEvents = require('../forward-events');
+const ignoredHost = require('../utils/ignored-host');
+const isBot = require('isbot');
 const logger = require('../utils/logger');
+const paths = require('../paths');
 const promClient = require('prom-client');
+const validateEvents = require('../validate-events');
 
 const collectCounter = new promClient.Counter({
   name: 'collect_endpoint',
@@ -14,10 +16,10 @@ const collectCounter = new promClient.Counter({
   labelNames: ['message', 'projectKey'],
 });
 const handler = function(request, reply) {
-  const events = JSON.parse(request.body.e);
+  const inputEvents = JSON.parse(request.body.e);
   const apiKey = request.body.client;
   const shortApiKey = request.body.client.substring(0, 6)
-  const errors = validateEvents(events);
+  const errors = validateEvents(inputEvents);
   if (errors.length > 0) {
     collectCounter.labels('events_had_errors', shortApiKey).inc();
     reply.send(errors);
@@ -26,15 +28,16 @@ const handler = function(request, reply) {
     logger.info({
       msg: 'Request was ignored as bot traffic',
       project_key: apiKey,
-      event_type: events[0].event_type,
-      device_id: events[0].device_id,
+      event_type: inputEvents[0].event_type,
+      device_id: inputEvents[0].device_id,
       user_agent: request.headers['user-agent'],
     });
     reply.send(constants.IGNORED);
   } else {
-    const eventsWithProxyData = addProxyData(events, process.env.NAIS_APP_IMAGE)
-    const normalizedEvents = normalizeEvents(eventsWithProxyData, request.ip);
-    forwardEvents(normalizedEvents, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
+    const eventsWithProxyData = addProxyData(inputEvents, process.env.NAIS_APP_IMAGE);
+    const eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
+    forwardEvents(eventsWithUrlsCleaned, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
       if (response.data.code !== 200 || request.query.debug) {
         collectCounter.labels('failed_ingesting_events', shortApiKey).inc();
@@ -47,8 +50,8 @@ const handler = function(request, reply) {
       logger.error({
         msg: error.message,
         project_key: apiKey,
-        event_type: events[0].event_type,
-        device_id: events[0].device_id,
+        event_type: inputEvents[0].event_type,
+        device_id: inputEvents[0].device_id,
         user_agent: request.headers['user-agent'],
       });
       collectCounter.labels('failed_proxy_events', shortApiKey).inc();

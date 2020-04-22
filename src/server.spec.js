@@ -18,26 +18,26 @@ describe('test end to end', async () => {
   const collectUrl = baseUrl + paths.COLLECT;
   const collectUrlDebug = collectUrl + '?debug=1';
 
-  Object.keys(nodemonConfig.env).forEach(key => {
-    process.env[key] = nodemonConfig.env[key];
-  });
+  const ingressPort = 9820;
+  const ingressUrl = 'http://localhost:' + ingressPort + "/ingresses.json";
+
   let amplitudeProxyServer;
   let ingressesServer;
   before(async () => {
+    Object.keys(nodemonConfig.env).forEach(key => {
+      process.env[key] = nodemonConfig.env[key];
+    });
+    process.env.INGRESSES_URL = ingressUrl;
     randomizeIngressPath();
-    ingressesServer = await startMockDataServer(2424);
-    amplitudeProxyServer = await server(port);
+    ingressesServer = await startMockDataServer(ingressPort);
+    amplitudeProxyServer = await server();
+    await amplitudeProxyServer.listen(port)
   });
 
   after(async () => {
     await amplitudeProxyServer.close();
     await ingressesServer.close();
-
   });
-  const requestBody = {
-    client: '55477baea93c5227d8c0f6b813653615',
-    e: JSON.stringify([exampleEvent]),
-  };
 
   it('should block bot traffic', async () => {
     const result = await axios.post(
