@@ -22,7 +22,7 @@ const handler = function(request, reply) {
   const errors = validateEvents(inputEvents);
   if (errors.length > 0) {
     collectCounter.labels('events_had_errors', shortApiKey).inc();
-    reply.send(errors);
+    reply.code(400).send(errors);
   } else if (isBot(request.headers['user-agent'])) {
     collectCounter.labels('ignored_as_bot_traffic', shortApiKey).inc();
     logger.info({
@@ -55,7 +55,7 @@ const handler = function(request, reply) {
         user_agent: request.headers['user-agent'],
       });
       collectCounter.labels('failed_proxy_events', shortApiKey).inc();
-      reply.send({
+      reply.code(502).send({
         statusCode: 502,
         message: 'Failed to proxy request',
         error: error.message,

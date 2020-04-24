@@ -1,7 +1,7 @@
 const server = require('./server');
 const axios = require('axios');
 const assert = require('assert');
-const exampleEvent = require('../examples/amplitude-event');
+const generateTestEvent = require('../test-utils/generate-test-event');
 const randomizeIngressPath = require('../test-utils/randomize-ingress-path');
 const startMockDataServer = require('../test-utils/start-mock-data-server');
 const collectRequestHeader = require('../test-utils/collect-request-header');
@@ -42,7 +42,7 @@ describe('test end to end', async () => {
   it('should block bot traffic', async () => {
     const result = await axios.post(
         collectUrlDebug,
-        collectRequestBody([exampleEvent]),
+        collectRequestBody([generateTestEvent()]),
         collectRequestHeader(),
     );
     assert.strictEqual(result.data, constants.IGNORED);
@@ -52,7 +52,7 @@ describe('test end to end', async () => {
   it('should receive and forward example event to amplitude', async () => {
     const result = await axios.post(
         collectUrlDebug,
-        collectRequestBody([exampleEvent]),
+        collectRequestBody([generateTestEvent()]),
         collectRequestHeader(COMMON_USER_AGENT),
     );
     if (result.data.code !== 200) {

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const exampleEvent = require('../../examples/amplitude-event.json');
+const generateTestEvent = require('../../test-utils/generate-test-event');
 const addClusterData = require('./add-cluster-data');
 
 describe('add-cluster-data', function() {
@@ -11,7 +11,7 @@ describe('add-cluster-data', function() {
         url: url,
       };
     };
-    const testEvent = JSON.parse(JSON.stringify(exampleEvent))
+    const testEvent = generateTestEvent()
     testEvent.platform = 'http://localhost/foo/bar';
     const outputEvents = addClusterData([testEvent], dummyGetMapWithData);
     assert.strictEqual(outputEvents[0].platform, 'Web');
@@ -19,7 +19,7 @@ describe('add-cluster-data', function() {
   });
 
   it('should ignore data when not fetched', function() {
-    const testEvent = JSON.parse(JSON.stringify(exampleEvent))
+    const testEvent = generateTestEvent()
     testEvent.platform = 'http://localhost/foo/bar';
     const outputEvents = addClusterData([testEvent], () => {});
     assert.strictEqual(outputEvents[0].platform, 'Web');

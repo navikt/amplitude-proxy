@@ -32,6 +32,7 @@ jobs:
             ${{ runner.os }}-
       - run:  npm install --ignore-scripts --no-optional
       - run:  npm test
+      - run:  npm run blackbox
 
   build:
     name: Build and push docker image

@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const firstName = require('faker-es6').default.name.firstName;
+const firstName = require('faker').name.firstName;
 module.exports = () => {
   const ingresses = [];
   for (let i = 0; i < 2345; i++) {
