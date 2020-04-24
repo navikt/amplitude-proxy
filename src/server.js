@@ -25,7 +25,7 @@ module.exports = async () => {
   fastify.get('/', require('./routes/index'));
   fastify.get('/libs/*', require('./routes/libs'));
   fastify.get(paths.ITS_ALIVE, async () => ({is: 'alive'}));
-  fastify.get(paths.ITS_READY, require('./routes/pod-prep'));
+  fastify.get(paths.ITS_READY, require('./routes/its-ready'));
   fastify.get(paths.METRICS, require('./routes/metrics'));
   fastify.route(require('./routes/collect'));
   fastify.route(require('./routes/collect-auto'));

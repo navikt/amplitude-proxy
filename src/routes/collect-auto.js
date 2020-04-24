@@ -88,7 +88,9 @@ const handler = function(request, reply) {
         device_id: events[0].device_id,
         user_agent: request.headers['user-agent'],
       });
-      reply.send({
+      reply
+      .code(502)
+      .send({
         statusCode: 502,
         message: 'Failed to proxy request',
         error: error.message,

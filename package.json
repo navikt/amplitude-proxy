@@ -2,11 +2,12 @@
   "name": "amplitude-proxy",
   "version": "1.0.0",
   "main": "serve.js",
+  "description": "Application that whitelists and forwards traffic to amplitudes servers.",
   "repository": "https://github.com/navikt/amplitude-proxy.git",
   "author": "NAV",
   "license": "MIT",
   "scripts": {
-    "e2e": "yarn up && mocha test-utils/e2e-test.js",
+    "blackbox": "node ./test-utils/ensure-test-ingresses.js && yarn up && mocha blackbox-test.js",
     "serve": "nodemon",
     "test": "mocha \"src/**/*.spec.js\"",
     "up": "docker-compose up -d --build"
@@ -25,12 +26,12 @@
     "prom-client": "^12.0.0"
   },
   "devDependencies": {
-    "faker-es6": "^5.0.0",
+    "faker": "^4.1.0",
     "mocha": "^7.1.1",
     "moxios": "^0.4.0",
     "nodemon": "^2.0.2",
     "pino-pretty": "^4.0.0",
     "uuid": "^7.0.3",
-    "wait-on": "^4.0.1"
+    "yaml": "^1.9.2"
   }
 }
