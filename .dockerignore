@@ -4,3 +4,4 @@
 !serve.*
 !src
 !cache
+!node_modules

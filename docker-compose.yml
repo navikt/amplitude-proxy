@@ -8,12 +8,14 @@ services:
       NAIS_CLUSTER_NAME: local
       PORT: 4243
       INGRESSES_URL: http://data/ingresses.json
-      PROJECT_KEY_MAPPINGS: "{\"55477baea93c5227d8c0f6b813653615\":\"*\"}"
+      PROJECT_KEYS_FILE: /secrets/project-keys.json
     ports:
       - '4243:4243'
     depends_on:
       - echo
       - data
+    volumes:
+      - ./secrets/:/secrets/
   echo:
     image: mendhak/http-https-echo
     ports:

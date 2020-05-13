@@ -7,6 +7,7 @@
   "author": "NAV",
   "license": "MIT",
   "scripts": {
+    "ensure-test-keyfile": "node ./test-utils/ensure-test-keyfile.js",
     "blackbox": "node ./test-utils/ensure-test-ingresses.js && yarn up && mocha blackbox-test.js",
     "serve": "nodemon",
     "test": "mocha \"src/**/*.spec.js\"",

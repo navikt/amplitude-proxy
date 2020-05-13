@@ -14,10 +14,6 @@ spec:
       rules:
         - application: amplitude-data
           namespace: dataplattform
-    inbound:
-      rules:
-        - application: istio-ingressgateway
-          namespace: istio-system
   image: {{image}}
   port: 4242
   prometheus:
@@ -45,7 +41,7 @@ spec:
       cpu: 200m
       memory: 256Mi
   ingresses:
-    - "https://amplitude.dev-nav.no"
+    - "https://amplitude.labs.nais.io"
   env:
     - name: APP_VERSION
       value: {{image}}
@@ -53,5 +49,7 @@ spec:
       value: https://api.amplitude.com
     - name: INGRESSES_URL
       value: http://amplitude-data/ingresses.json
-    - name: PROJECT_KEY_MAPPINGS
-      value: "{\"55477baea93c5227d8c0f6b813653615\":\"*\"}"
+    - name: PROJECT_KEYS_FILE
+      value: /var/run/secrets/project-keys.json
+  filesFrom:
+    - secret: project-keys

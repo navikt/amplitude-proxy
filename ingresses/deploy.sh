@@ -4,15 +4,15 @@ kubectl config use-context prod-gcp
 kubectl get pods -ndataplattform
 if [[ $? == 1 ]]
 then
-echo "Skru opp navtunellen får ikke tilgang til prod-gcp"
+echo "Skru på navtunellen, får ikke tilgang til prod-gcp"
 exit
 fi
 
-kubectl config use-context dev-gcp
+kubectl config use-context labs-gcp
 kubectl get pods -ndataplattform
 if [[ $? == 1 ]]
 then
-echo "Skru opp navtunellen får ikke tilgang til prod-gcp"
+echo "Skru på navtunellen, får ikke tilgang til prod-gcp"
 exit
 fi
 
@@ -28,7 +28,7 @@ echo "Får ikke pushet til docker.pkg.github.com"
 exit
 fi
 echo "Pushed ${IMAGE_NAME}"
-kubectl config use-context dev-gcp
+kubectl config use-context labs-gcp
 sed "s#IMAGE_NAME#${IMAGE_NAME}#g" app.yaml | kubectl apply -f -
 kubectl -ndataplattform rollout status deployment ${APPLICATION_NAME}
 echo "Prøver å pushe til prod-gcp"

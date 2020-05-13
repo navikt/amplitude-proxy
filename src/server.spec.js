@@ -30,8 +30,14 @@ describe('test end to end', async () => {
     process.env.INGRESSES_URL = ingressUrl;
     randomizeIngressPath();
     ingressesServer = await startMockDataServer(ingressPort);
-    amplitudeProxyServer = await server();
-    await amplitudeProxyServer.listen(port)
+    try {
+      amplitudeProxyServer = await server();
+      await amplitudeProxyServer.listen(port);
+    } catch (e) {
+      console.error('FATAL ERROR: ' + e.message);
+      await ingressesServer.close();
+      process.exit(1);
+    }
   });
 
   after(async () => {
