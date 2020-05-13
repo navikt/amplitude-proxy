@@ -1,5 +1,8 @@
 const validUrl = require('./valid-url');
 const transposeKeyString = require('./transpose-key-string');
+const getProjectKeysPath = require('../data/get-project-keys-path');
+const fs = require('fs');
+
 const checkEnvVars = (envVars) => {
   if (typeof envVars !== 'object') {
     throw Error('Env vars need to be an object');
@@ -10,10 +13,24 @@ const checkEnvVars = (envVars) => {
   if (!validUrl(envVars['INGRESSES_URL'])) {
     throw Error('INGRESSES_URL is not configured correct.');
   }
-  if (!envVars['PROJECT_KEY_MAPPINGS'] || !transposeKeyString(envVars['PROJECT_KEY_MAPPINGS']).has("*")) {
-    throw Error('PROJECT_KEY_MAPPINGS is not configured correct.');
+  if (!envVars['PROJECT_KEYS_FILE']) {
+    throw Error('PROJECT_KEYS_FILE is not set.');
   }
-  return true
+  const projectKeysFileName = getProjectKeysPath()
+  const projectKeysFileDesc = 'PROJECT_KEYS_FILE (' + projectKeysFileName + ')';
+  if (!fs.existsSync(projectKeysFileName)) {
+    throw Error(projectKeysFileDesc + ' doesn\'t exist.');
+  }
+  const projectKeysString = fs.readFileSync(projectKeysFileName, 'utf-8');
+  try {
+    JSON.parse(projectKeysString);
+  } catch (e) {
+    throw Error('Cannot parse ' + projectKeysFileDesc + '.');
+  }
+  if (!transposeKeyString(projectKeysString).has('*')) {
+    throw Error(projectKeysFileDesc + ' have no default project.');
+  }
+  return true;
 };
 
 module.exports = checkEnvVars;

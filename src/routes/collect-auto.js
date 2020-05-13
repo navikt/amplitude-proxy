@@ -10,7 +10,7 @@ const isBot = require('isbot');
 const logger = require('../utils/logger');
 const paths = require('../paths');
 const promClient = require('prom-client');
-const transposeKeyString = require('../utils/transpose-key-string');
+const getProjectKeys = require('../data/get-project-keys');
 const validateEvents = require('../validate-events');
 const validUrl = require('../utils/valid-url');
 
@@ -19,7 +19,9 @@ const collectCounter = new promClient.Counter({
   help: 'Count of requests received to the auto collect endpoint',
   labelNames: ['message', 'app', 'team'],
 });
-const apiKeyMap = transposeKeyString(process.env.PROJECT_KEY_MAPPINGS);
+
+const apiKeyMap = getProjectKeys();
+
 const handler = function(request, reply) {
   const events = JSON.parse(request.body.e);
   const apiKey = request.body.client;
@@ -32,7 +34,7 @@ const handler = function(request, reply) {
   const eventsWithClusterData = addClusterData(events, getIngressData);
   const appName = eventsWithClusterData[0].event_properties.app;
   const teamName = eventsWithClusterData[0].event_properties.team;
-  const eventUrl = eventsWithClusterData[0].event_properties.url;
+  const eventHostname = eventsWithClusterData[0].event_properties.hostname;
   const appContext = eventsWithClusterData[0].event_properties.context;
   const realApiKey = apiKeyMap.has(appContext)
       ? apiKeyMap.get(appContext)
@@ -57,15 +59,14 @@ const handler = function(request, reply) {
     });
     reply.send(constants.IGNORED);
 
-  } else if (eventUrl && ignoredHost(eventUrl)) {
+  } else if (eventHostname && ignoredHost(eventHostname)) {
     collectCounter.labels('ignored_as_dev_traffic', appName, teamName).inc();
-    reply.send('success, but request ignored as test-traffic so its not forwarded.');
+    reply.send(constants.SUCCESS);
 
   } else {
     const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
     const eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
-
 
     forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code

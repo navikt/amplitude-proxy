@@ -1,11 +1,8 @@
-const URL = require('url').URL;
-
-module.exports = (url) => {
-  const urlObj = new URL(url);
+module.exports = (hostname) => {
   if
   (
-      urlObj.hostname.includes('localhost') ||
-      urlObj.hostname.includes('heroku')
+      hostname.includes('localhost') ||
+      hostname.includes('heroku')
   ) {
     return true;
   }

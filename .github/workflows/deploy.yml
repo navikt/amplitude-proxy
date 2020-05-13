@@ -12,11 +12,13 @@ on:
       - created
 
 env:
+  TEST_PROJECT_KEY: ${{ secrets.TEST_PROJECT_KEY }}
   IMAGE: docker.pkg.github.com/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
 
 jobs:
   test:
     name: Run tests
+    timeout-minutes: 2
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -30,12 +32,14 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run:  npm install --ignore-scripts --no-optional
+      - run:  npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
+      - run:  mkdir -p secrets && npm run ensure-test-keyfile
       - run:  npm test
       - run:  npm run blackbox
 
   build:
     name: Build and push docker image
+    timeout-minutes: 2
     needs: test
     if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
@@ -51,7 +55,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run:  npm install --production --ignore-scripts --no-optional
+      - run:  npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
       - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,9 +64,10 @@ jobs:
           echo "$GITHUB_TOKEN" | docker login --username "$GITHUB_REPOSITORY" --password-stdin https://docker.pkg.github.com
           docker push ${IMAGE}
 
-  # Deployer til dev-gcp på alle merges til master
-  deploy-dev-gcp:
-    name: Deploy to nais dev-gcp
+  # Deployer til labs-gcp på alle merges til master
+  deploy-labs-gcp:
+    name: Deploy to nais labs-gcp
+    timeout-minutes: 2
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name != 'release'
     runs-on: ubuntu-latest
@@ -71,12 +76,13 @@ jobs:
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/dev-gcp.yaml
+          CLUSTER: labs-gcp
+          RESOURCE: .nais/labs-gcp.yaml
 
   # Deployer til Prod-GCP på "release" fra github
   deploy-prod-gcp:
     name: Deploy to nais prod-gcp
+    timeout-minutes: 2
     needs: test
     if: github.event_name == 'release'
     runs-on: ubuntu-latest

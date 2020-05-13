@@ -6,6 +6,10 @@ const serve = async (port) => {
   logger.info(`Server is starting...`);
   await fastify.listen(port, '0.0.0.0');
   logger.info(`Server listening on ${port}`);
+};
+try {
+  serve(process.env.PORT || 4242).then();
+} catch (e) {
+  logger.error(e.message);
 }
 
-serve(process.env.PORT || 4242).then()
