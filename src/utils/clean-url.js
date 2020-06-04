@@ -7,9 +7,11 @@ const formats = [
 ];
 module.exports = (url) => {
   let outputUrl = url;
-  formats.forEach(format => {
-    outputUrl = outputUrl.replace(format.regex, format.replace);
-  });
+  if(typeof url === 'string' || url instanceof String){
+    formats.forEach(format => {
+      outputUrl = outputUrl.replace(format.regex, format.replace);
+    });
+  }
   return outputUrl;
 };
 
