@@ -15,6 +15,7 @@ const collectCounter = new promClient.Counter({
   help: 'Count of requests received',
   labelNames: ['message', 'projectKey'],
 });
+
 const handler = function(request, reply) {
   const inputEvents = JSON.parse(request.body.e);
   const apiKey = request.body.client;
@@ -69,5 +70,5 @@ module.exports = {
   schema: {
     body: 'collect#',
   },
-  handler,
+  handler
 };

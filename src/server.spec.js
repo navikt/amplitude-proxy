@@ -28,6 +28,7 @@ describe('test end to end', async () => {
       process.env[key] = nodemonConfig.env[key];
     });
     process.env.INGRESSES_URL = ingressUrl;
+    process.env.NODE_ENV = constants.TEST;
     randomizeIngressPath();
     ingressesServer = await startMockDataServer(ingressPort);
     try {
