@@ -26,4 +26,8 @@ spec:
     - alert: Lav trafikk (respose code 200 er < 1 )
       expr: sum(irate(istio_requests_total{reporter="destination", destination_workload=~"amplitude-proxy",response_code="200"}[1d])) < 1
       for: 3m
-      action: "Sjekk loggene til app {{ $labels.log_app }} eller Grafana dashboard: https://grafana.adeo.no/d/06QXK89Wk/amplitude-proxy?orgId=1&from=now-24h&to=now"
+      action: "alert test"
+    - alert: slack alert test
+      expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="dataplattform"})==4
+      for: 2m
+      description: test
