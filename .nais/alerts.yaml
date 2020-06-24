@@ -27,7 +27,3 @@ spec:
       expr: sum(irate(istio_requests_total{reporter="destination", destination_workload=~"amplitude-proxy",response_code="200"}[1d])) < 1
       for: 3m
       action: "alert test"
-    - alert: slack alert test
-      expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="dataplattform"})==4
-      for: 2m
-      description: test
