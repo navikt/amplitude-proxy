@@ -1,0 +1,29 @@
+apiVersion: "nais.io/v1"
+kind: "Alert"
+metadata:
+  name: amplitude-proxy
+  namespace: default
+  labels:
+    team: dataplattform
+spec:
+  receivers:
+    slack:
+      channel: amplitude-proxy-alerts
+      prependText: '<!here> | '
+    email:
+      to: lord.andre.groseth@nav.no
+      send_resolved: false
+  alerts:
+    - alert: Amplitude-proxy nede
+      expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="dataplattform"})==0
+      for: 2m
+      description: "App {{ $labels.app }} er nede i namespace {{ $labels.kubernetes_namespace }}"
+      action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
+    - alert: høy feilrate i logger
+      expr: sum(irate(istio_requests_total{reporter="destination", destination_workload=~"amplitude-proxy",response_code=~"5.*"}[1d])) > 50
+      for: 3m
+      action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
+    - alert: Lav trafikk (respose code 200 er < 1 )
+      expr: sum(irate(istio_requests_total{reporter="destination", destination_workload=~"amplitude-proxy",response_code="200"}[1d])) < 1
+      for: 3m
+      action: "Sjekk loggene til app {{ $labels.log_app }} eller Grafana dashboard: https://grafana.adeo.no/d/06QXK89Wk/amplitude-proxy?orgId=1&from=now-24h&to=now"
