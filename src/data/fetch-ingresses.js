@@ -47,8 +47,8 @@ module.exports = async function (remoteUrl) {
     logger.info('Everything is ok, updating `get-ingress-data`');
     delete require.cache[require.resolve('./get-ingress-data')]; // removing stored modules, they need to be reloaded
     return true;
-  } catch {
-    logger.info('Failed to fetch ingresses from: ' + remoteUrl)
+  } catch (error ){
+    logger.info('Failed to fetch ingresses from: ' + remoteUrl + ', Error message: ' + error.message)
     return false
   }
 };
