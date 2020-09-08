@@ -8,32 +8,33 @@
   "license": "MIT",
   "scripts": {
     "ensure-test-keyfile": "node ./test-utils/ensure-test-keyfile.js",
-    "blackbox": "node ./test-utils/ensure-test-ingresses.js && yarn up && mocha blackbox-test.js",
+    "blackbox": "node ./test-utils/ensure-test-ingresses.js && npm run up && mocha blackbox-test.js",
     "serve": "nodemon",
     "test": "mocha \"src/**/*.spec.js\"",
     "up": "docker-compose up -d --build"
   },
   "dependencies": {
-    "ajv": "^6.12.0",
-    "axios": "^0.19.2",
-    "fastify": "^2.15.1",
-    "fastify-cors": "^3.0.3",
-    "fastify-formbody": "^3.1.0",
-    "fastify-metrics": "^5.0.1",
-    "fastify-static": "^2.6.0",
-    "geoip-lite": "^1.4.1",
-    "isbot": "^2.5.7",
-    "json-schema-library": "^4.1.2",
-    "pino": "^6.1.1",
+    "ajv": "^6.12.4",
+    "axios": "^0.20.0",
+    "fastify": "^3.3.0",
+    "fastify-cors": "^4.1.0",
+    "fastify-formbody": "^5.0.0",
+    "fastify-metrics": "^6.0.2",
+    "fastify-static": "^3.2.0",
+    "geoip-lite": "^1.4.2",
+    "isbot": "^3.0.8",
+    "json-schema-library": "^4.1.4",
+    "kafkajs": "^1.12.0",
+    "pino": "^6.6.0",
     "prom-client": "^12.0.0"
   },
   "devDependencies": {
     "faker": "^4.1.0",
-    "mocha": "^7.1.1",
+    "mocha": "^7.2.0",
     "moxios": "^0.4.0",
-    "nodemon": "^2.0.2",
-    "pino-pretty": "^4.0.0",
+    "nodemon": "^2.0.4",
+    "pino-pretty": "^4.2.1",
     "uuid": "^7.0.3",
-    "yaml": "^1.9.2"
+    "yaml": "^1.10.0"
   }
 }

@@ -1,24 +1,17 @@
 const assert = require('assert');
 const moxios = require('moxios');
-const buildFastify = require('../server');
 const paths = require('../paths');
 const constants = require('../constants');
-const nodemonConfig = require('../../nodemon');
-const mockIngressesMoxios = require('../../test-utils/mock-ingresses-moxios');
 const collectRequestBody = require('../../test-utils/collect-request-body');
 const collectRequestHeader = require('../../test-utils/collect-request-header');
 const generateTestEvent = require('../../test-utils/generate-test-event');
+const beforeRouteTest = require('../../test-utils/before-route-tests');
 const collectRoute = require('./collect');
-describe('collect route', function() {
+describe('collect', function() {
 
   let fastify;
   before(async () => {
-    Object.keys(nodemonConfig.env).forEach(key => {
-      process.env[key] = nodemonConfig.env[key];
-    });
-    await mockIngressesMoxios(moxios, process.env.INGRESSES_URL);
-    moxios.install();
-    fastify = await buildFastify();
+    fastify = await beforeRouteTest(moxios)
   });
   after(() => {
     moxios.uninstall();

@@ -8,6 +8,6 @@ const handler = async function(req, reply) {
  */
 module.exports = {
   method: 'GET',
-  url: paths.ITS_READY,
+  url: paths.ITS_ALIVE,
   handler
 };

@@ -5,7 +5,12 @@ const serve = async (port) => {
   const fastify = await server();
   logger.info(`Server is starting...`);
   await fastify.listen(port, '0.0.0.0');
-  logger.info(`Server listening on ${port}`);
+  if(!process.env.NAIS_CLUSTER_NAME){
+    logger.info(`Server listening on ${port}, visit http://localhost:${port}/`);
+  } else {
+    logger.info(`Server listening on ${port}`);
+  }
+
 };
 try {
   serve(process.env.PORT || 4242).then();

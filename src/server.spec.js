@@ -6,6 +6,7 @@ const randomizeIngressPath = require('../test-utils/randomize-ingress-path');
 const startMockDataServer = require('../test-utils/start-mock-data-server');
 const collectRequestHeader = require('../test-utils/collect-request-header');
 const collectRequestBody = require('../test-utils/collect-request-body');
+const client = require('prom-client');
 const paths = require('./paths');
 const constants = require('./constants');
 const nodemonConfig = require('../nodemon');
@@ -32,6 +33,7 @@ describe('test end to end', async () => {
     randomizeIngressPath();
     ingressesServer = await startMockDataServer(ingressPort);
     try {
+      client.register.clear();
       amplitudeProxyServer = await server();
       await amplitudeProxyServer.listen(port);
     } catch (e) {
