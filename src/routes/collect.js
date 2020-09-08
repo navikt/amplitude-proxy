@@ -2,6 +2,7 @@ const addGeoData = require('../filters/add-geo-data');
 const addProxyData = require('../filters/add-proxy-data');
 const cleanEventUrls = require('../filters/clean-event-urls');
 const constants = require('../constants');
+const createRequestLog = require('../utils/create-request-log');
 const forwardEvents = require('../forward-events');
 const ignoredHost = require('../utils/ignored-host');
 const isBot = require('isbot');
@@ -21,18 +22,13 @@ const handler = function(request, reply) {
   const apiKey = request.body.client;
   const shortApiKey = request.body.client.substring(0, 6)
   const errors = validateEvents(inputEvents);
+  const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'])
   if (errors.length > 0) {
     collectCounter.labels('events_had_errors', shortApiKey).inc();
     reply.code(400).send(errors);
   } else if (isBot(request.headers['user-agent'])) {
     collectCounter.labels('ignored_as_bot_traffic', shortApiKey).inc();
-    logger.info({
-      msg: 'Request was ignored as bot traffic',
-      project_key: apiKey,
-      event_type: inputEvents[0].event_type,
-      device_id: inputEvents[0].device_id,
-      user_agent: request.headers['user-agent'],
-    });
+    logger.info(log('Request was ignored as bot traffic'));
     reply.send(constants.IGNORED);
   } else {
     const eventsWithProxyData = addProxyData(inputEvents, process.env.NAIS_APP_IMAGE);
@@ -48,13 +44,7 @@ const handler = function(request, reply) {
         reply.send(constants.SUCCESS);
       }
     }).catch(function(error) {
-      logger.error({
-        msg: error.message,
-        project_key: apiKey,
-        event_type: inputEvents[0].event_type,
-        device_id: inputEvents[0].device_id,
-        user_agent: request.headers['user-agent'],
-      });
+      logger.error(log(error.message));
       collectCounter.labels('failed_proxy_events', shortApiKey).inc();
       reply.code(502).send({
         statusCode: 502,
@@ -64,11 +54,16 @@ const handler = function(request, reply) {
     });
   }
 };
+
+/**
+ *
+ * @type RouteOptions
+ */
 module.exports = {
   method: 'POST',
   url: paths.COLLECT,
   schema: {
-    body: 'collect#',
+    body: { $ref: 'collect#' },
   },
   handler
 };

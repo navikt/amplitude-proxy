@@ -1,5 +1,5 @@
 const geoLookup = require('geoip-lite').lookup;
-module.exports = async function(request, reply) {
+const handler =  function(request, reply) {
   reply.send({
     ip: request.ip,
     ips: request.ips,
@@ -7,4 +7,13 @@ module.exports = async function(request, reply) {
     hostname: request.hostname,
     geoip: geoLookup(request.ip),
   });
+};
+/**
+ *
+ * @type RouteOptions
+ */
+module.exports = {
+  method: 'GET',
+  url: '/your-ip',
+  handler
 };

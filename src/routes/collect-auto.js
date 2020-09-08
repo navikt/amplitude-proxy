@@ -3,14 +3,15 @@ const addGeoData = require('../filters/add-geo-data');
 const addProxyData = require('../filters/add-proxy-data');
 const cleanEventUrls = require('../filters/clean-event-urls');
 const constants = require('../constants');
+const createRequestLog = require('../utils/create-request-log');
 const forwardEvents = require('../forward-events');
 const getIngressData = require('../data/get-ingress-data');
+const getProjectKeys = require('../data/get-project-keys');
 const ignoredHost = require('../utils/ignored-host');
 const isBot = require('isbot');
 const logger = require('../utils/logger');
 const paths = require('../paths');
 const promClient = require('prom-client');
-const getProjectKeys = require('../data/get-project-keys');
 const validateEvents = require('../validate-events');
 const validUrl = require('../utils/valid-url');
 
@@ -39,6 +40,7 @@ const handler = function(request, reply) {
   const realApiKey = apiKeyMap.has(appContext)
       ? apiKeyMap.get(appContext)
       : apiKeyMap.get('*');
+  const log = createRequestLog(realApiKey,events[0].event_type,events[0].device_id,request.headers['user-agent'])
   const autoTrackKey = process.env.AUTO_TRACK_KEY || 'default';
   if (apiKey !== autoTrackKey) {
     collectCounter.labels('wrong_api_key', appName, teamName).inc();
@@ -50,13 +52,7 @@ const handler = function(request, reply) {
 
   } else if (isBot(request.headers['user-agent'])) {
     collectCounter.labels('ignored_as_bot_traffic', appName, teamName).inc();
-    logger.info({
-      msg: 'Request was ignored as bot traffic',
-      project_key: realApiKey,
-      event_type: events[0].event_type,
-      device_id: events[0].device_id,
-      user_agent: request.headers['user-agent'],
-    });
+    logger.info(log('Request was ignored as bot traffic'));
     reply.send(constants.IGNORED);
 
   } else if (eventHostname && ignoredHost(eventHostname)) {
@@ -82,13 +78,7 @@ const handler = function(request, reply) {
       }
     }).catch(function(error) {
       collectCounter.labels('failed_proxy_events', appName, teamName).inc();
-      logger.error({
-        msg: error.message,
-        project_key: realApiKey,
-        event_type: events[0].event_type,
-        device_id: events[0].device_id,
-        user_agent: request.headers['user-agent'],
-      });
+      logger.error(log(error.message));
       reply
       .code(502)
       .send({
@@ -99,11 +89,16 @@ const handler = function(request, reply) {
     });
   }
 };
+
+/**
+ *
+ * @type RouteOptions
+ */
 module.exports = {
   method: 'POST',
   url: paths.COLLECT_AUTO,
   schema: {
-    body: 'collect#',
+    body: { $ref: 'collect#' },
   },
   handler,
 };

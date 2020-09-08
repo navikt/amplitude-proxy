@@ -1,0 +1,34 @@
+{
+  "$id": "ingressUpdate",
+  "type": "object",
+  "required": [
+    "uid",
+    "ingresses",
+    "props"
+  ],
+  "properties": {
+    "uid": {
+      "$id": "#/properties/uid",
+      "type": "string"
+    },
+    "collector": {
+      "$id": "#/properties/collector",
+      "type": "string"
+    },
+    "ingresses": {
+      "$id": "#/properties/ingresses",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^(https?|http?)://",
+        "minLength": 5,
+        "maxLength": 255
+      }
+    },
+    "props": {
+      "$id": "#/properties/props",
+      "type": "object"
+    }
+  }
+}

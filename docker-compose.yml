@@ -24,4 +24,3 @@ services:
     build: ./ingresses
     ports:
       - '2525:80'
-

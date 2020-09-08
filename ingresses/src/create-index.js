@@ -38,3 +38,4 @@ contexts.forEach(context => {
 
 fs.writeFileSync(rootDir + '/cache/ingresses.json', JSON.stringify(data), 'utf-8');
 fs.writeFileSync(parentDir + '/tmp/ingresses.json', JSON.stringify(data), 'utf-8');
+console.log("Done")

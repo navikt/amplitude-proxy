@@ -1,0 +1,14 @@
+{
+  "uid": "something-unique-that-identifies-this-entry",
+  "collector": "preprod-collector",
+  "ingresses": [
+    "http://mydomain.com/a-contextpath",
+    "http://another-domain-that-for-some-reason-resolves.com/a-contextpath"
+  ],
+  "props": {
+    "team": "my-team",
+    "cluster": "my-cluster",
+    "env": "prod or what ever",
+    "custom-random-thing-that-should-be-tracked": "42"
+  }
+}

@@ -1,7 +1,7 @@
 const fetchUrl = require('../utils/fetch-url');
 const cached = {};
 const logger = require('../utils/logger');
-module.exports = async function(req, reply) {
+const handler = async function(req, reply) {
   const url = 'https://cdn.amplitude.com' + req.raw.url;
   const hostname = req.hostname;
   try {
@@ -14,4 +14,14 @@ module.exports = async function(req, reply) {
     logger.error(e.message)
     reply.code(500).send(e);
   }
+};
+
+/**
+ *
+ * @type RouteOptions
+ */
+module.exports = {
+  method: 'GET',
+  url: '/libs/*',
+  handler
 };
