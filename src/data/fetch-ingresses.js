@@ -9,7 +9,7 @@ const logger = require('../utils/logger');
  */
 module.exports = async function(remoteUrl) {
   const ingressesPath = getIngressPath();
-  logger.info("Starting to getch ingresses from: " + remoteUrl);
+  logger.info("Starting to fetch ingresses from: " + remoteUrl);
   const response = await axios.get(remoteUrl);
 
   if (!Array.isArray(response.data)) {
