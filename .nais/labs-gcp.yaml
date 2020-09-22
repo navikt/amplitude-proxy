@@ -16,6 +16,8 @@ spec:
           namespace: dataplattform
   image: {{image}}
   port: 4242
+  kafka:
+    pool: nav-dev
   prometheus:
     enabled: true
     path: /metrics

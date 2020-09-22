@@ -20,6 +20,8 @@ spec:
           namespace: istio-system
   image: {{image}}
   port: 4242
+  kafka:
+    pool: nav-prod
   prometheus:
     enabled: true
     path: /metrics
