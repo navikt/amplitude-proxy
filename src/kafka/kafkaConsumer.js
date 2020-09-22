@@ -2,8 +2,7 @@ const { Kafka } = require('kafkajs');
 const fs = require('fs');
 const shortid = require('shortid');
 
-
-module.exports = function () {
+module.exports = async function () {
   const kafka = new Kafka({
     brokers: process.env.KAFKA_BROKERS,
     ssl: {
