@@ -4,8 +4,9 @@ const shortid = require('shortid');
 const logger = require('../utils/logger');
 
 module.exports = async function () {
+  
   const kafka = new Kafka({
-    brokers: process.env.KAFKA_BROKERS,
+    brokers: [process.env.KAFKA_BROKERS],
     ssl: {
       rejectUnauthorized: false,
       ca: [fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8')],

@@ -99,12 +99,6 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev-gcp.yaml
-      - name: deploy alerts to dev-gcp
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/alerts.yaml
 
   # Deployer til Prod-GCP på "release" fra github
   deploy-prod-gcp:
