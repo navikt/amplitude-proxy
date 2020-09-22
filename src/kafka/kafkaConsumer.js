@@ -1,6 +1,7 @@
 const { Kafka } = require('kafkajs');
 const fs = require('fs');
 const shortid = require('shortid');
+const logger = require('../utils/logger');
 
 module.exports = async function () {
   const kafka = new Kafka({
@@ -20,7 +21,7 @@ module.exports = async function () {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      console.log({
+      logger.info({
         value: message.value.toString(),
       })
     },
