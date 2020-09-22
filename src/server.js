@@ -4,6 +4,7 @@ const logger = require('./utils/logger');
 const checkEnvVars = require('./utils/check-env-vars');
 const paths = require('./paths');
 const fetchIngresses = require('./data/fetch-ingresses');
+const KafkaConsumer = require('./kafka/kafkaConsumer');
 /**
  *
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
@@ -14,6 +15,7 @@ module.exports = async () => {
     trustProxy: true,
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
+  KafkaConsumer()
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
