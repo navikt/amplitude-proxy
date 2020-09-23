@@ -2,8 +2,9 @@ const { Kafka } = require('kafkajs');
 const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
+const fetchKafkaIngresses = require('./fetchKafkaIngresses');
 
-module.exports = async function () {
+module.exports = async function (ingressList) {
 
   const kafka = new Kafka({
     brokers: [process.env.KAFKA_BROKERS],
@@ -20,8 +21,6 @@ module.exports = async function () {
   await consumer.connect()
   await consumer.subscribe({ topic: 'dataplattform.ingress-topic', fromBeginning: true })
 
-  let kafkaMessage = []
-
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
 
@@ -29,8 +28,7 @@ module.exports = async function () {
       //   value: message.value.toString(),
       // })
       const jsonMessage = JSON.parse(message.value)
-      kafkaMessage.push(jsonMessage)
+      fetchKafkaIngresses(ingressList,jsonMessage)
     },
   })
-  return kafkaMessage;
 };

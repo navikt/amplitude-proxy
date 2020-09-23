@@ -13,13 +13,88 @@ const fetchKafkaIngresses = require('./kafka/fetchKafkaIngresses');
  */
 
 module.exports = async () => {
+
+  let ingresses = [
+    {
+      "app": "enonicxp",
+      "team": "enonic",
+      "namespace": "enonic",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://www.nav.no/no"
+    },
+    {
+      "app": "enonicxp",
+      "team": "enonic",
+      "namespace": "enonic",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://www.nav.no/en"
+    },
+    {
+      "app": "enonicxp",
+      "team": "enonic",
+      "namespace": "enonic",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://www.nav.no/se"
+    },
+    {
+      "app": "enonicxp",
+      "team": "enonic",
+      "namespace": "enonic",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://www.nav.no"
+    },
+    {
+      "app": "enonicxp",
+      "team": "enonic",
+      "namespace": "enonic",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://tjenester.nav.no/nav-sok"
+    },
+    {
+      "app": "iaweb",
+      "team": "arbeidsgiver",
+      "namespace": "iaweb",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://tjenester.nav.no/iaweb"
+    },
+    {
+      "app": "dokumentinnsending",
+      "team": "teamdokumenthandtering",
+      "namespace": "dokumentinnsending",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://tjenester.nav.no/dokumentinnsending"
+    },
+    {
+      "app": "bidragskalkulator",
+      "team": "orphans",
+      "namespace": "dokumentinnsending",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://tjenester.nav.no/bidragskalkulator"
+    },
+    {
+      "app": "pensjon-pselv",
+      "team": "teampensjon",
+      "namespace": "default",
+      "version": "unknown",
+      "context": "prod",
+      "ingress": "https://tjenester.nav.no/pselv"
+    }
+  ]
+
   const fastify = createServer({
     logger: false,
     trustProxy: true,
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
-  const kafkaMessages = await KafkaConsumer();
-  const ingresses = fetchKafkaIngresses(kafkaMessages);
+  KafkaConsumer(ingresses);
   logger.info(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
@@ -38,5 +113,6 @@ module.exports = async () => {
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
+  logger.info(ingresses)
   return fastify;
 };
