@@ -32,6 +32,5 @@ module.exports = async function () {
       kafkaMessage.push(jsonMessage)
     },
   })
-
   return kafkaMessage;
 };
