@@ -64,26 +64,26 @@ jobs:
           echo "$GITHUB_TOKEN" | docker login --username "$GITHUB_REPOSITORY" --password-stdin https://docker.pkg.github.com
           docker push ${IMAGE}
 
-  # # Deployer til labs-gcp på alle merges til master
-  # deploy-labs-gcp:
-  #   name: Deploy to nais labs-gcp
-  #   timeout-minutes: 2
-  #   needs: build
-  #   if: github.ref == 'refs/heads/master' && github.event_name != 'release'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - uses: nais/deploy/actions/deploy@v1
-  #       env:
-  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-  #         CLUSTER: labs-gcp
-  #         RESOURCE: .nais/labs-gcp.yaml
-  #     - name: deploy alerts to labs-gcp
-  #       uses: nais/deploy/actions/deploy@v1
-  #       env:
-  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-  #         CLUSTER: labs-gcp
-  #         RESOURCE: .nais/alerts.yaml
+  # Deployer til labs-gcp på alle merges til master
+  deploy-labs-gcp:
+    name: Deploy to nais labs-gcp
+    timeout-minutes: 2
+    needs: build
+    if: github.ref == 'refs/heads/master' && github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: .nais/labs-gcp.yaml
+      - name: deploy alerts to labs-gcp
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: .nais/alerts.yaml
 
   # Deployer til dev-gcp på alle merges til master
   deploy-dev-gcp:
