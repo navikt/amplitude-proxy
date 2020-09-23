@@ -30,7 +30,6 @@ module.exports = async () => {
   fastify.route(require('./routes/ingresses'));
   fastify.route(require('./routes/its-alive'));
   fastify.route(require('./routes/its-ready'));
-  fastify.route(require('./routes/getIngresses'));
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
