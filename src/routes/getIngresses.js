@@ -1,4 +1,4 @@
-const KafkaConsumer = require('./kafka/kafkaConsumer');
+const KafkaConsumer = require('../kafka/kafkaConsumer');
 
 let ingresses = [
   {
