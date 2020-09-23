@@ -5,6 +5,7 @@ const checkEnvVars = require('./utils/check-env-vars');
 const paths = require('./paths');
 const fetchIngresses = require('./data/fetch-ingresses');
 const KafkaConsumer = require('./kafka/kafkaConsumer');
+const fetchKafkaIngresses = require('./kafka/fetchKafkaIngresses');
 
 /**
  *
@@ -17,7 +18,9 @@ module.exports = async () => {
     trustProxy: true,
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
-  KafkaConsumer()
+  const kafkaMessages = KafkaConsumer();
+  const ingresses = fetchKafkaIngresses(kafkaMessages);
+  logger.info(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
