@@ -18,7 +18,7 @@ module.exports = async () => {
     trustProxy: true,
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
-  const kafkaMessages = KafkaConsumer();
+  const kafkaMessages = await KafkaConsumer();
   const ingresses = fetchKafkaIngresses(kafkaMessages);
   logger.info(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
