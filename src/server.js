@@ -4,15 +4,17 @@ const fs = require('fs');
 const logger = require('./utils/logger');
 const checkEnvVars = require('./utils/check-env-vars');
 const paths = require('./paths');
-const fetchIngresses = require('./data/fetch-ingresses');
+const kafkaConsumer = require('./kafka/kafkaConsumer');
+const getIngressExceptionPath = require('./data/ingressException-path')
+const ingressException = require(getIngressExceptionPath())
 
 /**
  *
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
  */
 
- let ingresses = []
- 
+ let ingresses = [...ingressException]
+
 module.exports = async () => {
 
   const fastify = createServer({
@@ -20,6 +22,8 @@ module.exports = async () => {
     trustProxy: true,
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
+  logger.info('Connecting to Kafka Stream: Consuming ingress topic')
+  kafkaConsumer(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
