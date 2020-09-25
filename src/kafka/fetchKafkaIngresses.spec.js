@@ -76,6 +76,14 @@ describe('Fetch Kafka ingresses', function () {
         "version": "unknown",
         "context": "prod",
         "ingress": "https://tjenester.nav.no/pselv"
+      },
+      {
+        "app": "test",
+        "team": "test",
+        "namespace": "test",
+        "version": "2020-09-14--7aa9d15",
+        "context": "dev-fss",
+        "ingress": "https://data.nais.preprod.local/apier"
       }
     ]
 
