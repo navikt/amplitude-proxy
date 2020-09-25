@@ -1,5 +1,6 @@
 const createServer = require('fastify');
 const path = require('path');
+const fs = require('fs');
 const logger = require('./utils/logger');
 const checkEnvVars = require('./utils/check-env-vars');
 const paths = require('./paths');
@@ -10,6 +11,8 @@ const fetchIngresses = require('./data/fetch-ingresses');
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
  */
 
+ let ingresses = []
+ 
 module.exports = async () => {
 
   const fastify = createServer({
