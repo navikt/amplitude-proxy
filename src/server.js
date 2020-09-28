@@ -16,7 +16,7 @@ const ingresses = new Map()
 
 module.exports = async () => {
 
-  ingresses.forEach(data => ingresses.set(data.ingress, data))
+  ingressException.forEach(data => ingresses.set(data.ingress, data))
 
   const fastify = createServer({
     logger: false,
