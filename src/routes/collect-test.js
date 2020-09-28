@@ -25,7 +25,7 @@ module.exports = function(request, reply, ingresses) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
     }
   });
-  const eventsWithClusterData = addClusterDataTest(events, getIngressData);
+  const eventsWithClusterData = addClusterDataTest(events, getIngressData, ingresses);
   const eventHostname = eventsWithClusterData[0].event_properties.hostname;
   const appContext = eventsWithClusterData[0].event_properties.context;
   const realApiKey = apiKeyMap.has(appContext)
