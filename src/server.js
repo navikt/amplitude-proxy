@@ -4,6 +4,10 @@ const logger = require('./utils/logger');
 const checkEnvVars = require('./utils/check-env-vars');
 const paths = require('./paths');
 const fetchIngresses = require('./data/fetch-ingresses');
+const kafkaConsumer = require('./kafka/kafkaConsumer');
+const getIngressExceptionPath = require('./data/ingressException-path')
+const ingressException = require(getIngressExceptionPath())
+const ingresses = new Map()
 
 /**
  *
@@ -12,11 +16,15 @@ const fetchIngresses = require('./data/fetch-ingresses');
 
 module.exports = async () => {
 
+  ingresses.forEach(data => ingresses.set(data.ingress, data))
+
   const fastify = createServer({
     logger: false,
     trustProxy: true,
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
+  logger.info('Connecting to Kafka Stream: Consuming ingress topic')
+  kafkaConsumer(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
