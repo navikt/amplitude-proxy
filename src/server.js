@@ -9,13 +9,14 @@ const getIngressExceptionPath = require('./data/ingressException-path')
 const ingressException = require(getIngressExceptionPath())
 const testCollect = require('./routes/collect-test');
 const { requests } = require('moxios');
+const ingresses = new Map();
 
 /**
  *
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
  */
 
- let ingresses = [...ingressException]
+ ingressException.forEach(exception => { ingresses.set(exception.ingress, exception) })
 
 module.exports = async () => {
 

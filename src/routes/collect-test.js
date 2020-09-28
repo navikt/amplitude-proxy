@@ -24,6 +24,7 @@ module.exports = function(request, reply, ingresses) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
     }
   });
+  logger.info("IngressMap is loaded with " + ingresses.size + " entries.");
   const eventsWithClusterData = addClusterDataTest(events, getIngressDataTest, ingresses);
   const eventHostname = eventsWithClusterData[0].event_properties.hostname;
   const appContext = eventsWithClusterData[0].event_properties.context;
