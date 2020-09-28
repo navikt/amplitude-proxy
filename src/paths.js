@@ -1,6 +1,7 @@
 module.exports = {
   COLLECT: '/collect',
   COLLECT_AUTO: '/collect-auto',
+  COLLECT_TEST: '/collect-test',
   HTTPAPI: '/2/httpapi',
   INGRESSES: '/ingresses',
   ITS_ALIVE: '/health/is-alive',
