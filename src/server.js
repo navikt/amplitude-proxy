@@ -7,6 +7,8 @@ const paths = require('./paths');
 const kafkaConsumer = require('./kafka/kafkaConsumer');
 const getIngressExceptionPath = require('./data/ingressException-path')
 const ingressException = require(getIngressExceptionPath())
+const testCollect = require('./routes/collect-test');
+const { requests } = require('moxios');
 
 /**
  *
@@ -39,6 +41,16 @@ module.exports = async () => {
   fastify.route(require('./routes/its-ready'));
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
+  fastify.route({
+    method: 'POST',
+    url: paths.COLLECT_TEST,
+    schema: {
+      body: { $ref: 'collect#' },
+    },
+    handler: function (request, reply) {
+      testCollect(request, reply, ingresses)
+    },
+  });
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
   return fastify;
 };
