@@ -3,33 +3,40 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
+const { error } = require('console');
 
 module.exports = async function (ingressList) {
 
-  const kafka = new Kafka({
-    brokers: [process.env.KAFKA_BROKERS],
-    ssl: {
-      rejectUnauthorized: false,
-      ca: [fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8')],
-      key: fs.readFileSync(process.env.KAFKA_PRIVATE_KEY_PATH, 'utf-8'),
-      cert: fs.readFileSync(process.env.KAFKA_CERTIFICATE_PATH, 'utf-8')
-    },
-  })
+  try {
 
-  const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
+    const kafka = new Kafka({
+      brokers: [process.env.KAFKA_BROKERS],
+      ssl: {
+        rejectUnauthorized: false,
+        ca: [fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8')],
+        key: fs.readFileSync(process.env.KAFKA_PRIVATE_KEY_PATH, 'utf-8'),
+        cert: fs.readFileSync(process.env.KAFKA_CERTIFICATE_PATH, 'utf-8')
+      },
+    })
 
-  await consumer.connect()
-  await consumer.subscribe({ topic: 'dataplattform.ingress-list-topic', fromBeginning: true })
+    const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
 
-  await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
+    await consumer.connect()
+    await consumer.subscribe({ topic: 'dataplattform.ingress-list-topic', fromBeginning: true })
 
-      // logger.info({
-      //   value: message.value.toString(),
-      // })
-      const jsonMessage = JSON.parse(message.value)
-      fetchKafkaIngresses(ingressList,jsonMessage)
-      logger.info(ingressList)
-    },
-  })
+    await consumer.run({
+      eachMessage: async ({ topic, partition, message }) => {
+
+        // logger.info({
+        //   value: message.value.toString(),
+        // })
+        const jsonMessage = JSON.parse(message.value)
+        fetchKafkaIngresses(ingressList, jsonMessage)
+        logger.info(ingressList)
+      },
+    })
+  } catch(e) {
+    isReadyStatus = false
+    errorKafkaConsumer = e
+  }
 };

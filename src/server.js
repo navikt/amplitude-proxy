@@ -14,7 +14,11 @@ const ingresses = new Map()
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
  */
 
+
 module.exports = async () => {
+
+  global.isReadyStatus = true
+  global.errorKafkaConsumer = ""
 
   ingressException.forEach(data => ingresses.set(data.ingress, data))
 
@@ -24,7 +28,7 @@ module.exports = async () => {
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
   logger.info('Connecting to Kafka Stream: Consuming ingress topic')
-  //kafkaConsumer(ingresses)
+  kafkaConsumer(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
