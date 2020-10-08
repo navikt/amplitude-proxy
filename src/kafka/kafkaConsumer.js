@@ -19,7 +19,7 @@ module.exports = async function (ingressList) {
   const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
 
   await consumer.connect()
-  await consumer.subscribe({ topic: 'dataplattform.ingress-topic', fromBeginning: true })
+  await consumer.subscribe({ topic: 'dataplattform.ingress-list-topic', fromBeginning: true })
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
