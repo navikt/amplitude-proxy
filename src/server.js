@@ -42,17 +42,7 @@ module.exports = async () => {
   fastify.route(require('./routes/your-ip'));
 
   const collectTest = require('./routes/collect-test');
-
-  fastify.route({
-    method: 'POST',
-    url: paths.COLLECT_TEST,
-    schema: {
-      body: { $ref: 'collect#' },
-    },
-    handler: function(request, reply) {
-      collectTest(request, reply, ingresses)
-    },
-  })
+  fastify.route(collectTest(ingresses))
 
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
   return fastify;
