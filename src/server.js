@@ -24,7 +24,7 @@ module.exports = async () => {
   });
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
   logger.info('Connecting to Kafka Stream: Consuming ingress topic')
-  kafkaConsumer(ingresses)
+  //kafkaConsumer(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
