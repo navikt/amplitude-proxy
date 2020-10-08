@@ -1,10 +1,6 @@
 const paths = require('../paths');
 const handler = async function(req, reply) {
-  if(isReadyStatus){
-    reply.send("ok");
-  } else {
-    reply.code(500).send(errorKafkaConsumer);
-  }
+  reply.send('ok');
 };
 /**
  *

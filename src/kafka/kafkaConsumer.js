@@ -8,7 +8,6 @@ const { error } = require('console');
 module.exports = async function (ingressList) {
 
   try {
-
     const kafka = new Kafka({
       brokers: [process.env.KAFKA_BROKERS],
       ssl: {
@@ -36,7 +35,7 @@ module.exports = async function (ingressList) {
       },
     })
   } catch(e) {
-    isReadyStatus = false
+    isAliveStatus = false
     errorKafkaConsumer = e
   }
 };

@@ -17,7 +17,7 @@ const ingresses = new Map()
 
 module.exports = async () => {
 
-  global.isReadyStatus = true
+  global.isAliveStatus = true
   global.errorKafkaConsumer = ""
 
   ingressException.forEach(data => ingresses.set(data.ingress, data))
