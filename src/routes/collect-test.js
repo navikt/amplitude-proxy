@@ -11,8 +11,15 @@ const ignoredHost = require('../utils/ignored-host');
 const isBot = require('isbot');
 const logger = require('../utils/logger');
 const paths = require('../paths');
+const promClient = require('prom-client');
 const validateEvents = require('../validate-events');
 const validUrl = require('../utils/valid-url');
+
+const collectCounter = new promClient.Counter({
+  name: 'collect_auto_endpoint',
+  help: 'Count of requests received to the auto collect endpoint',
+  labelNames: ['message', 'app', 'team'],
+});
 
 const apiKeyMap = getProjectKeys();
 
@@ -26,6 +33,8 @@ module.exports = function(request, reply, ingresses) {
     }
   });
   const eventsWithClusterData = addClusterDataTest(events, getIngressData, ingresses);
+  const appName = eventsWithClusterData[0].event_properties.app;
+  const teamName = eventsWithClusterData[0].event_properties.team;
   const eventHostname = eventsWithClusterData[0].event_properties.hostname;
   const appContext = eventsWithClusterData[0].event_properties.context;
   const realApiKey = apiKeyMap.has(appContext)
@@ -34,16 +43,20 @@ module.exports = function(request, reply, ingresses) {
   const log = createRequestLog(realApiKey,events[0].event_type,events[0].device_id,request.headers['user-agent'])
   const autoTrackKey = process.env.AUTO_TRACK_KEY || 'default';
   if (apiKey !== autoTrackKey) {
+    collectCounter.labels('wrong_api_key', appName, teamName).inc();
     reply.code(400).send('Apikey is wrong... need do match the AUTO_TRACK_KEY.');
 
   } else if (errors.length > 0) {
+    collectCounter.labels('events_had_errors', appName, teamName).inc();
     reply.code(400).send(errors);
 
   } else if (isBot(request.headers['user-agent'])) {
+    collectCounter.labels('ignored_as_bot_traffic', appName, teamName).inc();
     logger.info(log('Request was ignored as bot traffic'));
     reply.send(constants.IGNORED);
 
   } else if (eventHostname && ignoredHost(eventHostname)) {
+    collectCounter.labels('ignored_as_dev_traffic', appName, teamName).inc();
     reply.send(constants.SUCCESS);
 
   } else {
@@ -54,13 +67,17 @@ module.exports = function(request, reply, ingresses) {
     forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
       if (response.data.code !== 200) {
+        collectCounter.labels('failed_ingesting_events', appName, teamName).inc();
         reply.send(response.data);
       } else if (request.query.debug) {
+        collectCounter.labels('success_with_debug', appName, teamName).inc();
         reply.send(response.data);
       } else {
+        collectCounter.labels('success', appName, teamName).inc();
         reply.send(constants.SUCCESS);
       }
     }).catch(function(error) {
+      collectCounter.labels('failed_proxy_events', appName, teamName).inc();
       logger.error(log(error.message));
       reply
       .code(502)
