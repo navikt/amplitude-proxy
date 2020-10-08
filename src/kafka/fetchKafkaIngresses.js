@@ -1,5 +1,3 @@
-const KafkaConsumer = require('./kafkaConsumer')
-
 module.exports = function (ingresses, kafkaMessage) {
 
   let newIngresses = []

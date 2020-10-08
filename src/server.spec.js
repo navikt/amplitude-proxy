@@ -17,7 +17,9 @@ describe('test end to end', async () => {
   const hostname = '127.0.0.1';
   const baseUrl = 'http://' + hostname + ':' + port;
   const collectUrl = baseUrl + paths.COLLECT;
+  const collectAutoUrl = baseUrl + paths.COLLECT_TEST
   const collectUrlDebug = collectUrl + '?debug=1';
+  const collectAutoUrlDebug = collectAutoUrl + '?debug=1';
 
   const ingressPort = 9820;
   const ingressUrl = 'http://localhost:' + ingressPort + "/ingresses.json";
@@ -48,21 +50,58 @@ describe('test end to end', async () => {
     await ingressesServer.close();
   });
 
-  it('should block bot traffic', async () => {
+  it('collect endpoint should block bot traffic', async () => {
     const result = await axios.post(
-        collectUrlDebug,
-        collectRequestBody([generateTestEvent()]),
-        collectRequestHeader(),
+      collectUrlDebug,
+      collectRequestBody([generateTestEvent()]),
+      collectRequestHeader(),
     );
     assert.strictEqual(result.data, constants.IGNORED);
     assert.strictEqual(result.status, 200);
   });
 
+  it('collect-auto endpoint should block bot traffic', async () => {
+    const result = await axios.post(
+      collectAutoUrlDebug,
+      collectRequestBody([generateTestEvent('auto')], 'default'),
+      collectRequestHeader(),
+    );
+    assert.strictEqual(result.data, constants.IGNORED);
+    assert.strictEqual(result.status, 200);
+  });
+
+  it('collect-auto endpoint should block dev traffic', async () => {
+
+    const TestEvent = generateTestEvent('auto')
+    TestEvent.platform = "https://arbeidsgiver.localhost.heroku/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds"
+    const result = await axios.post(
+      collectAutoUrlDebug,
+      collectRequestBody([TestEvent], 'default'),
+      collectRequestHeader(COMMON_USER_AGENT),
+    );
+    assert.strictEqual(result.data, constants.SUCCESS);
+    assert.strictEqual(result.status, 200);
+  });
+
   it('should receive and forward example event to amplitude', async () => {
     const result = await axios.post(
-        collectUrlDebug,
-        collectRequestBody([generateTestEvent()]),
-        collectRequestHeader(COMMON_USER_AGENT),
+      collectUrlDebug,
+      collectRequestBody([generateTestEvent()]),
+      collectRequestHeader(COMMON_USER_AGENT),
+    );
+    if (result.data.code !== 200) {
+      console.error(result.data);
+    }
+    assert.strictEqual(result.status, 200);
+    assert.strictEqual(result.data.code, 200);
+    assert.strictEqual(result.data.events_ingested, 1);
+  });
+
+  it('should receive and forward example event auto to amplitude', async () => {
+    const result = await axios.post(
+      collectAutoUrlDebug,
+      collectRequestBody([generateTestEvent('auto')], 'default'),
+      collectRequestHeader(COMMON_USER_AGENT),
     );
     if (result.data.code !== 200) {
       console.error(result.data);
