@@ -34,15 +34,9 @@ module.exports = async function (ingressList) {
         logger.info(ingressList)
       },
     })
-  } catch(e) {
-    if (e instanceof TypeError) {
-      logger.error("Kafka env variables are incorrect")
-      isAliveStatus = false
-      errorKafkaConsumer = e
-    } else if (e instanceof KafkaJSError) {
-      logger.error("Kafka error:" + e.message)
-      isAliveStatus = false
-      errorKafkaConsumer = e
-    }
+  } catch (e) {
+    logger.error("Kafka error:" + e.message)
+    isAliveStatus = false
+    errorKafkaConsumer = e
   }
 };
