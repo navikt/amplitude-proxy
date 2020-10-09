@@ -120,12 +120,14 @@ describe('test end to end', async () => {
     assert.strictEqual(result2.status, 200);
   });
 
-  it('server should report unhealthy when is alive global variable status is false', async () => {
-   isAliveStatus = false
-   axios.get(baseUrl + paths.ITS_ALIVE).catch((response) => {
-      assert.strictEqual(response.status, 500)
-    })
-  });
+  it('server should report unhealthy when Kafka Consumer encounters an error', async () => {
+    const ingressMap = new Map()
+    kafkaConsumer(ingressMap).then(
+      axios.get(baseUrl + paths.ITS_ALIVE).catch((response) => {
+        assert.strictEqual(response.status, 500)
+      })
+    )
+   });
 
   it('should serve liberaries', async () => {
     const SDK_URL = baseUrl + paths.JS_SDK
