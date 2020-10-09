@@ -18,7 +18,7 @@ const ingresses = new Map()
 module.exports = async () => {
 
   global.isAliveStatus = true
-  global.errorKafkaConsumer = ""
+  global.errorKafkaConsumer = "Error: "
 
   ingressException.forEach(data => ingresses.set(data.ingress, data))
 
@@ -26,9 +26,10 @@ module.exports = async () => {
     logger: false,
     trustProxy: true,
   });
+  
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
   logger.info('Connecting to Kafka Stream: Consuming ingress topic')
-  //kafkaConsumer(ingresses)
+  kafkaConsumer(ingresses)
   if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));

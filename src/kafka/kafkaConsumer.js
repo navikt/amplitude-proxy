@@ -3,7 +3,6 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
-const { error } = require('console');
 
 module.exports = async function (ingressList) {
 
