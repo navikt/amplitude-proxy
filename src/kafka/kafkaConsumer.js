@@ -26,9 +26,9 @@ module.exports = async function (ingressList) {
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
 
-        logger.info({
-          value: message.value.toString(),
-        })
+        // logger.info({
+        //   value: message.value.toString(),
+        // })
         const jsonMessage = JSON.parse(message.value)
         fetchKafkaIngresses(ingressList, jsonMessage)
         logger.info(ingressList)
