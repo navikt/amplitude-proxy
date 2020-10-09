@@ -1,4 +1,4 @@
-const { Kafka, KafkaJSError } = require('kafkajs');
+const { Kafka } = require('kafkajs');
 const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
