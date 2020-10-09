@@ -1,4 +1,4 @@
-const { Kafka } = require('kafkajs');
+const { Kafka, KafkaJSError } = require('kafkajs');
 const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
@@ -35,7 +35,14 @@ module.exports = async function (ingressList) {
       },
     })
   } catch(e) {
-    isAliveStatus = false
-    errorKafkaConsumer = e
+    if (e instanceof TypeError) {
+      logger.error("Kafka env variables are incorrect")
+      isAliveStatus = false
+      errorKafkaConsumer = e
+    } else if (e instanceof KafkaJSError) {
+      logger.error("Kafka error:" + e.message)
+      isAliveStatus = false
+      errorKafkaConsumer = e
+    }
   }
 };
