@@ -31,6 +31,9 @@ echo "Pushed ${IMAGE_NAME}"
 kubectl config use-context labs-gcp
 sed "s#IMAGE_NAME#${IMAGE_NAME}#g" app.yaml | kubectl apply -f -
 kubectl -ndataplattform rollout status deployment ${APPLICATION_NAME}
+kubectl config use-context dev-gcp
+sed "s#IMAGE_NAME#${IMAGE_NAME}#g" app.yaml | kubectl apply -f -
+kubectl -ndataplattform rollout status deployment ${APPLICATION_NAME}
 echo "Prøver å pushe til prod-gcp"
 kubectl config use-context prod-gcp
 sed "s#IMAGE_NAME#${IMAGE_NAME}#g" app.yaml | kubectl apply -f -

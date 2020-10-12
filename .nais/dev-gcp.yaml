@@ -19,6 +19,8 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
+  kafka:
+    pool: nav-dev
   liveness:
     path: /health/is-alive
     initialDelay: 10
