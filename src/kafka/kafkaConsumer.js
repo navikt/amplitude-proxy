@@ -30,7 +30,7 @@ module.exports = async function (ingressList) {
         // })
         const jsonMessage = JSON.parse(message.value)
         fetchKafkaIngresses(ingressList, jsonMessage)
-        logger.info(jsonMessage)
+        //logger.info(jsonMessage)
       }
     })
   } catch (e) {
