@@ -3,7 +3,6 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
-const { error } = require('console');
 
 module.exports = async function (ingressList) {
 
@@ -21,7 +20,7 @@ module.exports = async function (ingressList) {
     const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
 
     await consumer.connect()
-    await consumer.subscribe({ topic: 'dataplattform.ingress-list-topic', fromBeginning: true })
+    await consumer.subscribe({ topic: 'dataplattform.ingress-topic', fromBeginning: true })
 
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
@@ -34,7 +33,8 @@ module.exports = async function (ingressList) {
         logger.info(ingressList)
       },
     })
-  } catch(e) {
+  } catch (e) {
+    logger.error("Kafka error:" + e.message)
     isAliveStatus = false
     errorKafkaConsumer = e
   }

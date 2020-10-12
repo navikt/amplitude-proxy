@@ -10,6 +10,8 @@ const client = require('prom-client');
 const paths = require('./paths');
 const constants = require('./constants');
 const nodemonConfig = require('../nodemon');
+const { resolve } = require('path');
+const kafkaConsumer = require('./kafka/kafkaConsumer')
 
 describe('test end to end', async () => {
   const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
@@ -112,12 +114,20 @@ describe('test end to end', async () => {
   });
 
   it('server should be ready when ready', async () => {
-    isAliveStatus = true
     const result1 = await axios.get(baseUrl + paths.ITS_ALIVE);
     assert.strictEqual(result1.status, 200);
     const result2 = await axios.get(baseUrl + paths.ITS_READY);
     assert.strictEqual(result2.status, 200);
   });
+
+  it('server should report unhealthy when Kafka Consumer encounters an error', async () => {
+    const ingressMap = new Map()
+    kafkaConsumer(ingressMap).then(
+      axios.get(baseUrl + paths.ITS_ALIVE).catch((response) => {
+        assert.strictEqual(response.status, 500)
+      })
+    )
+   });
 
   it('should serve liberaries', async () => {
     const SDK_URL = baseUrl + paths.JS_SDK
