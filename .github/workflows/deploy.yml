@@ -67,7 +67,6 @@ jobs:
   # Deployer til labs-gcp på alle merges til master
   deploy-labs-gcp:
     name: Deploy to nais labs-gcp
-    timeout-minutes: 2
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name != 'release'
     runs-on: ubuntu-latest
@@ -88,7 +87,6 @@ jobs:
   # Deployer til dev-gcp på alle merges til master
   deploy-dev-gcp:
     name: Deploy to nais dev-gcp
-    timeout-minutes: 2
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name != 'release'
     runs-on: ubuntu-latest
@@ -103,7 +101,6 @@ jobs:
   # Deployer til Prod-GCP på "release" fra github
   deploy-prod-gcp:
     name: Deploy to nais prod-gcp
-    timeout-minutes: 2
     needs: test
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
