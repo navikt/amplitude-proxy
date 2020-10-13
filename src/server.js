@@ -46,8 +46,9 @@ module.exports = async () => {
   fastify.route(require('./routes/its-ready'));
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
-  
-  fastify.route(require('./routes/collect-test')(ingresses))
+
+  const collectTest = require('./routes/collect-test')
+  fastify.route(collectTest(ingresses))
 
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
   return fastify;
