@@ -30,7 +30,7 @@ module.exports = async () => {
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
   logger.info('Connecting to Kafka Stream: Consuming ingress topic')
   kafkaConsumer(ingresses)
-  if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
+  // if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
   fastify.register(require('fastify-cors'), { origin: '*' });
@@ -38,7 +38,7 @@ module.exports = async () => {
   fastify.register(require('fastify-metrics'), { endpoint: paths.METRICS });
   fastify.register(require('fastify-static'), { root: path.join(__dirname, '..', 'public') });
   fastify.route(require('./routes/collect'));
-  fastify.route(require('./routes/collect-auto'));
+  // fastify.route(require('./routes/OLD-collect-auto'));
   fastify.route(require('./routes/index'));
   fastify.route(require('./routes/ingresses'));
   fastify.route(require('./routes/its-alive'));
@@ -46,8 +46,8 @@ module.exports = async () => {
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
 
-  const collectTest = require('./routes/collect-test')
-  fastify.route(collectTest(ingresses))
+  const collectAuto = require('./routes/collect-auto')
+  fastify.route(collectAuto(ingresses))
 
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
   return fastify;

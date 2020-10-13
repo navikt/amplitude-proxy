@@ -1,11 +1,11 @@
-const addClusterDataTest = require('../filters/add-cluster-data-test');
+const addClusterData = require('../filters/OLD-add-cluster-data');
 const addGeoData = require('../filters/add-geo-data');
 const addProxyData = require('../filters/add-proxy-data');
 const cleanEventUrls = require('../filters/clean-event-urls');
 const constants = require('../constants');
 const createRequestLog = require('../utils/create-request-log');
 const forwardEvents = require('../forward-events');
-const getIngressData = require('../data/lookup-function');
+const getIngressData = require('../data/get-ingress-data');
 const getProjectKeys = require('../data/get-project-keys');
 const ignoredHost = require('../utils/ignored-host');
 const isBot = require('isbot');
@@ -16,14 +16,14 @@ const validateEvents = require('../validate-events');
 const validUrl = require('../utils/valid-url');
 
 const collectCounter = new promClient.Counter({
-  name: 'collect_test_endpoint',
+  name: 'old_collect_auto_endpoint',
   help: 'Count of requests received to the auto collect endpoint',
   labelNames: ['message', 'app', 'team'],
 });
 
 const apiKeyMap = getProjectKeys();
 
-const customHandler = function (request, reply, ingresses) {
+const handler = function(request, reply) {
   const events = JSON.parse(request.body.e);
   const apiKey = request.body.client;
   const errors = validateEvents(events);
@@ -32,15 +32,15 @@ const customHandler = function (request, reply, ingresses) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
     }
   });
-  const eventsWithClusterData = addClusterDataTest(events, getIngressData, ingresses);
+  const eventsWithClusterData = addClusterData(events, getIngressData);
   const appName = eventsWithClusterData[0].event_properties.app;
   const teamName = eventsWithClusterData[0].event_properties.team;
   const eventHostname = eventsWithClusterData[0].event_properties.hostname;
   const appContext = eventsWithClusterData[0].event_properties.context;
   const realApiKey = apiKeyMap.has(appContext)
-    ? apiKeyMap.get(appContext)
-    : apiKeyMap.get('*');
-  const log = createRequestLog(realApiKey, events[0].event_type, events[0].device_id, request.headers['user-agent'])
+      ? apiKeyMap.get(appContext)
+      : apiKeyMap.get('*');
+  const log = createRequestLog(realApiKey,events[0].event_type,events[0].device_id,request.headers['user-agent'])
   const autoTrackKey = process.env.AUTO_TRACK_KEY || 'default';
   if (apiKey !== autoTrackKey) {
     collectCounter.labels('wrong_api_key', appName, teamName).inc();
@@ -64,7 +64,7 @@ const customHandler = function (request, reply, ingresses) {
     const eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
 
-    forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function (response) {
+    forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
       if (response.data.code !== 200) {
         collectCounter.labels('failed_ingesting_events', appName, teamName).inc();
@@ -76,29 +76,29 @@ const customHandler = function (request, reply, ingresses) {
         collectCounter.labels('success', appName, teamName).inc();
         reply.send(constants.SUCCESS);
       }
-    }).catch(function (error) {
+    }).catch(function(error) {
       collectCounter.labels('failed_proxy_events', appName, teamName).inc();
       logger.error(log(error.message));
       reply
-        .code(502)
-        .send({
-          statusCode: 502,
-          message: 'Failed to proxy request',
-          error: error.message,
-        });
+      .code(502)
+      .send({
+        statusCode: 502,
+        message: 'Failed to proxy request',
+        error: error.message,
+      });
     });
   }
 };
 
-module.exports = function (ingresses) {
-  return {
-    method: 'POST',
-    url: paths.COLLECT_TEST,
-    schema: {
-      body: { $ref: 'collect#' },
-    },
-    handler: function (request, reply) {
-      customHandler(request, reply, ingresses)
-    }
-  }
+/**
+ *
+ * @type RouteOptions
+ */
+module.exports = {
+  method: 'POST',
+  url: paths.COLLECT_AUTO,
+  schema: {
+    body: { $ref: 'collect#' },
+  },
+  handler,
 };
