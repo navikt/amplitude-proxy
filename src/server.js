@@ -19,6 +19,7 @@ module.exports = async () => {
 
   global.isAliveStatus = true
   global.errorKafkaConsumer = "Error: "
+  global.isReadyStatus = false
 
   ingressException.forEach(data => ingresses.set(data.ingress, data))
 
@@ -45,9 +46,8 @@ module.exports = async () => {
   fastify.route(require('./routes/its-ready'));
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
-
-  const collectTest = require('./routes/collect-test');
-  fastify.route(collectTest(ingresses))
+  
+  fastify.route(require('./routes/collect-test')(ingresses))
 
   fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
   return fastify;
