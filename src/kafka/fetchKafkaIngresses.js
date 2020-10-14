@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 module.exports = function (ingresses, kafkaMessage) {
 
   let newIngresses = []
@@ -18,6 +21,7 @@ module.exports = function (ingresses, kafkaMessage) {
   }
 
   newIngresses.forEach((newIngress) => {
+    fs.appendFile(path.resolve(__dirname, '..', 'resources', 'message.txt'), JSON.stringify(newIngress) + '\r\n')
     ingresses.set(newIngress.ingress, newIngress)
   })
 }
