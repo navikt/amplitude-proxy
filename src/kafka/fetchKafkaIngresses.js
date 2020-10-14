@@ -21,7 +21,11 @@ module.exports = function (ingresses, kafkaMessage) {
   }
 
   newIngresses.forEach((newIngress) => {
-    fs.appendFile(path.resolve(__dirname, '..', 'resources', 'message.txt'), JSON.stringify(newIngress) + '\r\n')
     ingresses.set(newIngress.ingress, newIngress)
+
+    fs.appendFile(path.resolve(__dirname, '..', 'resources', 'messages.txt'), JSON.stringify(newIngress) + '\r\n', function (err) {
+      if (err) return console.log(err);
+      console.log("added");
+  })
   })
 }
