@@ -19,6 +19,7 @@ describe('add-cluster-data', function() {
     assert.strictEqual(outputEvents[0].event_properties.hostname, 'www.nav.no');
     assert.strictEqual(outputEvents[0].event_properties.context, 'prod');
     assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar');
+    assert.strictEqual(outputEvents[0].event_properties.creationTimestamp, undefined);
   });
 
   it('should ignore data when not fetched', function() {

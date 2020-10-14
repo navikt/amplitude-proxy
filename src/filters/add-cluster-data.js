@@ -1,14 +1,16 @@
 const addClusterData = (inputEvents, getIngressData, ingresses) => {
   const outputEvents = [];
   inputEvents.forEach(event => {
-    const cloneEvent = {...event};
+    const cloneEvent = { ...event };
     cloneEvent.platform = 'Web'; // Correct this back to the original.
     cloneEvent.event_properties = event.event_properties || {};
     const eventUrl = event.platform;
     const ingressData = getIngressData(eventUrl, ingresses);
     if (ingressData) {
       Object.keys(ingressData).forEach(key => {
-        cloneEvent.event_properties[key] = ingressData[key];
+        if (key !== "creationTimestamp") {
+          cloneEvent.event_properties[key] = ingressData[key];
+        }
       });
     }
     const eventUrlObj = new URL(eventUrl);
