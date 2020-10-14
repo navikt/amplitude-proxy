@@ -29,7 +29,8 @@
     "namespace": "enonic",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://www.nav.no"
+    "ingress": "https://www.nav.no",
+    "creationTimeStamp": "test"
   },
   {
     "app": "enonicxp",
