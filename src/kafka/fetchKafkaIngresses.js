@@ -1,5 +1,4 @@
-const fs = require('fs')
-const path = require('path')
+const getIngressData = require('../data/lookup-function')
 
 module.exports = function (ingresses, kafkaMessage) {
 
@@ -11,6 +10,7 @@ module.exports = function (ingresses, kafkaMessage) {
     namespace: kafkaMessage.object.metadata.namespace,
     version: kafkaMessage.object.spec.image.split(':').pop(),
     context: kafkaMessage.cluster,
+    creationTimestamp: kafkaMessage.object.metadata.creationTimestamp
   }
 
   if (kafkaMessage.object.spec.ingresses) {
@@ -21,11 +21,13 @@ module.exports = function (ingresses, kafkaMessage) {
   }
 
   newIngresses.forEach((newIngress) => {
-    ingresses.set(newIngress.ingress, newIngress)
-
-    fs.appendFile(path.resolve(__dirname, '..', 'resources', 'messages.txt'), JSON.stringify(newIngress) + '\r\n', function (err) {
-      if (err) return console.log(err);
-      console.log("added");
-  })
+    const ingressData = getIngressData(newIngress.ingress, ingresses);
+    if(ingressData) {
+      if(ingressData.creationTimestamp < newIngress.creationTimestamp){
+        ingresses.set(newIngress.ingress, newIngress)
+      }
+    } else {
+      ingresses.set(newIngress.ingress, newIngress)
+    }
   })
 }
