@@ -32,13 +32,13 @@ module.exports = function (ingresses, kafkaMessage) {
       if(Date.parse(ingressData.creationTimestamp) < Date.parse(newIngress.creationTimestamp)){
         ingresses.delete(newIngress.ingress)
         ingresses.set(newIngress.ingress, newIngress)
-        logger.info("UPDATED" + ingressData.app + "to" + newIngress.app)
-        logger.info("UPDATED" + ingressData.namespace + "to" + newIngress.namespace)
-        logger.info("UPDATED" + ingressData.context + "to" + newIngress.context)
+        logger.info("UPDATED " + ingressData.app + " to " + newIngress.app)
+        logger.info("UPDATED " + ingressData.namespace + " to " + newIngress.namespace)
+        logger.info("UPDATED " + ingressData.context + " to " + newIngress.context)
       } else {
-        logger.info("IGNORED" + newIngress.app + "to" +  ingressData.app )
-        logger.info("IGNORED" + newIngress.namespace + "to" + ingressData.namespace )
-        logger.info("IGNORED" + newIngress.context + "to" + ingressData.context )
+        logger.info("IGNORED " + newIngress.app + " to " +  ingressData.app )
+        logger.info("IGNORED " + newIngress.namespace + " to " + ingressData.namespace )
+        logger.info("IGNORED " + newIngress.context + " to " + ingressData.context )
       }
     } else {
       ingresses.set(newIngress.ingress, newIngress)
