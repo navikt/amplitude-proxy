@@ -37,6 +37,6 @@ module.exports = function (ingresses, kafkaMessage) {
 
   logger.info("                  ")
   logger.info("          INGRESS LIST        ")
-  logger.info(ingresses)
+  logger.info(JSON.stringify([...ingresses]))
   logger.info("                  ")
 }
