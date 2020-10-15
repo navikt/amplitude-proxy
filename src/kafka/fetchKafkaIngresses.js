@@ -26,19 +26,13 @@ module.exports = function (ingresses, kafkaMessage) {
   newIngresses.forEach((newIngress) => {
     const ingressData = getIngressData(newIngress.ingress, ingresses);
     if(ingressData) {
-      if(ingressData.creationTimestamp < newIngress.creationTimestamp){
+      if(Date.parse(ingressData.creationTimestamp) < Date.parse(newIngress.creationTimestamp)){
+        ingresses.delete(newIngress.ingress)
         ingresses.set(newIngress.ingress, newIngress)
-        fs.appendFile(path.resolve(__dirname, '..', 'resources', 'messages.json'), JSON.stringify(ingressData) + '\r\n' + ',',function (err) {
-          if (err) throw err;
-          console.log('Saved!');
-        })
-        fs.appendFile(path.resolve(__dirname, '..', 'resources', 'messages.json'), JSON.stringify(newIngress) + '\r\n' + ',',function (err) {
-          if (err) throw err;
-          console.log('Saved!');
-        })
       }
     } else {
       ingresses.set(newIngress.ingress, newIngress)
     }
+    fs.writeSync(path.resolve(__dirname,'..','resources', 'messages.json'), JSON.stringify([...ingresses]))
   })
 }
