@@ -5,11 +5,6 @@ module.exports = function (ingresses, kafkaMessage) {
 
   let newIngresses = []
 
-  logger.info("             ")
-  logger.info(kafkaMessage.object.metadata.name)
-  logger.info(kafkaMessage)
-  logger.info("             ")
-
   const data = {
     app: kafkaMessage.object.metadata.name,
     team: kafkaMessage.object.metadata.labels.team,

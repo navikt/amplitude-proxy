@@ -29,6 +29,11 @@ module.exports = async function (ingressList) {
         //   value: message.value.toString(),
         // })
         const jsonMessage = JSON.parse(message.value)
+        logger.info("              ")
+        logger.info(jsonMessage.object.metadata.name)
+        logger.info(jsonMessage.object.metadata.creationTimestamp)
+        logger.info(message.timestamp)
+        logger.info("              ")
         fetchKafkaIngresses(ingressList, jsonMessage)
         //logger.info(ingressList.size)
       }
