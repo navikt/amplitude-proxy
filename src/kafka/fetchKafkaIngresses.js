@@ -25,13 +25,22 @@ module.exports = function (ingresses, kafkaMessage) {
 
   newIngresses.forEach((newIngress) => {
     const ingressData = getIngressData(newIngress.ingress, ingresses);
+    logger.info("           ")
     if(ingressData) {
+      logger.info(ingressData.creationTimestamp)
+      logger.info(newIngress.creationTimestamp)
       if(Date.parse(ingressData.creationTimestamp) < Date.parse(newIngress.creationTimestamp)){
         ingresses.delete(newIngress.ingress)
         ingresses.set(newIngress.ingress, newIngress)
+        logger.info("UPDATED" + ingressData.app + "to" + newIngress.app)
+        logger.info("UPDATED" + ingressData.namespace + "to" + newIngress.namespace)
+      } else {
+        logger.info("IGNORED" + newIngress.app + "to" +  ingressData.app )
+        logger.info("IGNORED" + newIngress.namespace + "to" + ingressData.namespace )
       }
     } else {
       ingresses.set(newIngress.ingress, newIngress)
     }
+    logger.info("           ")
   })
 }
