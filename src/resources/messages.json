@@ -1,0 +1,9 @@
+{
+  "app": "dakan-api-viewer",
+  "team": "dataplattform",
+  "namespace": "dataplattform",
+  "version": "2020-09-14--7aa9d15",
+  "context": "dev-fss",
+  "creationTimestamp": "2020-01-14T12:36:38Z",
+  "ingress": "https://data.nais.preprod.local/apier"
+}
