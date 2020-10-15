@@ -33,6 +33,7 @@ module.exports = function (ingresses, kafkaMessage) {
     } else {
       ingresses.set(newIngress.ingress, newIngress)
     }
-    fs.writeSync(path.resolve(__dirname,'..','resources', 'messages.json'), JSON.stringify([...ingresses]))
   })
+
+  fs.writeFile(path.resolve(__dirname, '..', 'resources', 'messages.json'), JSON.stringify([...ingresses]))
 }
