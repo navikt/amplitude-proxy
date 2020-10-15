@@ -28,6 +28,7 @@ module.exports = async function (ingressList) {
         // logger.info({
         //   value: message.value.toString(),
         // })
+        const jsonMessage = JSON.parse(message.value)
         fetchKafkaIngresses(ingressList, jsonMessage)
         //logger.info(ingressList.size)
       }
