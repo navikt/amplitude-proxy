@@ -1,4 +1,5 @@
 const getIngressData = require('../data/lookup-function')
+const logger = require('../utils/logger');
 
 module.exports = function (ingresses, kafkaMessage) {
 
@@ -23,8 +24,19 @@ module.exports = function (ingresses, kafkaMessage) {
   newIngresses.forEach((newIngress) => {
     const ingressData = getIngressData(newIngress.ingress, ingresses);
     if(ingressData) {
+      logger.info("                ")
+      logger.info(ingressData.creationTimestamp)
+      logger.info(newIngress.creationTimestamp)
+      logger.info("                ")
       if(ingressData.creationTimestamp < newIngress.creationTimestamp){
+        logger.info("                ")
+        logger.info("UPDATED")
+        logger.info("                ")
         ingresses.set(newIngress.ingress, newIngress)
+      } else {
+        logger.info("                ")
+        logger.info("IGNORED")
+        logger.info("                ")
       }
     } else {
       ingresses.set(newIngress.ingress, newIngress)
