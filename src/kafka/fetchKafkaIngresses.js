@@ -1,5 +1,7 @@
 const getIngressData = require('../data/lookup-function')
 const logger = require('../utils/logger');
+const fs = require('fs')
+const path = require('path')
 
 module.exports = function (ingresses, kafkaMessage) {
 
@@ -31,4 +33,6 @@ module.exports = function (ingresses, kafkaMessage) {
       ingresses.set(newIngress.ingress, newIngress)
     }
   })
+
+  fs.writeFileSync(path.resolve(__dirname, '..', 'resources', 'messages.json'), JSON.stringify([...ingresses]) + '\r\n')
 }
