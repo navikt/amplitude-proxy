@@ -35,5 +35,8 @@ module.exports = function (ingresses, kafkaMessage) {
     }
   })
 
-  fs.writeFile(path.resolve(__dirname, '..', 'resources', 'messages.json'), JSON.stringify([...ingresses]))
+  fs.writeFile(path.resolve(__dirname, '..', 'resources', 'messages.json'), JSON.stringify([...ingresses]), function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+  })
 }
