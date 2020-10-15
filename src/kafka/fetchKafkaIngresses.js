@@ -34,9 +34,4 @@ module.exports = function (ingresses, kafkaMessage) {
       ingresses.set(newIngress.ingress, newIngress)
     }
   })
-
-  logger.info("                  ")
-  logger.info("          INGRESS LIST        ")
-  logger.info(JSON.stringify([...ingresses]))
-  logger.info("                  ")
 }
