@@ -26,8 +26,7 @@ module.exports = function (ingresses, kafkaMessage) {
   newIngresses.forEach((newIngress) => {
     const ingressData = getIngressData(newIngress.ingress, ingresses);
     if(ingressData) {
-      if(Date.parse(ingressData.creationTimestamp) < Date.parse(newIngress.creationTimestamp)){
-        ingresses.delete(newIngress.ingress)
+      if(ingressData.creationTimestamp < newIngress.creationTimestamp){
         ingresses.set(newIngress.ingress, newIngress)
       }
     } else {
