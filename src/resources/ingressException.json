@@ -71,5 +71,13 @@
     "version": "unknown",
     "context": "prod",
     "ingress": "https://tjenester.nav.no/pselv"
+  },
+  {
+    "app": "desginsystemet",
+    "team": "desginsystem",
+    "namespace": "default",
+    "version": "unknown",
+    "context": "prod",
+    "ingress": "https://design.nav.no"
   }
 ]
