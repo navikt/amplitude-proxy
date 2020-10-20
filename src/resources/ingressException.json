@@ -73,8 +73,8 @@
     "ingress": "https://tjenester.nav.no/pselv"
   },
   {
-    "app": "desginsystemet",
-    "team": "desginsystem",
+    "app": "designsystemet",
+    "team": "designsystem",
     "namespace": "default",
     "version": "unknown",
     "context": "prod",
