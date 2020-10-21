@@ -1,7 +1,7 @@
 const paths = require('../paths');
 const handler = async function(req, reply) {
-  if(!isAliveStatus){
-    reply.code(500).send(errorKafkaConsumer);
+  if(!isAliveStatus.status){
+    reply.code(500).send(isAliveStatus.message);
   } else {
     reply.send("ok");
   }
