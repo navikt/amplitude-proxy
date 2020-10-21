@@ -3,6 +3,7 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
+const { exception } = require('console');
 
 module.exports = async function (ingressList) {
   try {
@@ -34,7 +35,7 @@ module.exports = async function (ingressList) {
     })
   } catch (e) {
     logger.error("Kafka error:" + e.message)
-    isAliveStatus = false
-    errorKafkaConsumer = e
+    isAliveStatus.status = false
+    isAliveStatus.message = e
   }
 };
