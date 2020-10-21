@@ -1,0 +1,141 @@
+{
+  "object": {
+    "apiVersion": "test.test/v1test1",
+    "kind": "Application",
+    "metadata": {
+      "annotations": {
+        "nais.io/deploymentCorrelationID": "123a123bb-123-1313-123-12345abcde"
+      },
+      "creationTimestamp": "2019-11-06T10: 42: 57Z",
+      "generation": 1,
+      "labels": {
+        "team": "test-team"
+      },
+      "name": "test-app",
+      "namespace": "default",
+      "resourceVersion": "123456789",
+      "selfLink": "/apis/test.test/v1test1/namespaces/default/applications/test-app",
+      "uid": "123a123bb-123-1313-123-12345abcde"
+    },
+    "spec": {
+      "env": [
+        {
+          "name": "test-spec",
+          "value": "test"
+        },
+        {
+          "name": "test-spec2",
+          "value": "test2"
+        }
+      ],
+      "image": "docker.pkg.github.com/test/test-app/test-app:vtest",
+      "ingresses": [
+        "https://test.test.test"
+      ],
+      "liveness": {
+        "failureThreshold": 1,
+        "initialDelay": 2,
+        "path": "/test-app/isAlive",
+        "periodSeconds": 4,
+        "timeout": 5
+      },
+      "port": 1234,
+      "readiness": {
+        "initialDelay": 1,
+        "path": "/test-app/isReady",
+        "timeout": 2
+      },
+      "replicas": {
+        "max": 1,
+        "min": 2
+      },
+      "resources": {
+        "limits": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "requests": {
+          "cpu": "200m",
+          "memory": "512Mi"
+        }
+      }
+    },
+    "status": {
+      "correlationID": "123a123bb-123-1313-123-12345abcde",
+      "deploymentRolloutStatus": "initialized",
+      "synchronizationHash": "a12345b12345",
+      "synchronizationState": "Synchronized",
+      "synchronizationTime": 1234567890
+    }
+  },
+  "raw_object": {
+    "apiVersion": "test.test/v1test1",
+    "kind": "Application",
+    "metadata": {
+      "annotations": {
+        "nais.io/deploymentCorrelationID": "123a123bb-123-1313-123-12345abcde"
+      },
+      "creationTimestamp": "2019-11-06T10:42:57Z",
+      "generation": 272,
+      "labels": {
+        "team": "test-team"
+      },
+      "name": "test-app",
+      "namespace": "default",
+      "resourceVersion": "123456789",
+      "selfLink": "/apis/test.test/v1test1/namespaces/default/applications/test-app",
+      "uid": "123a123bb-123-1313-123-12345abcde"
+    },
+    "spec": {
+      "env": [
+        {
+          "name": "test-spec",
+          "value": "test"
+        },
+        {
+          "name": "test-spec2",
+          "value": "test2"
+        }
+      ],
+      "image": "docker.pkg.github.com/test/test-app/test-app:vtest",
+      "ingresses": [
+        "https://test.test.test"
+      ],
+      "liveness": {
+        "failureThreshold": 1,
+        "initialDelay": 2,
+        "path": "/test-app/isAlive",
+        "periodSeconds": 4,
+        "timeout": 5
+      },
+      "port": 1234,
+      "readiness": {
+        "initialDelay": 1,
+        "path": "/test-app/isReady",
+        "timeout": 2
+      },
+      "replicas": {
+        "max": 1,
+        "min": 2
+      },
+      "resources": {
+        "limits": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "requests": {
+          "cpu": "200m",
+          "memory": "512Mi"
+        }
+      }
+    },
+    "status": {
+      "correlationID": "123a123bb-123-1313-123-12345abcde",
+      "deploymentRolloutStatus": "initialized",
+      "synchronizationHash": "a12345b12345",
+      "synchronizationState": "Synchronized",
+      "synchronizationTime": 1234567890
+    }
+  },
+  "cluster": "test-test"
+}
