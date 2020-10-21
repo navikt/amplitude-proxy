@@ -114,6 +114,7 @@ describe('test end to end', async () => {
   });
 
   it('server should be ready when ready', async () => {
+    isReadyStatus = true
     const result1 = await axios.get(baseUrl + paths.ITS_ALIVE);
     assert.strictEqual(result1.status, 200);
     const result2 = await axios.get(baseUrl + paths.ITS_READY);
