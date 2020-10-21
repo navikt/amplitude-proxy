@@ -1,6 +1,6 @@
 const paths = require('../paths');
-const isReady = async function (req, reply, ingresses) {
-  if( ingresses.size > 2000) {
+const handler = async function (req, reply) {
+  if( isReadyStatus) {
     reply.send('ok');
   } else {
     reply.code(503).send("App is not ready, still collecting ingresses");
@@ -10,12 +10,8 @@ const isReady = async function (req, reply, ingresses) {
  *
  * @type RouteOptions
  */
-module.exports = function (ingresses) {
-  return {
+module.exports = {
     method: 'GET',
     url: paths.ITS_READY,
-    handler: function (req, reply) {
-      isReady(req, reply, ingresses)
-    }
-  }
+    handler
 };
