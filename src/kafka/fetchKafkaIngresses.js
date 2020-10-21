@@ -34,6 +34,6 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
     }
   })
   if(ingresses.size > 2000) {
-    isReadyStatus = true
+    isReadyStatus.status = true
   }
 }
