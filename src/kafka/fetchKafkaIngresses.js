@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 const fs = require('fs')
 const path = require('path')
 
-module.exports = function (ingresses, kafkaMessage) {
+module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
 
   let newIngresses = []
 
@@ -33,4 +33,7 @@ module.exports = function (ingresses, kafkaMessage) {
       ingresses.set(newIngress.ingress, newIngress)
     }
   })
+  if(ingresses.size > 2000) {
+    isReadyStatus = true
+  }
 }
