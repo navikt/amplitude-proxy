@@ -10,8 +10,9 @@
     "ensure-test-keyfile": "node ./test-utils/ensure-test-keyfile.js",
     "blackbox": "node ./test-utils/ensure-test-ingresses.js && npm run up && mocha blackbox-test.js",
     "serve": "nodemon",
-    "test": "mocha \"src/**/*.spec.js\"",
-    "up": "docker-compose up -d --build"
+    "test": "npm run kafka-up && mocha \"src/**/*.spec.js\"",
+    "up": "docker-compose -f docker-compose.yml up -d --build",
+    "kafka-up": "docker-compose -f docker-compose-kafka.yml up -d --build"
   },
   "dependencies": {
     "ajv": "^6.12.4",
