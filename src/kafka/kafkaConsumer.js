@@ -3,9 +3,9 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
+const { exception } = require('console');
 
 module.exports = async function (ingressList) {
-
   try {
     const kafka = new Kafka({
       brokers: [process.env.KAFKA_BROKERS],
@@ -29,13 +29,13 @@ module.exports = async function (ingressList) {
         //   value: message.value.toString(),
         // })
         const jsonMessage = JSON.parse(message.value)
-        fetchKafkaIngresses(ingressList, jsonMessage)
+        fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus)
         //logger.info(ingressList.size)
       }
     })
   } catch (e) {
     logger.error("Kafka error:" + e.message)
-    isAliveStatus = false
-    errorKafkaConsumer = e
+    isAliveStatus.status = false
+    isAliveStatus.message = e
   }
 };

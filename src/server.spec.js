@@ -114,6 +114,7 @@ describe('test end to end', async () => {
   });
 
   it('server should be ready when ready', async () => {
+    isReadyStatus.status = true
     const result1 = await axios.get(baseUrl + paths.ITS_ALIVE);
     assert.strictEqual(result1.status, 200);
     const result2 = await axios.get(baseUrl + paths.ITS_READY);
@@ -128,6 +129,12 @@ describe('test end to end', async () => {
       })
     )
    });
+
+   it('server should report not ready when ingresses consumes are less than 2000', async () => {
+     axios.get(baseUrl + paths.ITS_READY).catch((error) => {
+      assert.strictEqual(error.response.status, 503);
+    });
+   })
 
   it('should serve liberaries', async () => {
     const SDK_URL = baseUrl + paths.JS_SDK
