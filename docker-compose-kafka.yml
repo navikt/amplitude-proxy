@@ -30,16 +30,16 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
     command: "sh -c '/etc/confluent/docker/run'"
 
-  kafka-ui:
-      container_name: kafka-ui
-      image: "obsidiandynamics/kafdrop"
-      ports:
-         - "9000:9000"
-      environment:
-        KAFKA_BROKERCONNECT: "kafka:9092"
-        JVM_OPTS: "-Xms32M -Xmx64M"
-        SERVER_SERVLET_CONTEXTPATH: "/"
-      restart: on-failure
-      depends_on:
-        - zookeeper
-        - kafka
+  # kafka-ui:
+  #     container_name: kafka-ui
+  #     image: "obsidiandynamics/kafdrop"
+  #     ports:
+  #        - "9000:9000"
+  #     environment:
+  #       KAFKA_BROKERCONNECT: "kafka:9092"
+  #       JVM_OPTS: "-Xms32M -Xmx64M"
+  #       SERVER_SERVLET_CONTEXTPATH: "/"
+  #     restart: on-failure
+  #     depends_on:
+  #       - zookeeper
+  #       - kafka
