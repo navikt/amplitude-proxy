@@ -4,9 +4,10 @@
     "INGRESSES_URL": "http://localhost:2525/ingresses.json",
     "AUTO_TRACK_KEY": "default",
     "PROJECT_KEYS_FILE": "./secrets/project-keys.json",
-    "KAFKA_BROKERS":"test",
+    "KAFKA_BROKERS":"localhost:29092",
     "KAFKA_CA_PATH":"./examples/test-kafka-cert.pem",
     "KAFKA_PRIVATE_KEY_PATH":"./examples/test-kafka-cert.pem",
-    "KAFKA_CERTIFICATE_PATH":"./examples/test-kafka-cert.pem"
+    "KAFKA_CERTIFICATE_PATH":"./examples/test-kafka-cert.pem",
+    "NAIS_CLUSTER_NAME": "test"
   }
 }
