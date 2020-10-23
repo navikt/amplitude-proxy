@@ -33,6 +33,9 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
       ingresses.set(newIngress.ingress, newIngress)
     }
   })
+  
+  logger.info("Ingress size: " + ingresses.size)
+
   if(ingresses.size > 2000) {
     isReadyStatus.status = true
   }
