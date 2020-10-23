@@ -32,8 +32,8 @@ describe('Kafka bad case', async () => {
   });
 
   it('server should report unhealthy when Kafka Consumer encounters an error', async () => {
-    axios.get(baseUrl + paths.ITS_ALIVE).catch((response) => {
-      assert.strictEqual(response.status, 500)
+    axios.get(baseUrl + paths.ITS_ALIVE).catch((error) => {
+      assert.strictEqual(error.response.status, 500)
     })
   });
 
