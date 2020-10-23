@@ -17,8 +17,8 @@ const ingresses = new Map()
 
 module.exports = async () => {
 
-  global.isAliveStatus = {status: true, message: "Error: "}
-  global.isReadyStatus = {status: false}
+  const isAliveStatus = {status: true, message: "Error: "}
+  const isReadyStatus = {status: false}
 
   ingressException.forEach(data => ingresses.set(data.ingress, data))
 
@@ -29,7 +29,7 @@ module.exports = async () => {
   
   if (checkEnvVars(process.env)) logger.info('Environment vars is ok.');
   logger.info('Connecting to Kafka Stream: Consuming ingress topic')
-  kafkaConsumer(ingresses)
+  kafkaConsumer(ingresses, isAliveStatus, isReadyStatus)
   // if (await fetchIngresses(process.env.INGRESSES_URL)) logger.info('Ingresses fetched successfully.');
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
@@ -41,14 +41,20 @@ module.exports = async () => {
   // fastify.route(require('./routes/OLD-collect-auto'));
   fastify.route(require('./routes/index'));
   fastify.route(require('./routes/ingresses'));
-  fastify.route(require('./routes/its-alive'));
-  fastify.route(require('./routes/its-ready'))
+  //fastify.route(require('./routes/its-alive'));
+  //fastify.route(require('./routes/its-ready'));
   fastify.route(require('./routes/libs'));
   fastify.route(require('./routes/your-ip'));
 
-  const collectAuto = require('./routes/collect-auto')
-  fastify.route(collectAuto(ingresses))
+  const isAlive = require('./routes/its-alive');
+  fastify.route(isAlive(isAliveStatus));
 
-  fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) })
+  const isReady = require('./routes/its-ready');
+  fastify.route(isReady(isReadyStatus));
+
+  const collectAuto = require('./routes/collect-auto');
+  fastify.route(collectAuto(ingresses));
+
+  fastify.get(paths.SCHEMAS, (request, reply) => { reply.send(fastify.getSchemas()) });
   return fastify;
 };
