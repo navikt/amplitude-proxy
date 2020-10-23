@@ -10,14 +10,7 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
     const kafkaBrokers = process.env.KAFKA_BROKERS.split(",");
     const kafkaConfig = { brokers: [...kafkaBrokers] }
 
-    // Default session timeout of Kafkajs
-    let sessionTimeout = 30000
-
-    if (process.env.NAIS_CLUSTER_NAME === 'test') {
-      sessionTimeout = 1000
-    }
-
-    if (!kafkaBrokers[0].includes('local')) {
+    if (!kafkaBrokers[0].includes('localhost')) {
       kafkaConfig.ssl = {
         rejectUnauthorized: false,
         ca: [fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8')],
@@ -28,7 +21,7 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
 
     const kafka = new Kafka(kafkaConfig)
 
-    const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}`,sessionTimeout: sessionTimeout })
+    const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
 
     await consumer.connect()
     await consumer.subscribe({ topic: 'dataplattform.ingress-topic', fromBeginning: true })
@@ -41,9 +34,15 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
         // })
         const jsonMessage = JSON.parse(message.value)
         fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus)
-        //logger.info(ingressList.size)
+        logger.info("Ingress size: " + ingressList.size)
+
+        if(ingressList.size > 2000 && kafkaBrokers[0].includes('localhost')) {
+          consumer.disconnect()
+        }
+
       }
     })
+
   } catch (e) {
     logger.error("Kafka error:" + e.message)
     isAliveStatus.status = false
