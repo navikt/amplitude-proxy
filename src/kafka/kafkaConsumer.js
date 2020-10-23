@@ -14,7 +14,7 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
     let sessionTimeout = 30000
 
     if (process.env.NAIS_CLUSTER_NAME === 'test') {
-      sessionTimeout = 10000
+      sessionTimeout = 1000
     }
 
     if (!kafkaBrokers[0].includes('local')) {
