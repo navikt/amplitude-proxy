@@ -10,7 +10,7 @@ const isAlive = async function(req, reply, isAliveStatus) {
  *
  * @type RouteOptions
  */
-module.exports = function () {
+module.exports = function (isAliveStatus) {
   return {
     method: 'GET',
     url: paths.ITS_ALIVE,
