@@ -2,7 +2,8 @@ const { Kafka } = require('kafkajs');
 const ExampleMessage = require('../examples/kafka-message.json')
 
 module.exports = async function () {
-  const kafka = new Kafka({ brokers: [process.env.KAFKA_BROKERS] })
+  const kafkaBrokers = process.env.KAFKA_BROKERS.split(",")
+  const kafka = new Kafka({ brokers: [...kafkaBrokers] })
 
   const producer = kafka.producer()
   await producer.connect()
