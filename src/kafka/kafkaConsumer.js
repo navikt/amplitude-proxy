@@ -5,13 +5,19 @@ const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
 const { exception } = require('console');
 
-module.exports = async function (ingressList) {
+module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
   try {
-    const kafkaConfig = {
-      brokers: [process.env.KAFKA_BROKERS]
+    const kafkaBrokers = process.env.KAFKA_BROKERS.split(",");
+    const kafkaConfig = { brokers: [...kafkaBrokers] }
+
+    // Default session timeout of Kafkajs
+    let sessionTimeout = 30000
+
+    if (process.env.NAIS_CLUSTER_NAME === 'test') {
+      sessionTimeout = 10000
     }
 
-    if(fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8') !==  "test") {
+    if (!kafkaBrokers[0].includes('local')) {
       kafkaConfig.ssl = {
         rejectUnauthorized: false,
         ca: [fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8')],
@@ -22,7 +28,7 @@ module.exports = async function (ingressList) {
 
     const kafka = new Kafka(kafkaConfig)
 
-    const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
+    const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}`,sessionTimeout: sessionTimeout })
 
     await consumer.connect()
     await consumer.subscribe({ topic: 'dataplattform.ingress-topic', fromBeginning: true })
