@@ -129,4 +129,10 @@ describe('test end to end', async () => {
     assert.notStrictEqual(found2, -1);
     assert.deepEqual(result1.data, result2.data);
   });
+
+  it('server should report alive when no kafka error happens', async () => {
+    const result = await axios.get(baseUrl + paths.ITS_ALIVE);
+    assert.strictEqual(result.status, 200);
+  });
+
 });
