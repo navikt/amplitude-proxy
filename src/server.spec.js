@@ -135,4 +135,12 @@ describe('test end to end', async () => {
     assert.strictEqual(result.status, 200);
   });
 
+  it('server should report ready when successfully retrieving 2000 ingresses', () => {
+    setTimeout(async (done) => {
+      const result = await axios.get(baseUrl + paths.ITS_READY);
+      assert.strictEqual(result.status, 200);
+      done()
+    }, 20000)
+  });
+
 });
