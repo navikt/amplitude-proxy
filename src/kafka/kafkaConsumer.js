@@ -34,8 +34,10 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
         // })
         const jsonMessage = JSON.parse(message.value)
         fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus)
-        logger.info("Ingress size: " + ingressList.size)
-
+        if(ingressList.size % 100 === 0){
+          logger.info("Ingress size: " + ingressList.size)
+        }
+        
         if(ingressList.size > 2000 && kafkaBrokers[0].includes('localhost')) {
           consumer.disconnect()
         }
