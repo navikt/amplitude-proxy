@@ -34,8 +34,6 @@ jobs:
       - run:  npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
       - run:  mkdir -p secrets && npm run ensure-test-keyfile
       - run:  npm test
-        env:
-          CI: true
       - run:  npm run blackbox
 
   build:
