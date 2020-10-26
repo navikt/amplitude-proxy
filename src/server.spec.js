@@ -11,7 +11,8 @@ const paths = require('./paths');
 const constants = require('./constants');
 const nodemonConfig = require('../nodemon');
 const { resolve } = require('path');
-const kafkaConsumer = require('./kafka/kafkaConsumer')
+const generateKafkaMessage = require('../test-utils/generate-kafka-message');
+const logger = require('./utils/logger');
 
 describe('test end to end', async () => {
   const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
@@ -34,6 +35,7 @@ describe('test end to end', async () => {
     });
     process.env.INGRESSES_URL = ingressUrl;
     process.env.NODE_ENV = constants.TEST;
+    generateKafkaMessage()
     randomizeIngressPath();
     ingressesServer = await startMockDataServer(ingressPort);
     try {
@@ -113,29 +115,6 @@ describe('test end to end', async () => {
     assert.strictEqual(result.data.events_ingested, 1);
   });
 
-  it('server should be ready when ready', async () => {
-    isReadyStatus.status = true
-    const result1 = await axios.get(baseUrl + paths.ITS_ALIVE);
-    assert.strictEqual(result1.status, 200);
-    const result2 = await axios.get(baseUrl + paths.ITS_READY);
-    assert.strictEqual(result2.status, 200);
-  });
-
-  it('server should report unhealthy when Kafka Consumer encounters an error', async () => {
-    const ingressMap = new Map()
-    kafkaConsumer(ingressMap).then(
-      axios.get(baseUrl + paths.ITS_ALIVE).catch((response) => {
-        assert.strictEqual(response.status, 500)
-      })
-    )
-   });
-
-   it('server should report not ready when ingresses consumes are less than 2000', async () => {
-     axios.get(baseUrl + paths.ITS_READY).catch((error) => {
-      assert.strictEqual(error.response.status, 503);
-    });
-   })
-
   it('should serve liberaries', async () => {
     const SDK_URL = baseUrl + paths.JS_SDK
     const result1 = await axios.get(SDK_URL);
@@ -150,4 +129,18 @@ describe('test end to end', async () => {
     assert.notStrictEqual(found2, -1);
     assert.deepEqual(result1.data, result2.data);
   });
+
+  it('server should report alive when no kafka error happens', async () => {
+    const result = await axios.get(baseUrl + paths.ITS_ALIVE);
+    assert.strictEqual(result.status, 200);
+  });
+
+  it('server should report ready when successfully retrieving 2000 ingresses', () => {
+    setTimeout(async (done) => {
+      const result = await axios.get(baseUrl + paths.ITS_READY);
+      assert.strictEqual(result.status, 200);
+      done()
+    }, 20000)
+  });
+
 });

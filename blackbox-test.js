@@ -18,9 +18,8 @@ describe('test end to end', async () => {
   const collectUrl = baseUrl + paths.COLLECT;
   const collectUrlDebug = collectUrl + '?debug=1';
 
-  // Temporarily disable is ready check. Must find an effective way to mock a kafka stream for its ready check to pass
-  // 
-  //
+
+  // disabled temporarily 
   // let intervalHandle;
   // before(done => {
   //   console.log('Waiting on ' + baseUrl + paths.ITS_READY);

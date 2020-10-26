@@ -9,6 +9,7 @@ services:
       PORT: 4243
       INGRESSES_URL: http://data/ingresses.json
       PROJECT_KEYS_FILE: /secrets/project-keys.json
+      KAFKA_BROKERS: localhost:29092,localhost:9092
     ports:
       - '4243:4243'
     depends_on:

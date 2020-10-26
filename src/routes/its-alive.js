@@ -1,5 +1,5 @@
 const paths = require('../paths');
-const handler = async function(req, reply) {
+const isAlive = async function(req, reply, isAliveStatus) {
   if(!isAliveStatus.status){
     reply.code(500).send(isAliveStatus.message);
   } else {
@@ -10,8 +10,13 @@ const handler = async function(req, reply) {
  *
  * @type RouteOptions
  */
-module.exports = {
-  method: 'GET',
-  url: paths.ITS_ALIVE,
-  handler
+module.exports = function (isAliveStatus) {
+  return {
+    method: 'GET',
+    url: paths.ITS_ALIVE,
+    handler: function (req, reply){
+      isAlive(req,reply, isAliveStatus)
+    }
+  }
+
 };
