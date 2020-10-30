@@ -77,7 +77,7 @@ describe('test end to end', async () => {
   it('collect-auto endpoint should block dev traffic', async () => {
 
     const TestEvent = generateTestEvent('auto')
-    TestEvent.platform = "https://arbeidsgiver.localhost.heroku/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds"
+    TestEvent.platform = "https://arbeidsgiver.heroku/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds"
     const result = await axios.post(
       collectAutoUrlDebug,
       collectRequestBody([TestEvent], 'default'),
