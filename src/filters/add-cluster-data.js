@@ -4,7 +4,11 @@ const addClusterData = (inputEvents, getIngressData, ingresses) => {
     const cloneEvent = { ...event };
     cloneEvent.platform = 'Web'; // Correct this back to the original.
     cloneEvent.event_properties = event.event_properties || {};
-    const eventUrl = event.platform;
+    let eventUrl = event.platform;
+    if(eventUrl.includes('localhost')) {
+      const localUrl = eventUrl.split(':')
+      eventUrl = localUrl.slice(0,2).join(':')
+    }
     const ingressData = getIngressData(eventUrl, ingresses);
     if (ingressData) {
       Object.keys(ingressData).forEach(key => {
