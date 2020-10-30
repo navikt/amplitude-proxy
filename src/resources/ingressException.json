@@ -87,5 +87,13 @@
     "version": "test",
     "context": "local",
     "ingress": "http://localhost"
+  },
+  {
+    "app": "local_test",
+    "team": "local_test",
+    "namespace": "local",
+    "version": "test",
+    "context": "local",
+    "ingress": "https://localhost"
   }
 ]
