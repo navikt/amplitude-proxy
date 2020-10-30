@@ -79,5 +79,13 @@
     "version": "unknown",
     "context": "prod",
     "ingress": "https://design.nav.no"
+  },
+  {
+    "app": "local_test",
+    "team": "local_test",
+    "namespace": "local",
+    "version": "test",
+    "context": "local",
+    "ingress": "http://localhost"
   }
 ]
