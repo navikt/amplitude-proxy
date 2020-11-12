@@ -10,6 +10,7 @@ The application translates IP-adresses to locations, using `geoip-lite`.
 # Prerequisites
 - Install node.js
 - Install homebrew(for Mac)
+- Docker installed and running
 
 ## **Install**
 `npm install`
