@@ -4,6 +4,7 @@ const ingressException = require(getIngressException())
 const generateTestEvent = require('../../test-utils/generate-test-event');
 const addClusterData = require('./add-cluster-data');
 const getIngressDate = require('../data/lookup-function')
+const constants = require('../constants');
 
 describe('add-cluster-data', function() {
   const ingressList = new Map()
@@ -41,5 +42,13 @@ describe('add-cluster-data', function() {
     assert.strictEqual(outputEvents[0].event_properties.namespace, undefined);
     assert.strictEqual(outputEvents[0].event_properties.hostname, 'localhost');
     assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar');
+  });
+  it('should clean eventUrl', function() {
+    const testEvent = generateTestEvent();
+    testEvent.platform = 'http://localhost/foo/bar/3932934293939?query=param';
+    const outputEvents = addClusterData([testEvent], () => {});
+    console.log(outputEvents);
+    assert.strictEqual(outputEvents[0].platform, 'Web');
+    assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar/' + constants.REDACTED);
   });
 });
