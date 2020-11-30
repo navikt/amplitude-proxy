@@ -16,6 +16,7 @@ const addClusterData = (inputEvents, getIngressData, ingresses) => {
         }
       });
     }
+    const cleanedEventUrl = cleanUrl(eventUrl);
     const eventUrlObj = new URL(eventUrl);
     cloneEvent.event_properties.url = eventUrlObj.hostname + eventUrlObj.pathname;
     cloneEvent.event_properties.hostname = eventUrlObj.hostname;
