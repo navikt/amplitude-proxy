@@ -1,3 +1,4 @@
+const cleanUrl = require('../utils/clean-url');
 const addClusterData = (inputEvents, getIngressData, ingresses) => {
   const outputEvents = [];
   inputEvents.forEach(event => {
@@ -16,7 +17,8 @@ const addClusterData = (inputEvents, getIngressData, ingresses) => {
         }
       });
     }
-    const eventUrlObj = new URL(eventUrl);
+    const cleanedEventUrl = cleanUrl(eventUrl);
+    const eventUrlObj = new URL(cleanedEventUrl);
     cloneEvent.event_properties.url = eventUrlObj.hostname + eventUrlObj.pathname;
     cloneEvent.event_properties.hostname = eventUrlObj.hostname;
     cloneEvent.event_properties.pagePath = eventUrlObj.pathname;
