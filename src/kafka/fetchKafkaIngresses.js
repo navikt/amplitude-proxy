@@ -28,9 +28,11 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
     if(ingressData) {
       if(ingressData.creationTimestamp < newIngress.creationTimestamp){
         ingresses.set(newIngress.ingress, newIngress)
+        logger.info('App: ' + kafkaMessage.object.metadata.name + ' added to ingress list')
       }
     } else {
       ingresses.set(newIngress.ingress, newIngress)
+      logger.info('App: ' + kafkaMessage.object.metadata.name + ' added to ingress list')
     }
   })
   
