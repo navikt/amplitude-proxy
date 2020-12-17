@@ -2,7 +2,7 @@ const uuid = require('uuid');
 const firstName = require('faker').name.firstName;
 module.exports = () => {
   const ingresses = [];
-  for (let i = 0; i < 2345; i++) {
+  for (let i = 0; i < 4345; i++) {
     const appName = firstName().toLowerCase();
     ingresses.push({
       'app': appName,

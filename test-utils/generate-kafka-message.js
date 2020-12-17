@@ -8,7 +8,7 @@ module.exports = async function () {
   const producer = kafka.producer()
   await producer.connect()
 
-  for (x = 0; x < 2010; x++) {
+  for (x = 0; x < 4010; x++) {
     const ingress = "https://test.test.test"
     const key = "12345abcde"
     const newKey = x + key

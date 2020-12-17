@@ -113,7 +113,7 @@ describe('Fetch Kafka ingresses', function () {
     const ingresses = new Map()
     let isReadyStatus = {status: false}
 
-    for (x = 0; x < 2000; x++) {
+    for (x = 0; x < 4000; x++) {
 
       ingresses.set("https://data.nais.preprod.local/apier" + x, {
         "app": "data-catalog-api-viewer",
