@@ -24,12 +24,13 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
   }
 
   newIngresses.forEach((newIngress) => {
-    logger.info("App recieved from kafka: " + newIngress.app + "in " + newIngress.context)
     const ingressData = getIngressData(newIngress.ingress, ingresses);
     if(ingressData) {
       if(ingressData.creationTimestamp < newIngress.creationTimestamp){
         ingresses.set(newIngress.ingress, newIngress)
         logger.info('App: ' + newIngress.app + ' added to ingress list, with ingress: ' + newIngress.ingress)
+      } else {
+        logger.info('Ignore duplicate app: ' + newIngress.app + " in " + newIngress.context)
       }
     } else {
       ingresses.set(newIngress.ingress, newIngress)
