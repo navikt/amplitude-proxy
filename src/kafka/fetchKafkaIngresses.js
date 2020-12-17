@@ -5,8 +5,6 @@ const path = require('path')
 
 module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
 
-  logger.info("Kafka topic recieved, App: " + kafkaMessage.object.metadata.name + "in " + kafkaMessage.cluster)
-
   let newIngresses = []
 
   const data = {
@@ -26,6 +24,7 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
   }
 
   newIngresses.forEach((newIngress) => {
+    logger.info("App recieved from kafka: " + newIngress.app + "in " + newIngress.context)
     const ingressData = getIngressData(newIngress.ingress, ingresses);
     if(ingressData) {
       if(ingressData.creationTimestamp < newIngress.creationTimestamp){
