@@ -37,7 +37,7 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
           logger.info("Ingress size: " + ingressList.size)
         }
         
-        if(ingressList.size > 2000 && kafkaBrokers[0].includes('localhost')) {
+        if(ingressList.size > 4000 && kafkaBrokers[0].includes('localhost')) {
           consumer.disconnect()
         }
 
