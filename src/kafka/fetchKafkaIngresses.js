@@ -5,6 +5,8 @@ const path = require('path')
 
 module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
 
+  logger.info("Kafka topic recieved, App: " + kafkaMessage.object.metadata.name + "in " + kafkaMessage.cluster)
+
   let newIngresses = []
 
   const data = {
