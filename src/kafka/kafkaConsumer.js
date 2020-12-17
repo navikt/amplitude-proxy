@@ -3,7 +3,6 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
-const { exception } = require('console');
 
 module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
   try {
@@ -34,9 +33,10 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
         // })
         const jsonMessage = JSON.parse(message.value)
         fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus)
-        if(ingressList.size % 100 === 0){
-          logger.info("Ingress size: " + ingressList.size)
-        }
+        logger.info(jsonMessage.object.metadata.name)
+        //if(ingressList.size % 100 === 0){
+        logger.info("Ingress size: " + ingressList.size)
+        //}
         
         if(ingressList.size > 2000 && kafkaBrokers[0].includes('localhost')) {
           consumer.disconnect()
