@@ -1,4 +1,3 @@
-const getIngressData = require('../data/lookup-function')
 const logger = require('../utils/logger');
 const fs = require('fs')
 const path = require('path')
@@ -24,13 +23,11 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
   }
 
   newIngresses.forEach((newIngress) => {
-    const ingressData = getIngressData(newIngress.ingress, ingresses);
+    const ingressData = ingresses.get(newIngress.ingress);
     if(ingressData) {
       if(ingressData.creationTimestamp < newIngress.creationTimestamp){
         ingresses.set(newIngress.ingress, newIngress)
         logger.info('Overwritting App: ' + newIngress.app + ' added to ingress list, with ingress: ' + newIngress.ingress)
-      } else {
-        logger.info('Ignore duplicate app: ' + newIngress.app + " in " + newIngress.context)
       }
     } else {
       logger.info('No duplicate found adding new app: ' + newIngress.app + ' added to ingress list, with ingress: ' + newIngress.ingress)
@@ -38,7 +35,7 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
     }
   })
   
-  if(ingresses.size > 2000) {
+  if(ingresses.size > 4000) {
     isReadyStatus.status = true
   }
 }
