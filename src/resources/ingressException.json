@@ -73,6 +73,14 @@
     "ingress": "https://tjenester.nav.no/pselv"
   },
   {
+    "app": "statistikkforsykmelder",
+    "team": "disykefravar",
+    "namespace": "default",
+    "version": "unknown",
+    "context": "prod",
+    "ingress": "https://tjenester.nav.no/statistikkforsykmelder"
+  },
+  {
     "app": "designsystemet",
     "team": "designsystem",
     "namespace": "default",
