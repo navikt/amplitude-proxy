@@ -13,7 +13,7 @@ const parseContext = (context, contextData) => {
     };
     if (item.spec.ingresses) {
       item.spec.ingresses.forEach(ingressRaw => {
-        const ingress = ingressRaw.replace(/\/$/, '');
+        const ingress = ingressRaw.replace(/\/$/, '').replace(/\#$/, '');
         allData.push({...data, ingress});
       });
     }

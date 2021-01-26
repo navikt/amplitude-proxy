@@ -1,5 +1,5 @@
 module.exports = (urlRaw, map) => {
-  const url = urlRaw.replace(/\/$/, '');
+  const url = urlRaw.replace(/\/$/, '').replace(/\#$/, '');
   const parts = url.split('/');
   let entry;
   for (let i = 7; i >= 3; i--) {

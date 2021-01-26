@@ -17,7 +17,7 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
 
   if (kafkaMessage.object.spec.ingresses) {
     kafkaMessage.object.spec.ingresses.forEach(ingressRaw => {
-      const ingress = ingressRaw.replace(/\/$/, '');
+      const ingress = ingressRaw.replace(/\/$/, '').replace(/\#$/, '');
       newIngresses.push({ ...data, ingress })
     });
   }
