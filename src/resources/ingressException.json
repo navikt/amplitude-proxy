@@ -5,7 +5,8 @@
     "namespace": "enonic",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://www.nav.no/no"
+    "ingress": "https://www.nav.no/no",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "enonicxp",
@@ -13,7 +14,8 @@
     "namespace": "enonic",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://www.nav.no/en"
+    "ingress": "https://www.nav.no/en",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "enonicxp",
@@ -21,7 +23,8 @@
     "namespace": "enonic",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://www.nav.no/se"
+    "ingress": "https://www.nav.no/se",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "enonicxp",
@@ -30,7 +33,7 @@
     "version": "unknown",
     "context": "prod",
     "ingress": "https://www.nav.no",
-    "creationTimeStamp": "test"
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "enonicxp",
@@ -38,7 +41,8 @@
     "namespace": "enonic",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://tjenester.nav.no/nav-sok"
+    "ingress": "https://tjenester.nav.no/nav-sok",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "iaweb",
@@ -46,7 +50,8 @@
     "namespace": "iaweb",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://tjenester.nav.no/iaweb"
+    "ingress": "https://tjenester.nav.no/iaweb",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "dokumentinnsending",
@@ -54,7 +59,8 @@
     "namespace": "dokumentinnsending",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://tjenester.nav.no/dokumentinnsending"
+    "ingress": "https://tjenester.nav.no/dokumentinnsending",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "bidragskalkulator",
@@ -62,7 +68,8 @@
     "namespace": "dokumentinnsending",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://tjenester.nav.no/bidragskalkulator"
+    "ingress": "https://tjenester.nav.no/bidragskalkulator",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "pensjon-pselv",
@@ -70,7 +77,8 @@
     "namespace": "default",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://tjenester.nav.no/pselv"
+    "ingress": "https://tjenester.nav.no/pselv",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "statistikkforsykmelder",
@@ -78,7 +86,8 @@
     "namespace": "default",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://tjenester.nav.no/statistikkforsykmelder"
+    "ingress": "https://tjenester.nav.no/statistikkforsykmelder",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "designsystemet",
@@ -86,7 +95,8 @@
     "namespace": "default",
     "version": "unknown",
     "context": "prod",
-    "ingress": "https://design.nav.no"
+    "ingress": "https://design.nav.no",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "local_test",
@@ -94,7 +104,8 @@
     "namespace": "local",
     "version": "test",
     "context": "local",
-    "ingress": "http://localhost"
+    "ingress": "http://localhost",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   },
   {
     "app": "local_test",
@@ -102,6 +113,7 @@
     "namespace": "local",
     "version": "test",
     "context": "local",
-    "ingress": "https://localhost"
+    "ingress": "https://localhost",
+    "creationTimeStamp": "2020-12-27T10:10:17.084575"
   }
 ]
