@@ -27,10 +27,10 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
     if(ingressData) {
       if(ingressData.creationTimestamp < newIngress.creationTimestamp){
         ingresses.set(newIngress.ingress, newIngress)
-        logger.info('Overwritting App: ' + newIngress.app + ' added to ingress list, with ingress: ' + newIngress.ingress)
+        logger.info('Overwritting App: ' + newIngress.app + 'from cluster: ' + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress)
       }
     } else {
-      logger.info('No duplicate found adding new app: ' + newIngress.app + ' added to ingress list, with ingress: ' + newIngress.ingress)
+      logger.info('No duplicate found adding new app: ' + newIngress.app + 'from cluster: ' + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress)
       ingresses.set(newIngress.ingress, newIngress)
     }
   })
