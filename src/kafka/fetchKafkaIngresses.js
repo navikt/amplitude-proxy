@@ -24,20 +24,25 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
 
   newIngresses.forEach((newIngress) => {
     const ingressData = ingresses.get(newIngress.ingress);
-    if(ingressData) {
-      if(ingressData.creationTimestamp < newIngress.creationTimestamp){
+    if (ingressData) {
+      if (ingressData.creationTimestamp < newIngress.creationTimestamp) {
         ingresses.set(newIngress.ingress, newIngress)
-        logger.info('Overwritting App: ' + newIngress.app + ' from cluster: ' + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress)
+        logger.info('Overwritting App: ' + newIngress.app + ' from cluster: ' + newIngress.context
+          + ' added to ingress list, with ingress: ' + newIngress.ingress + ', app creation timestamp: '
+          + newIngress.creationTimestamp)
       } else {
-        logger.info('Ignoring App: ' + newIngress.app + ' from cluster: ' + newIngress.context + ' with ingress: ' + newIngress.ingress)
+        logger.info('Ignoring App: ' + newIngress.app + ' from cluster: ' + newIngress.context
+          + ' with ingress: ' + newIngress.ingress + ', app creation timestamp: ' + newIngress.creationTimestamp)
       }
     } else {
-      logger.info('No duplicate found adding new app: ' + newIngress.app + ' from cluster: ' + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress)
+      logger.info('No duplicate found adding new app: ' + newIngress.app + ' from cluster: '
+        + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress
+        + ', app creation timestamp: ' + newIngress.creationTimestamp)
       ingresses.set(newIngress.ingress, newIngress)
     }
   })
-  
-  if(ingresses.size > 4000) {
+
+  if (ingresses.size > 4000) {
     isReadyStatus.status = true
   }
 }
