@@ -43,7 +43,7 @@ spec:
       cpu: 200m
       memory: 256Mi
   ingresses:
-    - "https://amplitude.dev.nais.io"
+    - "https://amplitude.dev-gcp.nais.io"
   env:
     - name: APP_VERSION
       value: {{image}}
