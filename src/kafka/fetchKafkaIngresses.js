@@ -1,8 +1,15 @@
 const logger = require('../utils/logger');
 const fs = require('fs')
 const path = require('path')
+const ignoreList = require('./ignoreList.json')
 
 module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
+
+  ignoreList.forEach((item) => {
+    if ( item.app === kafkaMessage.object.metadata.name && item.cluster === kafkaMessage.cluster) {
+      return;
+    }
+  })
 
   let newIngresses = []
 
