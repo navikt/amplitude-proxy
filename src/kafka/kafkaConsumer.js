@@ -3,8 +3,13 @@ const fs = require('fs');
 const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
+const ignoreList = require('./ignoreList.json')
+const ignoreAppList = new Map()
 
 module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
+
+  ignoreList.forEach(data => ignoreAppList.set(data.app, data))
+
   try {
     const kafkaBrokers = process.env.KAFKA_BROKERS.split(",");
     const kafkaConfig = { brokers: [...kafkaBrokers] }
@@ -32,7 +37,7 @@ module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
         //   value: message.value.toString(),
         // })
         const jsonMessage = JSON.parse(message.value)
-        fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus)
+        fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus, ignoreAppList)
         if(ingressList.size % 100 === 0){
           logger.info("Ingress size: " + ingressList.size)
         }

@@ -1,15 +1,8 @@
 const logger = require('../utils/logger');
 const fs = require('fs')
 const path = require('path')
-const ignoreList = require('./ignoreList.json')
 
-module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
-
-  ignoreList.forEach((item) => {
-    if ( item.app === kafkaMessage.object.metadata.name && item.cluster === kafkaMessage.cluster) {
-      return;
-    }
-  })
+module.exports = function (ingresses, kafkaMessage, isReadyStatus, ignoreAppList) {
 
   let newIngresses = []
 
@@ -31,21 +24,26 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus) {
 
   newIngresses.forEach((newIngress) => {
     const ingressData = ingresses.get(newIngress.ingress);
-    if (ingressData) {
-      if (ingressData.creationTimestamp < newIngress.creationTimestamp) {
-        ingresses.set(newIngress.ingress, newIngress)
-        logger.info('Overwritting App: ' + newIngress.app + ' from cluster: ' + newIngress.context
-          + ' added to ingress list, with ingress: ' + newIngress.ingress + ', app creation timestamp: '
-          + newIngress.creationTimestamp)
-      } else {
-        logger.info('Ignoring App: ' + newIngress.app + ' from cluster: ' + newIngress.context
-          + ' with ingress: ' + newIngress.ingress + ', app creation timestamp: ' + newIngress.creationTimestamp)
-      }
+    const ignoredApp = ignoreAppList.get(newIngress.app)
+    if (ignoredApp && ignoredApp.cluster === newIngress.context) {
+      logger.info('Ignoring app: ' + newIngress.app + ' on cluster: ' + newIngress.contex)
     } else {
-      logger.info('No duplicate found adding new app: ' + newIngress.app + ' from cluster: '
-        + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress
-        + ', app creation timestamp: ' + newIngress.creationTimestamp)
-      ingresses.set(newIngress.ingress, newIngress)
+      if (ingressData) {
+        if (ingressData.creationTimestamp < newIngress.creationTimestamp) {
+          ingresses.set(newIngress.ingress, newIngress)
+          logger.info('Overwritting App: ' + newIngress.app + ' from cluster: ' + newIngress.context
+            + ' added to ingress list, with ingress: ' + newIngress.ingress + ', app creation timestamp: '
+            + newIngress.creationTimestamp)
+        } else {
+          logger.info('Ignoring App: ' + newIngress.app + ' from cluster: ' + newIngress.context
+            + ' with ingress: ' + newIngress.ingress + ', app creation timestamp: ' + newIngress.creationTimestamp)
+        }
+      } else {
+        logger.info('No duplicate found adding new app: ' + newIngress.app + ' from cluster: '
+          + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress
+          + ', app creation timestamp: ' + newIngress.creationTimestamp)
+        ingresses.set(newIngress.ingress, newIngress)
+      }
     }
   })
 
