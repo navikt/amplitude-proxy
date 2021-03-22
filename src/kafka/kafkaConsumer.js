@@ -8,7 +8,7 @@ const ignoreAppList = new Map()
 
 module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
 
-  ignoreList.forEach(data => ignoreAppList.set(data.app, data))
+  ignoreList.forEach(data => ignoreAppList.set(data.ingress, data))
 
   try {
     const kafkaBrokers = process.env.KAFKA_BROKERS.split(",");

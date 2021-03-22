@@ -24,8 +24,8 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus, ignoreAppList
 
   newIngresses.forEach((newIngress) => {
     const ingressData = ingresses.get(newIngress.ingress);
-    const ignoredApp = ignoreAppList.get(newIngress.app)
-    if (ignoredApp && ignoredApp.cluster === newIngress.context) {
+    const ignoredApp = ignoreAppList.get(newIngress.ingress)
+    if (ignoredApp && ignoredApp.cluster === newIngress.context && ignoredApp.app === newIngress.app) {
       logger.info('Ignoring app: ' + newIngress.app + ' on cluster: ' + newIngress.context)
     } else {
       if (ingressData) {

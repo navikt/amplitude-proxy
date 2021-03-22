@@ -1,5 +1,6 @@
 [
   {
+    "ingress": "https://www.nav.no/pselv",
     "app": "pensjon-pselv",
     "cluster": "dev-fss"
   }
