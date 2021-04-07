@@ -3,5 +3,10 @@
     "ingress": "https://www.nav.no/pselv",
     "app": "pensjon-pselv",
     "cluster": "dev-fss"
+  },
+  {
+    "ingress": "https://data.nav.no/datapakke",
+    "app": "data-package-viewer",
+    "cluster": "prod-sbs"
   }
 ]
