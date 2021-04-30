@@ -20,10 +20,13 @@ spec:
       description: "App {{ $labels.app }} er nede i namespace {{ $labels.kubernetes_namespace }}"
       action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
     - alert: høy feilrate i logger
-      expr: sum(irate(istio_requests_total{reporter="destination", destination_workload=~"amplitude-proxy",response_code=~"5.*"}[1d])) > 50
+      expr: sum(irate(response_total{namespace="dataplattform", app="amplitude-proxy", direction="inbound", tls="true", status_code=~"5.*"}[1d])) > 50
       for: 3m
       action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
     - alert: Lav trafikk (respose code 200 er < 1 )
-      expr: sum(irate(istio_requests_total{reporter="destination", destination_workload=~"amplitude-proxy",response_code="200"}[1d])) < 1
+      expr: sum(irate(response_total{namespace="dataplattform", app="amplitude-proxy", direction="inbound", tls="true", status_code="200"}[1d])) < 1
       for: 3m
       action: "alert test"
+
+
+      
