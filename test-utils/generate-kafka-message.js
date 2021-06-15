@@ -16,7 +16,7 @@ module.exports = async function () {
     const newExample = ExampleMessage
     newExample.object.spec.ingresses = [newIngress]
     await producer.send({
-      topic: 'dataplattform.ingress-topic',
+      topic: 'dataplattform.ingress-topic-v2',
       messages: [
         { key: newKey, value: JSON.stringify(newExample) },
       ],
