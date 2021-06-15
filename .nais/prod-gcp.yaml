@@ -24,7 +24,7 @@ spec:
     enabled: true
     path: /metrics
   kafka:
-    pool: nav-prod
+    pool: nav-infrastructure
   liveness:
     path: /health/is-alive
     initialDelay: 10
