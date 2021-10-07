@@ -21,7 +21,7 @@
     "fastify-cors": "^4.1.0",
     "fastify-formbody": "^5.0.0",
     "fastify-metrics": "^6.0.2",
-    "fastify-static": "^4.2.4",
+    "fastify-static": "^3.4.0",
     "geoip-lite": "^1.4.2",
     "isbot": "^3.3.4",
     "json-schema-library": "^4.1.4",
