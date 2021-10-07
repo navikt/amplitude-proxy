@@ -36,7 +36,7 @@ describe('collect', function() {
       method: collectRoute.method,
       url: collectRoute.url,
       payload: collectRequestBody([generateTestEvent()]),
-      headers: collectRequestHeader().headers,
+      headers: collectRequestHeader('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36').headers,
     }).then((response) => {
       assert.strictEqual(response.body, constants.SUCCESS);
     });
@@ -61,7 +61,7 @@ describe('collect', function() {
       method: collectRoute.method,
       url: collectRoute.url,
       payload: collectRequestBody([generateTestEvent()]),
-      headers: collectRequestHeader().headers,
+      headers: collectRequestHeader('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36').headers,
     }).then((response) => { // the .end call will trigger the request
       assert.strictEqual(response.statusCode, 502);
     });
@@ -71,7 +71,7 @@ describe('collect', function() {
       method: collectRoute.method,
       url: collectRoute.url,
       payload: collectRequestBody([{foo:"bar"}]),
-      headers: collectRequestHeader().headers,
+      headers: collectRequestHeader('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36').headers,
     }).then((response) => {
       assert.strictEqual(response.statusCode, 400);
     });
