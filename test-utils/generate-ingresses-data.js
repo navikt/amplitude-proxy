@@ -1,5 +1,11 @@
 const uuid = require('uuid');
 const firstName = require('faker').name.firstName;
+
+/***
+ * Keeping this around. One might want to manually populate the ingress map object.
+ *
+ * @return {*[]}
+ */
 module.exports = () => {
   const ingresses = [];
   for (let i = 0; i < 4345; i++) {

@@ -47,7 +47,6 @@ describe('add-cluster-data', function() {
     const testEvent = generateTestEvent();
     testEvent.platform = 'http://localhost/foo/bar/3932934293939?query=param';
     const outputEvents = addClusterData([testEvent], () => {});
-    console.log(outputEvents);
     assert.strictEqual(outputEvents[0].platform, 'Web');
     assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar/' + constants.REDACTED);
   });

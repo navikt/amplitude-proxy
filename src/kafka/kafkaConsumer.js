@@ -1,57 +1,24 @@
-const { Kafka } = require('kafkajs');
-const fs = require('fs');
-const shortid = require('shortid');
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
-const ignoreList = require('./ignoreList.json')
-const ignoreAppList = new Map()
+const ignoreList = require('../resources/ignoreList.json');
+const ignoreAppList = new Map();
 
-module.exports = async function (ingressList, isAliveStatus, isReadyStatus) {
-
-  ignoreList.forEach(data => ignoreAppList.set(data.ingress, data))
+module.exports = async function(consumer, ingressList, isAliveStatus, isReadyStatus) {
+  ignoreList.forEach(data => ignoreAppList.set(data.ingress, data));
 
   try {
-    const kafkaBrokers = process.env.KAFKA_BROKERS.split(",");
-    const kafkaConfig = { brokers: [...kafkaBrokers] }
-
-    if (!kafkaBrokers[0].includes('localhost')) {
-      kafkaConfig.ssl = {
-        rejectUnauthorized: false,
-        ca: [fs.readFileSync(process.env.KAFKA_CA_PATH, 'utf-8')],
-        key: fs.readFileSync(process.env.KAFKA_PRIVATE_KEY_PATH, 'utf-8'),
-        cert: fs.readFileSync(process.env.KAFKA_CERTIFICATE_PATH, 'utf-8')
-      }
-    }
-
-    const kafka = new Kafka(kafkaConfig)
-
-    const consumer = kafka.consumer({ groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}` })
-
-    await consumer.connect()
-    await consumer.subscribe({ topic: 'dataplattform.ingress-topic-v2', fromBeginning: true })
-
+    await consumer.connect();
+    await consumer.subscribe({topic: process.env.INGRESS_TOPIC, fromBeginning: true});
+    logger.info('Kafka connected: ' + process.env.INGRESS_TOPIC);
     await consumer.run({
-      eachMessage: async ({ topic, partition, message }) => {
-
-        // logger.info({
-        //   value: message.value.toString(),
-        // })
-        const jsonMessage = JSON.parse(message.value)
-        fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus, ignoreAppList)
-        if(ingressList.size % 100 === 0){
-          logger.info("Ingress size: " + ingressList.size)
-        }
-        
-        if(ingressList.size > 4000 && kafkaBrokers[0].includes('localhost')) {
-          consumer.disconnect()
-        }
-
-      }
-    })
-
+      eachMessage: ({topic, partition, message}) => {
+        const jsonMessage = JSON.parse(message.value);
+        fetchKafkaIngresses(ingressList, jsonMessage, isReadyStatus, ignoreAppList);
+      },
+    });
   } catch (e) {
-    logger.error("Kafka error:" + e.message)
-    isAliveStatus.status = false
-    isAliveStatus.message = e
+    logger.error('Kafka error: ' + e.message);
+    isAliveStatus.status = false;
+    isAliveStatus.message = e;
   }
 };

@@ -1,15 +1,15 @@
 const exampleEvent = require('../examples/amplitude-event');
-const exampleEventAuto = require('../examples/amplitude-event-auto')
+const exampleEventAuto = require('../examples/amplitude-event-auto');
 const uuid = require('uuid');
 const deviceId = uuid.v4();
 const sessionId = new Date().getTime();
-let event_id = 1
+let event_id = 1;
 module.exports = (event) => {
-  let exampleData
-  if(event !== undefined) {
-    exampleData = exampleEventAuto
+  let exampleData;
+  if (event !== undefined) {
+    exampleData = exampleEventAuto;
   } else {
-    exampleData = exampleEvent
+    exampleData = exampleEvent;
   }
   const testEvent = JSON.parse(JSON.stringify(exampleData));
   testEvent.device_id = deviceId;

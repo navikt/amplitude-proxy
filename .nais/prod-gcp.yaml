@@ -53,8 +53,8 @@ spec:
       value: {{image}}
     - name: AMPLITUDE_URL
       value: https://api.amplitude.com
-    - name: INGRESSES_URL
-      value: http://amplitude-data/ingresses.json
+    - name: INGRESS_TOPIC
+      value: dataplattform.ingress-topic-v2
     - name: PROJECT_KEYS_FILE
       value: /var/run/secrets/project-keys.json
   filesFrom:

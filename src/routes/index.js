@@ -1,5 +1,5 @@
 const handler = function(req, reply) {
-  reply.sendFile('index.txt');
+  reply.sendFile('index.html');
 };
 /**
  *

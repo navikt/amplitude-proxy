@@ -1,5 +1,5 @@
 const geoLookup = require('geoip-lite').lookup;
-const handler =  function(request, reply) {
+const handler = function(request, reply) {
   reply.send({
     ip: request.ip,
     ips: request.ips,
@@ -15,5 +15,5 @@ const handler =  function(request, reply) {
 module.exports = {
   method: 'GET',
   url: '/your-ip',
-  handler
+  handler,
 };

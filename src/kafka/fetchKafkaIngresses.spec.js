@@ -2,7 +2,7 @@ const assert = require('assert');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses')
 const getIngressExceptionPath = require('../data/ingressException-path')
 const ingressException = require(getIngressExceptionPath())
-const ignoreList = require('./ignoreList.json')
+const ignoreList = require('../resources/ignoreList.json')
 
 describe('Fetch Kafka ingresses', function () {
 

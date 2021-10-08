@@ -12,7 +12,7 @@ const isReady = async function (req, reply, isReadyStatus) {
  */
 module.exports = function (isReadyStatus) {
   return {
-    method: 'GET',
+    method: ['GET', 'HEAD'],
     url: paths.ITS_READY,
     handler: function (req, reply) {
       isReady(req, reply, isReadyStatus)

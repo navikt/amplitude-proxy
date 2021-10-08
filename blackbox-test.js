@@ -7,9 +7,14 @@ const collectRequestHeader = require('./test-utils/collect-request-header');
 const collectRequestBody = require('./test-utils/collect-request-body');
 const YAML = require('yaml');
 const fs = require('fs');
+const {COMMON_USER_AGENT} = require('./test-utils/constants');
+
+/**
+ * Test run agains the built docker container. Simulating a "as real as it gets" scenario.
+ */
 describe('test end to end', async () => {
+
   const DUMMY_CLIENT_ID = '0002BDF3F871B49F4F14ABDB13BD9B59';
-  const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
   const file = fs.readFileSync('./docker-compose.yml', 'utf8');
   const dockerCompose = YAML.parse(file);
   const port = dockerCompose.services.server.environment.PORT;
@@ -18,29 +23,7 @@ describe('test end to end', async () => {
   const collectUrl = baseUrl + paths.COLLECT;
   const collectUrlDebug = collectUrl + '?debug=1';
 
-
-  // disabled temporarily 
-  // let intervalHandle;
-  // before(done => {
-  //   console.log('Waiting on ' + baseUrl + paths.ITS_READY);
-  //   intervalHandle = setInterval(() => {
-  //     axios.get(baseUrl + paths.ITS_READY).then(d => {
-  //       if (d.data === 'ok') {
-  //         done();
-  //         clearInterval(intervalHandle);
-  //       }
-  //     }).catch(e => {
-  //       console.error(e.message);
-  //     });
-  //   }, 1000);
-  // });
-  // after(() => {
-  //   if(intervalHandle){
-  //     clearInterval(intervalHandle);
-  //   }
-  // });
-
-  it('happy case - ignored both', async () => {
+  it('happy case - ignored bot traffic', async () => {
     const result = await axios.post(
         collectUrlDebug,
         collectRequestBody([generateTestEvent()]),
@@ -49,6 +32,8 @@ describe('test end to end', async () => {
     assert.strictEqual(result.status, 200);
     assert.strictEqual(result.data, constants.IGNORED);
   });
+
+
   it('happy case - success', async () => {
     const inputBody = collectRequestBody([generateTestEvent()], DUMMY_CLIENT_ID);
     const result = await axios.post(
@@ -62,4 +47,5 @@ describe('test end to end', async () => {
     const forwardedBody = JSON.parse(result.data.body);
     assert.strictEqual(DUMMY_CLIENT_ID, forwardedBody.api_key);
   });
+
 });
