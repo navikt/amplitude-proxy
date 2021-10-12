@@ -7,21 +7,16 @@ services:
       AMPLITUDE_URL: http://echo
       NAIS_CLUSTER_NAME: local
       PORT: 4243
-      INGRESSES_URL: http://data/ingresses.json
       PROJECT_KEYS_FILE: /secrets/project-keys.json
-      KAFKA_BROKERS: localhost:29092,localhost:9092
+      KAFKA_BROKERS: kafka:9093
+      INGRESS_TOPIC: dataplattform.ingress-topic-v2
     ports:
       - '4243:4243'
     depends_on:
       - echo
-      - data
     volumes:
       - ./secrets/:/secrets/
   echo:
     image: mendhak/http-https-echo
     ports:
       - '8484:80'
-  data:
-    build: ./ingresses
-    ports:
-      - '2525:80'

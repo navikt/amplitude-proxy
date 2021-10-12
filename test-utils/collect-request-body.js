@@ -1,7 +1,9 @@
 const qs = require('querystring');
+const {TEST_PROJECT_KEY} = require('./constants');
+
 module.exports = (events, client) => {
   return qs.stringify({
-    client: client || '55477baea93c5227d8c0f6b813653615',
+    client: client || TEST_PROJECT_KEY,
     e: JSON.stringify(events),
   });
 };

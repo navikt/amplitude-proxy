@@ -1,3 +1,5 @@
+const {isOnNais} = require('./is-on-nais');
+
 const pinoConfig = {
   timestamp: false,
   formatters: {
@@ -7,7 +9,7 @@ const pinoConfig = {
   },
 };
 
-if (!process.env.NAIS_CLUSTER_NAME) {
+if (!isOnNais()) {
   pinoConfig.prettyPrint = {colorize: true};
 }
 

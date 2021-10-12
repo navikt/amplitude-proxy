@@ -1,79 +1,76 @@
 const assert = require('assert');
-const moxios = require('moxios');
+const nock = require('nock');
 const paths = require('../paths');
 const constants = require('../constants');
 const collectRequestBody = require('../../test-utils/collect-request-body');
 const collectRequestHeader = require('../../test-utils/collect-request-header');
 const generateTestEvent = require('../../test-utils/generate-test-event');
-const beforeRouteTest = require('../../test-utils/before-route-tests');
+const createAmplitudeServer = require('../../test-utils/create-amplitude-server');
 const collectRoute = require('./collect');
-describe('collect', function() {
 
-  let fastify;
+describe('collect', function() {
+  const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
+
+  let amplitudeServer;
+
   before(async () => {
-    fastify = await beforeRouteTest(moxios)
+    amplitudeServer = await createAmplitudeServer({}, 'collect.spec');
+    await amplitudeServer.ready();
   });
-  after(() => {
-    moxios.uninstall();
+  after(async () => {
+    await amplitudeServer.ready();
+    await amplitudeServer.close();
   });
+
+  afterEach(() => nock.cleanAll());
 
   it('should work in happy case', async function() {
-    moxios.wait(function() {
-      let request = moxios.requests.mostRecent();
-      assert.strictEqual(request.url, process.env.AMPLITUDE_URL + paths.HTTPAPI);
-      const requestData = JSON.parse(request.config.data);
-      const requestEvents = requestData.events;
+    const scope = nock(process.env.AMPLITUDE_URL).persist().post(paths.HTTPAPI, body => {
+      const requestEvents = body.events;
       assert.strictEqual(requestEvents.length, 1);
       const firstEvent = requestEvents[0];
       assert.strictEqual(firstEvent.event_properties.proxyVersion, constants.UNKNOWN);
       assert.strictEqual(firstEvent.user_properties.referrer, 'https://www.nav.no/[redacted]');
-      request.respondWith({
-        status: 200,
-        response: constants.SUCCESS,
-      });
-    });
-    await fastify.inject({
+      return body;
+    }).
+        reply(200, constants.SUCCESS);
+    const response = await amplitudeServer.inject({
       method: collectRoute.method,
       url: collectRoute.url,
       payload: collectRequestBody([generateTestEvent()]),
-      headers: collectRequestHeader('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36').headers,
-    }).then((response) => {
-      assert.strictEqual(response.body, constants.SUCCESS);
+      headers: collectRequestHeader(COMMON_USER_AGENT).headers,
     });
+    assert.strictEqual(response.body, constants.SUCCESS);
+    scope.done();
   });
 
   it('should return 502 when proxying failes', async function() {
-    moxios.wait(function() {
-      let request = moxios.requests.mostRecent();
-      assert.strictEqual(request.url, process.env.AMPLITUDE_URL + paths.HTTPAPI);
-      const requestData = JSON.parse(request.config.data);
-      const requestEvents = requestData.events;
+    const scope = nock(process.env.AMPLITUDE_URL).persist().post(paths.HTTPAPI, body => {
+      const requestEvents = body.events;
       assert.strictEqual(requestEvents.length, 1);
       const firstEvent = requestEvents[0];
       assert.strictEqual(firstEvent.event_properties.proxyVersion, constants.UNKNOWN);
       assert.strictEqual(firstEvent.user_properties.referrer, 'https://www.nav.no/[redacted]');
-      request.respondWith({
-        status: 419,
-        response: "gibberish",
-      });
-    });
-    await fastify.inject({
+      return body;
+    }).reply(419, 'gibberish');
+
+    const response = await amplitudeServer.inject({
       method: collectRoute.method,
       url: collectRoute.url,
       payload: collectRequestBody([generateTestEvent()]),
-      headers: collectRequestHeader('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36').headers,
-    }).then((response) => { // the .end call will trigger the request
-      assert.strictEqual(response.statusCode, 502);
+      headers: collectRequestHeader(COMMON_USER_AGENT).headers,
     });
+    assert.strictEqual(response.statusCode, 502);
+    scope.done();
   });
+
   it('should return 400 when validation failes', async function() {
-    await fastify.inject({
+    const response = await amplitudeServer.inject({
       method: collectRoute.method,
       url: collectRoute.url,
-      payload: collectRequestBody([{foo:"bar"}]),
-      headers: collectRequestHeader('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36').headers,
-    }).then((response) => {
-      assert.strictEqual(response.statusCode, 400);
+      payload: collectRequestBody([{foo: 'bar'}]),
+      headers: collectRequestHeader(COMMON_USER_AGENT).headers,
     });
+    assert.strictEqual(response.statusCode, 400);
   });
 });

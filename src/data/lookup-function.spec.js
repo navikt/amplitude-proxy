@@ -1,4 +1,3 @@
-
 const assert = require('assert');
 const lookupFunction = require("./lookup-function");
 const testUrl = 'https://www.w3schools.com/dsa/js/da/asdfa/js_break.asp';

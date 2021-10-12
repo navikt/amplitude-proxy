@@ -1,22 +1,22 @@
 const paths = require('../paths');
 const isAlive = async function(req, reply, isAliveStatus) {
-  if(!isAliveStatus.status){
+  if (!isAliveStatus.status) {
     reply.code(500).send(isAliveStatus.message);
   } else {
-    reply.send("ok");
+    reply.send('ok');
   }
 };
 /**
  *
  * @type RouteOptions
  */
-module.exports = function (isAliveStatus) {
+module.exports = function(isAliveStatus) {
   return {
-    method: 'GET',
+    method: ['GET', 'HEAD'],
     url: paths.ITS_ALIVE,
-    handler: function (req, reply){
-      isAlive(req,reply, isAliveStatus)
-    }
-  }
+    handler: function(req, reply) {
+      isAlive(req, reply, isAliveStatus);
+    },
+  };
 
 };

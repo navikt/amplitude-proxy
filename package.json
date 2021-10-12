@@ -7,16 +7,16 @@
   "author": "NAV",
   "license": "MIT",
   "scripts": {
-    "ensure-test-keyfile": "node ./test-utils/ensure-test-keyfile.js",
-    "blackbox": "node ./test-utils/ensure-test-ingresses.js && npm run up && mocha blackbox-test.js",
+    "ensure-test-features": "node ./test-utils/ensure-test-features.js",
+    "blackbox": "npm run up && wait-on http://localhost:4243/health/is-ready && mocha blackbox-test.js",
     "serve": "nodemon",
     "test": "npm run kafka-up && mocha \"src/**/*.spec.js\"",
-    "up": "docker-compose -f docker-compose.yml up -d --build",
-    "kafka-up": "docker-compose -f docker-compose-kafka.yml up -d --build"
+    "up": "docker-compose -f docker-compose.yml up -d",
+    "kafka-up": "docker-compose -f docker-compose-kafka.yml up -d"
   },
   "dependencies": {
     "ajv": "^6.12.4",
-    "axios": "^0.22.0",
+    "axios": "^0.21.4",
     "fastify": "^3.22.0",
     "fastify-cors": "^4.1.0",
     "fastify-formbody": "^5.1.0",
@@ -34,10 +34,12 @@
     "faker": "^4.1.0",
     "mocha": "^9.1.2",
     "moxios": "^0.4.0",
+    "nock": "^13.1.3",
     "nodemon": "^2.0.4",
     "nyc": "^15.1.0",
     "pino-pretty": "^4.2.1",
     "uuid": "^7.0.3",
+    "wait-on": "^6.0.0",
     "yaml": "^1.10.0"
   }
 }

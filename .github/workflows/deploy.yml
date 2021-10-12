@@ -15,14 +15,24 @@ env:
   TEST_PROJECT_KEY: ${{ secrets.TEST_PROJECT_KEY }}
   IMAGE: docker.pkg.github.com/${{ github.repository }}/${{ github.event.repository.name }}:${{ github.sha }}
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Cache node modules
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Node Modules
         uses: actions/cache@v1
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
@@ -31,16 +41,39 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run:  npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
-      - run:  mkdir -p secrets && npm run ensure-test-keyfile
-      - run:  npm test
-      - run:  npm run blackbox
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Set up Kafka # Can bring up kafka right away
+        run: npm run kafka-up
+
+      - name: Install Node Modules
+        run: npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
+
+      - name: Prep Test Environment # Just get the app up ahead
+        run: mkdir -p secrets && npm run ensure-test-features
+
+      - name: Prep Blackbox Tests # Just get the app up ahead of blackbox
+        run: npm run up
+
+      - name: Run Unit Tests # Running unit tests
+        run: npm test
+
+      - name: Run Blackbox Tests # Running test against the docker image
+        run: npm run blackbox
 
   build:
     name: Build and push docker image
     needs: test
     if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -53,7 +86,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run:  npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
+      - run: npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
       - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -88,6 +121,7 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name != 'release'
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
@@ -102,6 +136,7 @@ jobs:
     needs: test
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1

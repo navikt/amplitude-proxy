@@ -1,64 +1,44 @@
-const server = require('./server');
 const axios = require('axios');
 const assert = require('assert');
 const generateTestEvent = require('../test-utils/generate-test-event');
-const randomizeIngressPath = require('../test-utils/randomize-ingress-path');
-const startMockDataServer = require('../test-utils/start-mock-data-server');
 const collectRequestHeader = require('../test-utils/collect-request-header');
 const collectRequestBody = require('../test-utils/collect-request-body');
-const client = require('prom-client');
+const createAmplitudeServer = require('../test-utils/create-amplitude-server');
 const paths = require('./paths');
 const constants = require('./constants');
-const nodemonConfig = require('../nodemon');
-const { resolve } = require('path');
 const generateKafkaMessage = require('../test-utils/generate-kafka-message');
-const logger = require('./utils/logger');
+const logger = require('../src/utils/logger');
+const {ingressMap} = require('./data/ingress-map');
 
-describe('test end to end', async () => {
+describe('server tests', async () => {
   const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
   const port = 9832;
   const hostname = '127.0.0.1';
   const baseUrl = 'http://' + hostname + ':' + port;
   const collectUrl = baseUrl + paths.COLLECT;
-  const collectAutoUrl = baseUrl + paths.COLLECT_AUTO
+  const collectAutoUrl = baseUrl + paths.COLLECT_AUTO;
   const collectUrlDebug = collectUrl + '?debug=1';
   const collectAutoUrlDebug = collectAutoUrl + '?debug=1';
 
-  const ingressPort = 9820;
-  const ingressUrl = 'http://localhost:' + ingressPort + "/ingresses.json";
-
   let amplitudeProxyServer;
-  let ingressesServer;
+
   before(async () => {
-    Object.keys(nodemonConfig.env).forEach(key => {
-      process.env[key] = nodemonConfig.env[key];
-    });
-    process.env.INGRESSES_URL = ingressUrl;
-    process.env.NODE_ENV = constants.TEST;
-    generateKafkaMessage()
-    randomizeIngressPath();
-    ingressesServer = await startMockDataServer(ingressPort);
-    try {
-      client.register.clear();
-      amplitudeProxyServer = await server();
-      await amplitudeProxyServer.listen(port);
-    } catch (e) {
-      console.error('FATAL ERROR: ' + e.message);
-      await ingressesServer.close();
-      process.exit(1);
-    }
+    amplitudeProxyServer = await createAmplitudeServer({}, 'server.spec');
+    generateKafkaMessage().then(undefined);
+    await amplitudeProxyServer.listen(port);
   });
 
-  after(async () => {
-    await amplitudeProxyServer.close();
-    await ingressesServer.close();
+  after(() => {
+    amplitudeProxyServer.close(() => {
+      logger.info({msg: 'AmplitudeProxyServer closed', name: 'server.spec'});
+    });
   });
 
   it('collect endpoint should block bot traffic', async () => {
     const result = await axios.post(
-      collectUrlDebug,
-      collectRequestBody([generateTestEvent()]),
-      collectRequestHeader(),
+        collectUrlDebug,
+        collectRequestBody([generateTestEvent()]),
+        collectRequestHeader(),
     );
     assert.strictEqual(result.data, constants.IGNORED);
     assert.strictEqual(result.status, 200);
@@ -66,9 +46,9 @@ describe('test end to end', async () => {
 
   it('collect-auto endpoint should block bot traffic', async () => {
     const result = await axios.post(
-      collectAutoUrlDebug,
-      collectRequestBody([generateTestEvent('auto')], 'default'),
-      collectRequestHeader(),
+        collectAutoUrlDebug,
+        collectRequestBody([generateTestEvent('auto')], 'default'),
+        collectRequestHeader(),
     );
     assert.strictEqual(result.data, constants.IGNORED);
     assert.strictEqual(result.status, 200);
@@ -76,12 +56,12 @@ describe('test end to end', async () => {
 
   it('collect-auto endpoint should block dev traffic', async () => {
 
-    const TestEvent = generateTestEvent('auto')
-    TestEvent.platform = "https://arbeidsgiver.heroku/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds"
+    const TestEvent = generateTestEvent('auto');
+    TestEvent.platform = 'https://arbeidsgiver.heroku/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds';
     const result = await axios.post(
-      collectAutoUrlDebug,
-      collectRequestBody([TestEvent], 'default'),
-      collectRequestHeader(COMMON_USER_AGENT),
+        collectAutoUrlDebug,
+        collectRequestBody([TestEvent], 'default'),
+        collectRequestHeader(COMMON_USER_AGENT),
     );
     assert.strictEqual(result.data, constants.SUCCESS);
     assert.strictEqual(result.status, 200);
@@ -89,9 +69,9 @@ describe('test end to end', async () => {
 
   it('should receive and forward example event to amplitude', async () => {
     const result = await axios.post(
-      collectUrlDebug,
-      collectRequestBody([generateTestEvent()]),
-      collectRequestHeader(COMMON_USER_AGENT),
+        collectUrlDebug,
+        collectRequestBody([generateTestEvent()]),
+        collectRequestHeader(COMMON_USER_AGENT),
     );
     if (result.data.code !== 200) {
       console.error(result.data);
@@ -103,9 +83,9 @@ describe('test end to end', async () => {
 
   it('should receive and forward example event auto to amplitude', async () => {
     const result = await axios.post(
-      collectAutoUrlDebug,
-      collectRequestBody([generateTestEvent('auto')], 'default'),
-      collectRequestHeader(COMMON_USER_AGENT),
+        collectAutoUrlDebug,
+        collectRequestBody([generateTestEvent('auto')], 'default'),
+        collectRequestHeader(COMMON_USER_AGENT),
     );
     if (result.data.code !== 200) {
       console.error(result.data);
@@ -115,8 +95,8 @@ describe('test end to end', async () => {
     assert.strictEqual(result.data.events_ingested, 1);
   });
 
-  it('should serve liberaries', async () => {
-    const SDK_URL = baseUrl + paths.JS_SDK
+  it('should serve libraries', async () => {
+    const SDK_URL = baseUrl + paths.JS_SDK;
     const result1 = await axios.get(SDK_URL);
     assert.strictEqual(result1.status, 200);
     const found1 = result1.data.indexOf(hostname + ':' + port + paths.COLLECT);
@@ -135,12 +115,18 @@ describe('test end to end', async () => {
     assert.strictEqual(result.status, 200);
   });
 
-  it('server should report ready when successfully retrieving 2000 ingresses', () => {
-    setTimeout(async (done) => {
-      const result = await axios.get(baseUrl + paths.ITS_READY);
-      assert.strictEqual(result.status, 200);
-      done()
-    }, 20000)
-  });
+  it('server should report ready when successfully retrieving 4000 ingresses', (done) => {
+    const intervalHandle = setInterval(() => {
+      if (ingressMap.size > 4000) {
+        console.log('Ingress size is ', ingressMap.size);
+        clearInterval(intervalHandle);
+        axios.get(baseUrl + paths.ITS_READY).then((result) => {
+          assert.strictEqual(result.status, 200);
+        }).catch(e => {
+          logger.error({msg: e.message, name: 'server.spec'});
+        }).finally(done);
+      }
+    }, 333);
+  }).timeout(5000);
 
 });

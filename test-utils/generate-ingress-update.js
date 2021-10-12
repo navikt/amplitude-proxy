@@ -22,5 +22,5 @@ module.exports = () => {
     'version': uuid.v4(),
     'context': context,
   };
-  return [testUpdate];
+  return testUpdate;
 };

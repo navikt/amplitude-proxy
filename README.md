@@ -4,7 +4,9 @@ This improves privacy concerns related to tracking user behavior events.
 All applications must use this proxy and is not allowed to send events 
 directly to Amplitude.
 
-The application translates IP-adresses to locations, using `geoip-lite`.
+The application translates IP-adresses to locations, using [geoip-lite](https://www.npmjs.com/package/geoip-lite).
+The proxy uses [isbot](https://www.npmjs.com/package/isbot) to filter out
+bot traffic at the source.
 
 
 # Prerequisites
@@ -25,8 +27,8 @@ App runs on
 Test with postman against: `http://localhost:4242/collect`
 
 
-## Auto-collect (POC/DRAFT)
-This endpoint require some config. Theese projects will be mapped
+## The auto-collect endpoint
+This endpoint require some config. The projects will be mapped
 to urls. Atm this is not done in a very generic way.
 ```
 {
@@ -35,6 +37,8 @@ to urls. Atm this is not done in a very generic way.
   "project-key-test": "*"
 }
 ```
+This config might either be in a json-file 
+`PROJECT_KEYS_FILE` or as stringified json in an envvar `PROJECT_KEYS` 
 
 The datasource looks like this and is taken from our kubernetes cluster:
 
@@ -50,4 +54,5 @@ The datasource looks like this and is taken from our kubernetes cluster:
 ```
 
 This way most of our urls can be mapped.
+
 

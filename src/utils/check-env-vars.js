@@ -10,9 +10,7 @@ const checkEnvVars = (envVars) => {
   if (!validUrl(envVars['AMPLITUDE_URL'])) {
     throw Error('AMPLITUDE_URL is not configured correct.');
   }
-  if (!validUrl(envVars['INGRESSES_URL'])) {
-    throw Error('INGRESSES_URL is not configured correct.');
-  }
+
   if (!envVars['PROJECT_KEYS_FILE']) {
     throw Error('PROJECT_KEYS_FILE is not set.');
   }

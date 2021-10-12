@@ -1,10 +1,10 @@
 {
   "env": {
     "AMPLITUDE_URL": "https://api.amplitude.com",
-    "INGRESSES_URL": "http://localhost:2525/ingresses.json",
     "AUTO_TRACK_KEY": "default",
     "PROJECT_KEYS_FILE": "./secrets/project-keys.json",
-    "KAFKA_BROKERS":"localhost:29092,localhost:9092",
-    "NAIS_CLUSTER_NAME": "test"
+    "KAFKA_BROKERS":"localhost:9092",
+    "NAIS_CLUSTER_NAME": "test",
+    "INGRESS_TOPIC": "dataplattform.ingress-topic-v2"
   }
 }

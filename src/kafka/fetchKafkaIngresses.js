@@ -1,10 +1,8 @@
-const logger = require('../utils/logger');
-const fs = require('fs')
-const path = require('path')
+const {ingressLog} = require('../utils/ingress-log');
 
-module.exports = function (ingresses, kafkaMessage, isReadyStatus, ignoreAppList) {
+module.exports = function(ingresses, kafkaMessage, isReadyStatus, ignoreAppList) {
 
-  let newIngresses = []
+  let newIngresses = [];
 
   const data = {
     app: kafkaMessage.object.metadata.name,
@@ -12,42 +10,47 @@ module.exports = function (ingresses, kafkaMessage, isReadyStatus, ignoreAppList
     namespace: kafkaMessage.object.metadata.namespace,
     version: kafkaMessage.object.spec.image.split(':').pop(),
     context: kafkaMessage.cluster,
-    creationTimestamp: kafkaMessage.object.metadata.creationTimestamp
-  }
+    creationTimestamp: kafkaMessage.object.metadata.creationTimestamp,
+  };
 
   if (kafkaMessage.object.spec.ingresses) {
     kafkaMessage.object.spec.ingresses.forEach(ingressRaw => {
       const ingress = ingressRaw.replace(/\/$/, '').replace(/\#$/, '');
-      newIngresses.push({ ...data, ingress })
+      newIngresses.push({...data, ingress});
     });
   }
 
   newIngresses.forEach((newIngress) => {
     const ingressData = ingresses.get(newIngress.ingress);
-    const ignoredApp = ignoreAppList.get(newIngress.ingress)
+    const ignoredApp = ignoreAppList.get(newIngress.ingress);
+    const logStatus = ingressLog(
+        newIngress.app,
+        newIngress.context,
+        newIngress.ingress,
+        newIngress.creationTimestamp,
+    );
     if (ignoredApp && ignoredApp.cluster === newIngress.context && ignoredApp.app === newIngress.app) {
-      logger.info('Ignoring app: ' + newIngress.app + ' on cluster: ' + newIngress.context)
+      logStatus('Ignored because of ignoreAppList');
     } else {
       if (ingressData) {
         if (ingressData.creationTimestamp < newIngress.creationTimestamp) {
-          ingresses.set(newIngress.ingress, newIngress)
-          logger.info('Overwritting App: ' + newIngress.app + ' from cluster: ' + newIngress.context
-            + ' added to ingress list, with ingress: ' + newIngress.ingress + ', app creation timestamp: '
-            + newIngress.creationTimestamp)
+          ingresses.set(newIngress.ingress, newIngress);
+          logStatus('Added to ingress list');
+
         } else {
-          logger.info('Ignoring App: ' + newIngress.app + ' from cluster: ' + newIngress.context
-            + ' with ingress: ' + newIngress.ingress + ', app creation timestamp: ' + newIngress.creationTimestamp)
+          logStatus('Ignored because of creationTimestamp');
         }
       } else {
-        logger.info('No duplicate found adding new app: ' + newIngress.app + ' from cluster: '
-          + newIngress.context + ' added to ingress list, with ingress: ' + newIngress.ingress
-          + ', app creation timestamp: ' + newIngress.creationTimestamp)
-        ingresses.set(newIngress.ingress, newIngress)
+        if (isReadyStatus.status) {
+// Just logg after app is successfully started
+          logStatus('No duplicate found adding new app');
+        }
+        ingresses.set(newIngress.ingress, newIngress);
       }
     }
-  })
+  });
 
   if (ingresses.size > 4000) {
-    isReadyStatus.status = true
+    isReadyStatus.status = true;
   }
-}
+};
