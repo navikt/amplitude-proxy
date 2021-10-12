@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const logFilepath = path.join(process.cwd(), 'ingresses.log');
+const logFilepath = path.join(os.tmpdir(), 'ingresses.log');
 const ingressLogStream = fs.createWriteStream(logFilepath);
 const ingressLog = (app, cluster, ingress, createdTime) => {
   return (status) => {
