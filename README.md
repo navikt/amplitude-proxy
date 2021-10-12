@@ -55,4 +55,6 @@ The datasource looks like this and is taken from our kubernetes cluster:
 
 This way most of our urls can be mapped.
 
+## Ingress log
 
+Log data for ingresses are saved in a local file called ingresses.log. This file can be found in the /tmp folder.
