@@ -22,9 +22,6 @@ then
     done
 fi
 
-# ensures that geoip-lite and isbot is updated
-npm upgrade isbot geoip-lite --no-fund --no-audit
-
 if test -e "./serve.js";
 then
     node \
