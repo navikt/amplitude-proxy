@@ -6,7 +6,7 @@ on:
       - '*'
   pull_request:
     branches:
-      - master
+      - main
   release:
     types:
       - created
@@ -71,7 +71,7 @@ jobs:
   build:
     name: Build and push docker image
     needs: test
-    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -115,11 +115,11 @@ jobs:
   #         CLUSTER: labs-gcp
   #         RESOURCE: .nais/alerts.yaml
 
-  # Deployer til dev-gcp på alle merges til master
+  # Deployer til dev-gcp på alle merges til main
   deploy-dev-gcp:
     name: Deploy to nais dev-gcp
     needs: build
-    if: github.ref == 'refs/heads/master' && github.event_name != 'release'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
