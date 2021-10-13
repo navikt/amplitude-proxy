@@ -31,7 +31,7 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "faker": "^4.1.0",
+    "faker": "^5.5.3",
     "mocha": "^9.1.2",
     "moxios": "^0.4.0",
     "nock": "^13.1.3",
