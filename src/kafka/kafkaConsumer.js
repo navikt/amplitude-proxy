@@ -8,8 +8,8 @@ module.exports = async function(consumer, ingressList, isAliveStatus, isReadySta
 
   try {
     await consumer.connect();
-    await consumer.subscribe({topic: process.env.INGRESS_TOPIC, fromBeginning: true});
-    logger.info('Kafka connected: ' + process.env.INGRESS_TOPIC);
+    await consumer.subscribe({topic: process.env.KAFKA_INGRESS_TOPIC, fromBeginning: true});
+    logger.info('Kafka connected: ' + process.env.KAFKA_INGRESS_TOPIC);
     await consumer.run({
       eachMessage: ({topic, partition, message}) => {
         const jsonMessage = JSON.parse(message.value);

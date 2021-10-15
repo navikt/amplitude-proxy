@@ -3,7 +3,6 @@
  */
 const fs = require('fs');
 const path = require('path');
-const generateKafkaMessage = require('./generate-kafka-message');
 const setupTestEnvs = require('./setup-test-envs');
 const logger = require('../src/utils/logger');
 
@@ -24,15 +23,3 @@ if (!fs.existsSync(secretsPath)) {
 } else {
   logger.info('Project keys file already exists.');
 }
-
-/**
- * Fixing environment variables
- */
-setupTestEnvs();
-
-/**
- * Generating kafka messages
- */
-generateKafkaMessage().then(() => {
-  logger.info('Done generating kafka messages!');
-});

@@ -1,4 +1,5 @@
 const geoLookup = require('geoip-lite').lookup;
+
 const handler = function(request, reply) {
   reply.send({
     ip: request.ip,
@@ -8,6 +9,7 @@ const handler = function(request, reply) {
     geoip: geoLookup(request.ip),
   });
 };
+
 /**
  *
  * @type RouteOptions

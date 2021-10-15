@@ -1,4 +1,5 @@
 const paths = require('../paths');
+
 const isAlive = async function(req, reply, isAliveStatus) {
   if (!isAliveStatus.status) {
     reply.code(500).send(isAliveStatus.message);
@@ -6,6 +7,7 @@ const isAlive = async function(req, reply, isAliveStatus) {
     reply.send('ok');
   }
 };
+
 /**
  *
  * @type RouteOptions

@@ -3,10 +3,12 @@ const assert = require('assert');
 const paths = require('./paths');
 const createAmplitudeServer = require('../test-utils/create-amplitude-server');
 const logger = require("../src/utils/logger")
+const {
+  port,
+  baseUrl,
+} = require('../test-utils/test-paths');
 describe('Kafka bad case', async () => {
-  const port = 9835;
-  const hostname = '127.0.0.1';
-  const baseUrl = 'http://' + hostname + ':' + port;
+
 
   let amplitudeProxyServer;
 

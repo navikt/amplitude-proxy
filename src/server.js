@@ -8,14 +8,17 @@ const getIngressExceptionPath = require('./data/ingressException-path');
 const ingressException = require(getIngressExceptionPath());
 const {ingressLogStream} = require('./utils/ingress-log');
 const {createKafkaConsumer} = require('./kafka/createKafkaConsumer');
-const {ingressMap} = require('./data/ingress-map');
 
 /**
  *
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
  */
 module.exports = async (name) => {
-
+  /**
+   * Ingress map should be created pr fastify instance.
+   * @type {Map<any, any>}
+   */
+  const ingressMap = new Map();
   const isAliveStatus = {status: true, message: 'Error: '};
   const isReadyStatus = {status: false};
   let serverIsClosed = false;
@@ -27,23 +30,31 @@ module.exports = async (name) => {
     trustProxy: true,
   });
 
+  fastify.decorate('ingresses', ingressMap);
+
   if (checkEnvVars(process.env)) logger.info({msg: 'Environment vars is ok.', name, ingresses: ingressMap.size});
 
-  logger.info({msg: 'Connecting to Kafka: Trying to consume topic ' + process.env.INGRESS_TOPIC, name});
-  const consumer = createKafkaConsumer();
-  fastify.addHook('onClose', async (instance, done) => {
-    serverIsClosed = true;
-    ingressLogStream.destroy();
-    if (consumerIsReady) await consumer.disconnect();
-    logger.info({msg: 'Servers is closed!', name, ingresses: ingressMap.size});
-    done();
-  });
+  if (process.env.KAFKA_DISABLED === 'true') {
+    logger.info({msg: 'Kafka integration is disabled'});
+    isAliveStatus.status = true;
+    isReadyStatus.status = true;
+  } else {
+    logger.info({msg: 'Connecting to Kafka: Trying to consume topic ' + process.env.KAFKA_INGRESS_TOPIC, name});
+    const consumer = createKafkaConsumer();
+    fastify.addHook('onClose', async (instance, done) => {
+      serverIsClosed = true;
+      ingressLogStream.destroy();
+      if (consumerIsReady) await consumer.disconnect();
+      logger.info({msg: 'Servers is closed!', name, ingresses: ingressMap.size});
+      done();
+    });
+    kafkaConsumer(consumer, ingressMap, isAliveStatus, isReadyStatus).then(async () => {
+      consumerIsReady = true;
+      logger.info({msg: 'Kafka Consumer is ready!', name, ingresses: ingressMap.size});
+      if (serverIsClosed) await consumer.disconnect();
+    });
+  }
 
-  kafkaConsumer(consumer, ingressMap, isAliveStatus, isReadyStatus).then(async () => {
-    consumerIsReady = true;
-    logger.info({msg: 'Kafka Consumer is ready!', name, ingresses: ingressMap.size});
-    if (serverIsClosed) await consumer.disconnect();
-  });
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
 

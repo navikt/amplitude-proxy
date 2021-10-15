@@ -3,10 +3,7 @@ version: '3'
 services:
   zookeeper:
     container_name: zookeeper
-    image: "confluentinc/cp-zookeeper:5.4.1"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: "2181"
-      ZOOKEEPER_TICK_TIME: "2000"
+    image: "zookeeper"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://zookeeper:2181"]
       interval: 30s
@@ -15,7 +12,7 @@ services:
 
   kafka:
     container_name: kafka
-    image: "confluentinc/cp-kafka:5.4.1"
+    image: "wurstmeister/kafka"
     ports:
       - "9092:9092"
       - "9093:9093"
@@ -24,11 +21,17 @@ services:
     restart: on-failure
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_LISTENERS: INSIDE://:9093,OUTSIDE://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
-    command: "sh -c '/etc/confluent/docker/run'"
+
+  preloader:
+    build:
+      dockerfile: ./Dockerfile.Preloader
+    environment:
+      KAFKA_BROKERS: kafka:9093
+      KAFKA_INGRESS_TOPIC: dataplattform.ingress-topic-v2
+    depends_on:
+      - kafka

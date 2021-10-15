@@ -9,7 +9,7 @@ services:
       PORT: 4243
       PROJECT_KEYS_FILE: /secrets/project-keys.json
       KAFKA_BROKERS: kafka:9093
-      INGRESS_TOPIC: dataplattform.ingress-topic-v2
+      KAFKA_INGRESS_TOPIC: dataplattform.ingress-topic-v2
     ports:
       - '4243:4243'
     depends_on:
