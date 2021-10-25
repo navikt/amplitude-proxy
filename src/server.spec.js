@@ -6,25 +6,23 @@ const collectRequestBody = require('../test-utils/collect-request-body');
 const createAmplitudeServer = require('../test-utils/create-amplitude-server');
 const paths = require('./paths');
 const constants = require('./constants');
-const generateKafkaMessage = require('../test-utils/generate-kafka-message');
+
 const logger = require('../src/utils/logger');
-const {ingressMap} = require('./data/ingress-map');
+const {COMMON_USER_AGENT} = require('../test-utils/constants');
+const {
+  port,
+  hostname,
+  baseUrl,
+  collectUrlDebug,
+  collectAutoUrlDebug,
+} = require('../test-utils/test-paths');
 
 describe('server tests', async () => {
-  const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
-  const port = 9832;
-  const hostname = '127.0.0.1';
-  const baseUrl = 'http://' + hostname + ':' + port;
-  const collectUrl = baseUrl + paths.COLLECT;
-  const collectAutoUrl = baseUrl + paths.COLLECT_AUTO;
-  const collectUrlDebug = collectUrl + '?debug=1';
-  const collectAutoUrlDebug = collectAutoUrl + '?debug=1';
 
   let amplitudeProxyServer;
 
   before(async () => {
     amplitudeProxyServer = await createAmplitudeServer({}, 'server.spec');
-    generateKafkaMessage().then(undefined);
     await amplitudeProxyServer.listen(port);
   });
 
@@ -55,7 +53,6 @@ describe('server tests', async () => {
   });
 
   it('collect-auto endpoint should block dev traffic', async () => {
-
     const TestEvent = generateTestEvent('auto');
     TestEvent.platform = 'https://arbeidsgiver.heroku/min-side-arbeidsgiver/asdompage/asdfas?fasd=ddds';
     const result = await axios.post(
@@ -116,17 +113,21 @@ describe('server tests', async () => {
   });
 
   it('server should report ready when successfully retrieving 4000 ingresses', (done) => {
+    let tries = 0;
     const intervalHandle = setInterval(() => {
-      if (ingressMap.size > 4000) {
-        console.log('Ingress size is ', ingressMap.size);
+      tries++
+      axios.get(baseUrl + paths.ITS_READY).then((result) => {
+        assert.strictEqual(result.status, 200);
         clearInterval(intervalHandle);
-        axios.get(baseUrl + paths.ITS_READY).then((result) => {
-          assert.strictEqual(result.status, 200);
-        }).catch(e => {
-          logger.error({msg: e.message, name: 'server.spec'});
-        }).finally(done);
+        done()
+      }).catch(e => {
+        logger.error({msg: e.message, name: 'server.spec'});
+      })
+      if (tries > 9) {
+        clearInterval(intervalHandle);
+        done()
       }
-    }, 333);
+    }, 500);
   }).timeout(5000);
 
 });

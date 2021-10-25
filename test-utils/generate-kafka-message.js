@@ -16,8 +16,8 @@ module.exports = async function() {
     groupId: logName + '_' + shortid.generate(),
   });
   await consumer.connect();
-  await consumer.subscribe({topic: process.env.INGRESS_TOPIC, fromBeginning: true});
-  logger.info({msg: 'Consumer connected: ' + process.env.INGRESS_TOPIC, name: logName});
+  await consumer.subscribe({topic: process.env.KAFKA_INGRESS_TOPIC, fromBeginning: true});
+  logger.info({msg: 'Consumer connected: ' + process.env.KAFKA_INGRESS_TOPIC, name: logName});
   let count = 0;
   await consumer.run({
     eachMessage: async ({topic, partition, message}) => {
@@ -59,13 +59,11 @@ module.exports = async function() {
       newExample.object.metadata.labels.team = mockData.props.team;
       messages.push({key: '12345abcde' + x, value: JSON.stringify(newExample)});
       if (messages.length === 200 || x === numbOfMessages) {
-
         sendPromises.push(producer.send({
-          topic: process.env.INGRESS_TOPIC,
+          topic: process.env.KAFKA_INGRESS_TOPIC,
           messages,
         }));
         messages = [];
-
       }
     }
     await Promise.all(sendPromises);

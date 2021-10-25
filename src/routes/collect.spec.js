@@ -6,17 +6,19 @@ const collectRequestBody = require('../../test-utils/collect-request-body');
 const collectRequestHeader = require('../../test-utils/collect-request-header');
 const generateTestEvent = require('../../test-utils/generate-test-event');
 const createAmplitudeServer = require('../../test-utils/create-amplitude-server');
+const {COMMON_USER_AGENT} = require('../../test-utils/constants');
+
+
 const collectRoute = require('./collect');
 
 describe('collect', function() {
-  const COMMON_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
-
   let amplitudeServer;
 
   before(async () => {
     amplitudeServer = await createAmplitudeServer({}, 'collect.spec');
     await amplitudeServer.ready();
   });
+
   after(async () => {
     await amplitudeServer.ready();
     await amplitudeServer.close();
@@ -32,8 +34,7 @@ describe('collect', function() {
       assert.strictEqual(firstEvent.event_properties.proxyVersion, constants.UNKNOWN);
       assert.strictEqual(firstEvent.user_properties.referrer, 'https://www.nav.no/[redacted]');
       return body;
-    }).
-        reply(200, constants.SUCCESS);
+    }).reply(200, constants.SUCCESS);
     const response = await amplitudeServer.inject({
       method: collectRoute.method,
       url: collectRoute.url,

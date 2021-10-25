@@ -1,29 +1,25 @@
 const assert = require('assert');
-const moxios = require('moxios');
+
 const forwardEvents = require('./forward-events');
 const paths = require('./paths');
+const nock = require('nock');
+const constants = require('./constants');
 
 describe('forward-events', function() {
-  beforeEach(() => moxios.install());
-  afterEach(() => moxios.uninstall());
 
-  it('should be forwarded', function(done) {
+  afterEach(() => nock.cleanAll());
+
+  it('should be forwarded', async () => {
     const events = [];
     const api_key = Math.random().toString(36).substr(2);
     const amplitudeUrl = 'http://localhost:4242';
-    moxios.wait(function() {
-      let request = moxios.requests.mostRecent();
-      assert.strictEqual(request.url, amplitudeUrl + paths.HTTPAPI);
-      assert.strictEqual(request.config.method, 'post');
-      const body = JSON.parse(request.config.data);
+    const scope = nock(amplitudeUrl).persist().post(paths.HTTPAPI, body => {
       assert.strictEqual(body.api_key, api_key);
       assert.deepStrictEqual(body.events, []);
-      request.respondWith({
-        status: 200,
-        response: 'success',
-      }).then(() => done());
-    });
-    forwardEvents(events, api_key, amplitudeUrl);
+      return body;
+    }).reply(200, constants.SUCCESS);
+    await forwardEvents(events, api_key, amplitudeUrl);
+    scope.done();
   });
 
 });

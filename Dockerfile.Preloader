@@ -1,0 +1,10 @@
+FROM node:alpine
+WORKDIR /app
+
+COPY src src/
+COPY examples examples/
+COPY test-utils test-utils/
+COPY node_modules node_modules/
+RUN find . -name "*.spec.js" -type f -delete
+CMD node test-utils/preloader.js
+

@@ -1,6 +1,7 @@
 const fetchUrl = require('../utils/fetch-url');
 const cached = {};
 const logger = require('../utils/logger');
+
 const handler = async function(req, reply) {
   const url = 'https://cdn.amplitude.com' + req.raw.url;
   const hostname = req.hostname;

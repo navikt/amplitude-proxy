@@ -1,4 +1,5 @@
 const paths = require('../paths');
+
 const isReady = async function (req, reply, isReadyStatus) {
   if (isReadyStatus.status) {
     reply.send('ok');
@@ -6,6 +7,7 @@ const isReady = async function (req, reply, isReadyStatus) {
     reply.code(503).send("App is not ready, still collecting ingresses");
   }
 };
+
 /**
  *
  * @type RouteOptions

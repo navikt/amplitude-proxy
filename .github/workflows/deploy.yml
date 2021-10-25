@@ -23,44 +23,33 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v1
+#        with:
+#          install: true
 
       - name: Cache Node Modules
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-node-
             ${{ runner.os }}-
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      - name: Set up Kafka # Can bring up kafka right away
-        run: npm run kafka-up
 
       - name: Install Node Modules
         run: npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
 
-      - name: Prep Test Environment # Just get the app up ahead
+      - name: Prep Test Environment
         run: mkdir -p secrets && npm run ensure-test-features
 
-      - name: Prep Blackbox Tests # Just get the app up ahead of blackbox
-        run: npm run up
+      - name: Set up Docker Compose # Can bring up kafka and other containers
+        run: npm run all-up
 
       - name: Run Unit Tests # Running unit tests
         run: npm test
@@ -68,60 +57,40 @@ jobs:
       - name: Run Blackbox Tests # Running test against the docker image
         run: npm run blackbox
 
-  build:
-    name: Build and push docker image
-    needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-      - name: Cache node modules
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - run: npm ci --ignore-scripts --no-optional --prefer-offline --no-audit
-      - name: Build and publish Docker image
+      - name: Tag image from Docker Compose
+        run: |
+          docker tag amplitude-proxy_server ${IMAGE}
+
+      - name: Push Docker Image
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build . --pull --tag ${IMAGE}
           echo "$GITHUB_TOKEN" | docker login --username "$GITHUB_REPOSITORY" --password-stdin https://docker.pkg.github.com
           docker push ${IMAGE}
 
   # Deployer til labs-gcp på alle merges til master
-  # deploy-labs-gcp:
-  #   name: Deploy to nais labs-gcp
-  #   needs: build
-  #   if: github.ref == 'refs/heads/master' && github.event_name != 'release'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - uses: nais/deploy/actions/deploy@v1
-  #       env:
-  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-  #         CLUSTER: labs-gcp
-  #         RESOURCE: .nais/labs-gcp.yaml
-  #     - name: deploy alerts to labs-gcp
-  #       uses: nais/deploy/actions/deploy@v1
-  #       env:
-  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-  #         CLUSTER: labs-gcp
-  #         RESOURCE: .nais/alerts.yaml
+  deploy-labs-gcp:
+    name: Deploy to nais labs-gcp
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: .nais/labs-gcp.yaml
+
 
   # Deployer til dev-gcp på alle merges til main
   deploy-dev-gcp:
     name: Deploy to nais dev-gcp
-    needs: build
+    needs: test
     if: github.ref == 'refs/heads/main' && github.event_name != 'release'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
@@ -136,7 +105,7 @@ jobs:
     needs: test
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1

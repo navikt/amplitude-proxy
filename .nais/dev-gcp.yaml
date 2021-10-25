@@ -11,9 +11,6 @@ spec:
       external:
         - host: api.amplitude.com
         - host: cdn.amplitude.com
-      rules:
-        - application: amplitude-data
-          namespace: dataplattform
   image: {{image}}
   port: 4242
   prometheus:
@@ -45,11 +42,9 @@ spec:
   ingresses:
     - "https://amplitude.dev-gcp.nais.io"
   env:
-    - name: APP_VERSION
-      value: {{image}}
     - name: AMPLITUDE_URL
       value: https://api.amplitude.com
-    - name: INGRESS_TOPIC
+    - name: KAFKA_INGRESS_TOPIC
       value: dataplattform.ingress-topic-v2
     - name: PROJECT_KEYS_FILE
       value: /var/run/secrets/project-keys.json

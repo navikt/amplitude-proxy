@@ -3,7 +3,6 @@ const {KafkaPinoLogger} = require('./kafkaPinoLogger');
 const {isOnNais} = require('../utils/is-on-nais');
 const fs = require('fs');
 const shortid = require('shortid');
-const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
 
 const createKafkaConsumer = () => {
   const kafkaBrokers = process.env.KAFKA_BROKERS.split(',');
@@ -26,11 +25,9 @@ const createKafkaConsumer = () => {
 
   const kafka = new Kafka(kafkaConfig);
 
-  const consumer = kafka.consumer({
+  return kafka.consumer({
     groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}`,
   });
-
-  return consumer;
 };
 
 module.exports = {

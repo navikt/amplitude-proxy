@@ -11,8 +11,10 @@
     "blackbox": "npm run up && wait-on http://localhost:4243/health/is-ready && mocha blackbox-test.js",
     "serve": "nodemon",
     "test": "npm run kafka-up && mocha \"src/**/*.spec.js\"",
-    "up": "docker-compose -f docker-compose.yml up -d",
-    "kafka-up": "docker-compose -f docker-compose-kafka.yml up -d"
+    "up": "docker compose -f docker-compose.yml up -d  --no-recreate --quiet-pull",
+    "kafka-up": "docker compose -f docker-compose-kafka.yml up -d --no-recreate --quiet-pull",
+    "all-up": "docker compose -f docker-compose-kafka.yml -f docker-compose.yml up -d --no-recreate --quiet-pull",
+    "down": "docker compose -f docker-compose-kafka.yml -f docker-compose.yml down"
   },
   "dependencies": {
     "ajv": "^8.6.3",
@@ -24,7 +26,6 @@
     "fastify-static": "^4.4.2",
     "geoip-lite": "^1.4.2",
     "isbot": "^3.3.4",
-    "json-schema-library": "^6.0.0",
     "kafkajs": "^1.14.0",
     "pino": "^7.0.1",
     "prom-client": "^14.0.0",
@@ -33,10 +34,8 @@
   "devDependencies": {
     "faker": "^5.5.3",
     "mocha": "^9.1.2",
-    "moxios": "^0.4.0",
     "nock": "^13.1.3",
     "nodemon": "^2.0.4",
-    "nyc": "^15.1.0",
     "pino-pretty": "^7.1.0",
     "uuid": "^8.3.2",
     "wait-on": "^6.0.0",
