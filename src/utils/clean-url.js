@@ -4,6 +4,8 @@ const formats = [
   {regex: /[a-f0-9\-]{6,}/ig, replace: constants.REDACTED},
   // id format https://www.nav.no/initial/1000Ro2Fi
   {regex: /\d[oiA-Z0-9]{8,}/g, replace: constants.REDACTED},
+  // searches for a 11 digit number in the url
+  {regex: /[0-9]\d{11}/g, replace: constants.REDACTED}
 ];
 module.exports = (url) => {
   let outputUrl = url;
