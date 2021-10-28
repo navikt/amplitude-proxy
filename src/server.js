@@ -20,7 +20,7 @@ module.exports = async (name) => {
    */
   const ingressMap = new Map();
   const isAliveStatus = {status: true, message: 'Error: '};
-  const isReadyStatus = {status: false};
+  const isReadyStatus = {status: true};
   let serverIsClosed = false;
   let consumerIsReady = false;
   ingressException.forEach(data => ingressMap.set(data.ingress, data));
