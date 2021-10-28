@@ -5,10 +5,12 @@ describe('clean-object-urls', function() {
   it('urls in an object should be cleaned', function() {
     const cleanedObjects = cleanObjectUrls({
       url: 'https://example.com/initial/1000Ro2Fi',
+      referrer: 'https://example.com/person/12345678901',
       other: 'prop',
       numb: 123,
     });
     assert.strictEqual(cleanedObjects.url, 'https://example.com/initial/' + constants.REDACTED);
+    assert.strictEqual(cleanedObjects.referrer, 'https://example.com/person/' + constants.REDACTED);
     assert.strictEqual(cleanedObjects.other, 'prop');
     assert.strictEqual(cleanedObjects.numb, 123);
   });
