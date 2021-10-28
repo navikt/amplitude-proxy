@@ -3,7 +3,7 @@ kind: "Application"
 metadata:
   labels:
     team: dataplattform
-  name: amplitude-proxy
+  name: amplitude-proxy-temp
   namespace: dataplattform
 spec:
   accessPolicy:
