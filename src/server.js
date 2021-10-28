@@ -20,7 +20,7 @@ module.exports = async (name) => {
    */
   const ingressMap = new Map();
   const isAliveStatus = {status: true, message: 'Error: '};
-  const isReadyStatus = {status: true};
+  const isReadyStatus = {status: false};
   let serverIsClosed = false;
   let consumerIsReady = false;
   ingressException.forEach(data => ingressMap.set(data.ingress, data));
@@ -41,6 +41,7 @@ module.exports = async (name) => {
   } else {
     logger.info({msg: 'Connecting to Kafka: Trying to consume topic ' + process.env.KAFKA_INGRESS_TOPIC, name});
     const consumer = createKafkaConsumer();
+
     fastify.addHook('onClose', async (instance, done) => {
       serverIsClosed = true;
       ingressLogStream.destroy();
@@ -48,6 +49,7 @@ module.exports = async (name) => {
       logger.info({msg: 'Servers is closed!', name, ingresses: ingressMap.size});
       done();
     });
+    
     kafkaConsumer(consumer, ingressMap, isAliveStatus, isReadyStatus).then(async () => {
       consumerIsReady = true;
       logger.info({msg: 'Kafka Consumer is ready!', name, ingresses: ingressMap.size});
