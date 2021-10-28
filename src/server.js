@@ -30,7 +30,7 @@ module.exports = async (name) => {
     trustProxy: true,
   });
 
-  fastify.decorate('ingresses', ingressMap);
+  // fastify.decorate('ingresses', ingressMap);
 
   if (checkEnvVars(process.env)) logger.info({msg: 'Environment vars is ok.', name, ingresses: ingressMap.size});
 
