@@ -25,9 +25,11 @@ const createKafkaConsumer = () => {
 
   const kafka = new Kafka(kafkaConfig);
 
-  return kafka.consumer({
+  const consumer = kafka.consumer({
     groupId: `amplitude_proxy_${process.env.NAIS_CLUSTER_NAME}_${shortid.generate()}`,
   });
+
+  return consumer
 };
 
 module.exports = {
