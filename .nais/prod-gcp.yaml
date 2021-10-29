@@ -11,10 +11,6 @@ spec:
       external:
         - host: api.amplitude.com
         - host: cdn.amplitude.com
-    inbound:
-      rules:
-        - application: istio-ingressgateway
-          namespace: istio-system
   image: {{image}}
   port: 4242
   prometheus:
