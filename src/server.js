@@ -8,17 +8,17 @@ const getIngressExceptionPath = require('./data/ingressException-path');
 const ingressException = require(getIngressExceptionPath());
 const { ingressLogStream } = require('./utils/ingress-log');
 const { createKafkaConsumer } = require('./kafka/createKafkaConsumer');
-/**
- * Ingress map should be created pr fastify instance.
- * @type {Map<any, any>}
- */
-const ingressMap = new Map();
 
 /**
  *
  * @returns {Promise<*|fastify.FastifyInstance<http2.Http2SecureServer, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>|fastify.FastifyInstance<https.Server, http.IncomingMessage, http.ServerResponse>|fastify.FastifyInstance<http.Server, http.IncomingMessage, http.ServerResponse>>}
  */
 module.exports = async (name) => {
+  /**
+ * Ingress map should be created pr fastify instance.
+ * @type {Map<any, any>}
+ */
+  const ingressMap = new Map();
   const isAliveStatus = { status: true, message: 'Error: ' };
   const isReadyStatus = { status: false };
   let serverIsClosed = false;
