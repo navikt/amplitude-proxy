@@ -30,11 +30,13 @@ module.exports = async (name) => {
     trustProxy: true,
   });
 
-  fastify.decorate('ingresses', ingressMap);
+  // fastify.decorate('ingresses', ingressMap);
 
   if (checkEnvVars(process.env)) logger.info({msg: 'Environment vars is ok.', name, ingresses: ingressMap.size});
 
-  if (process.env.KAFKA_DISABLED === 'true') {
+  const kafkaDiasabled = process.env.KAFKA_DISABLED || false
+
+  if (kafkaDiasabled === 'true') {
     logger.info({msg: 'Kafka integration is disabled'});
     isAliveStatus.status = true;
     isReadyStatus.status = true;
