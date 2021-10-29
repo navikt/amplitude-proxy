@@ -34,28 +34,30 @@ module.exports = async (name) => {
 
   if (checkEnvVars(process.env)) logger.info({ msg: 'Environment vars is ok.', name, ingresses: ingressMap.size });
 
-  if (process.env.KAFKA_DISABLED === 'true') {
-    logger.info({ msg: 'Kafka integration is disabled' });
-    isAliveStatus.status = true;
-    isReadyStatus.status = true;
-  } else {
-    logger.info({ msg: 'Connecting to Kafka: Trying to consume topic ' + process.env.KAFKA_INGRESS_TOPIC, name });
-    const consumer = createKafkaConsumer();
+  // if (process.env.KAFKA_DISABLED === 'true') {
+  //   logger.info({ msg: 'Kafka integration is disabled' });
+  //   isAliveStatus.status = true;
+  //   isReadyStatus.status = true;
+  // } else {
 
-    fastify.addHook('onClose', async (instance, done) => {
-      serverIsClosed = true;
-      ingressLogStream.destroy();
-      if (consumerIsReady) await consumer.disconnect();
-      logger.info({ msg: 'Servers is closed!', name, ingresses: ingressMap.size });
-      done();
-    });
+  // }
 
-    kafkaConsumer(consumer, ingressMap, isAliveStatus, isReadyStatus).then(async () => {
-      consumerIsReady = true;
-      logger.info({ msg: 'Kafka Consumer is ready!', name, ingresses: ingressMap.size });
-      if (serverIsClosed) await consumer.disconnect();
-    });
-  }
+  logger.info({ msg: 'Connecting to Kafka: Trying to consume topic ' + process.env.KAFKA_INGRESS_TOPIC, name });
+  const consumer = createKafkaConsumer();
+
+  fastify.addHook('onClose', async (instance, done) => {
+    serverIsClosed = true;
+    ingressLogStream.destroy();
+    if (consumerIsReady) await consumer.disconnect();
+    logger.info({ msg: 'Servers is closed!', name, ingresses: ingressMap.size });
+    done();
+  });
+
+  kafkaConsumer(consumer, ingressMap, isAliveStatus, isReadyStatus).then(async () => {
+    consumerIsReady = true;
+    logger.info({ msg: 'Kafka Consumer is ready!', name, ingresses: ingressMap.size });
+    if (serverIsClosed) await consumer.disconnect();
+  });
 
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
