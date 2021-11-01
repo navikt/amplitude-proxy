@@ -33,6 +33,7 @@ describe('collect', function() {
       const firstEvent = requestEvents[0];
       assert.strictEqual(firstEvent.event_properties.proxyVersion, constants.UNKNOWN);
       assert.strictEqual(firstEvent.user_properties.referrer, 'https://www.nav.no/[redacted]');
+      assert.strictEqual(firstEvent.user_properties.initial_referrer, 'https://www.nav.no/initial/[redacted]');
       return body;
     }).reply(200, constants.SUCCESS);
     const response = await amplitudeServer.inject({
@@ -52,6 +53,7 @@ describe('collect', function() {
       const firstEvent = requestEvents[0];
       assert.strictEqual(firstEvent.event_properties.proxyVersion, constants.UNKNOWN);
       assert.strictEqual(firstEvent.user_properties.referrer, 'https://www.nav.no/[redacted]');
+      assert.strictEqual(firstEvent.user_properties.initial_referrer, 'https://www.nav.no/initial/[redacted]');
       return body;
     }).reply(419, 'gibberish');
 
