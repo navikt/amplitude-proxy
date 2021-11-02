@@ -71,7 +71,7 @@ const customHandler = function(request, reply, ingresses) {
         reply.send(response.data);
       } else if (request.query.debug) {
         collectCounter.labels('success_with_debug', appName, teamName).inc();
-        reply.send({requestData: request, cleanedEvents: eventsWithUrlsCleaned});
+        reply.send(eventsWithUrlsCleaned);
       } else {
         collectCounter.labels('success', appName, teamName).inc();
         reply.send(constants.SUCCESS);
