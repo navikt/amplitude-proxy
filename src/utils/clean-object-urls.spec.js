@@ -8,10 +8,14 @@ describe('clean-object-urls', function() {
       referrer: 'https://example.com/person/12345678901',
       other: 'prop',
       numb: 123,
+      nesteObject : {
+        initial_referrer: 'https://example.com/person/12345678901'
+      }
     });
     assert.strictEqual(cleanedObjects.url, 'https://example.com/initial/' + constants.REDACTED);
     assert.strictEqual(cleanedObjects.referrer, 'https://example.com/person/' + constants.REDACTED);
     assert.strictEqual(cleanedObjects.other, 'prop');
     assert.strictEqual(cleanedObjects.numb, 123);
+    assert.strictEqual(cleanedObjects.nesteObject.initial_referrer, 'https://example.com/person/' + constants.REDACTED)
   });
 });
