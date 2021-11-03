@@ -28,7 +28,7 @@
     "isbot": "^3.3.4",
     "kafkajs": "^1.14.0",
     "pino": "^7.0.5",
-    "prom-client": "^14.0.0",
+    "prom-client": "^14.0.1",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
