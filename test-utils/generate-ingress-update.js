@@ -1,6 +1,6 @@
 const example = require('../examples/ingress-update');
 const uuid = require('uuid');
-const firstName = require('faker').name.firstName;
+const firstName = require('@faker-js/faker').name.firstName;
 module.exports = () => {
   const testUpdate = JSON.parse(JSON.stringify(example));
   const numberOfIngresses = Math.ceil(Math.random() * 5);

@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const firstName = require('faker').name.firstName;
+const firstName = require('@faker-js/faker').name.firstName;
 
 /***
  * Keeping this around. One might want to manually populate the ingress map object.

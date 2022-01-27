@@ -14,7 +14,7 @@ module.exports = (event) => {
   const testEvent = JSON.parse(JSON.stringify(exampleData));
   testEvent.device_id = deviceId;
   testEvent.uuid = uuid.v4();
-  testEvent.event_type = require('faker').lorem.words();
+  testEvent.event_type = require('@faker-js/faker').lorem.words();
   testEvent.timestamp = new Date().getTime();
   testEvent.session_id = sessionId;
   testEvent.event_id = event_id;
