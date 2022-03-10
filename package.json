@@ -27,7 +27,7 @@
     "geoip-lite": "^1.4.4",
     "isbot": "^3.4.3",
     "kafkajs": "^1.16.0",
-    "pino": "^7.8.0",
+    "pino": "^7.8.1",
     "prom-client": "^14.0.1",
     "shortid": "^2.2.15"
   },
