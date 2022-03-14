@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "ensure-test-features": "node ./test-utils/ensure-test-features.js",
-    "blackbox": "npm run removeOrphan && npm run up && wait-on http://localhost:4243/health/is-ready && mocha blackbox-test.js",
+    "blackbox": "wait-on http://localhost:4243/health/is-ready && mocha blackbox-test.js",
     "serve": "nodemon",
     "test": "npm run kafka-up && mocha \"src/**/*.spec.js\"",
     "up": "docker compose -f docker-compose.yml up -d  --no-recreate --quiet-pull -p ",
