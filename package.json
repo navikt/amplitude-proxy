@@ -25,7 +25,7 @@
     "fastify-metrics": "^8.0.0",
     "fastify-static": "^4.7.0",
     "geoip-lite": "^1.4.5",
-    "isbot": "^3.4.6",
+    "isbot": "^3.4.7",
     "kafkajs": "^1.16.0",
     "pino": "^7.11.0",
     "prom-client": "^14.0.1",
