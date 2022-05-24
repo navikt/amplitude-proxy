@@ -70,14 +70,9 @@ describe('server tests', async () => {
         collectRequestBody([generateTestEvent()]),
         collectRequestHeader(COMMON_USER_AGENT),
     );
-    
-    console.error("TEST RESULT")
-    console.error(result.data)
-    console.error("TEST RESULT")
-
 
     if (result.data.code !== 200) {
-      console.error(result.data);
+      logger.error(result.data);
     }
     assert.strictEqual(result.status, 200);
     assert.strictEqual(result.data.code, 200);
@@ -91,7 +86,7 @@ describe('server tests', async () => {
         collectRequestHeader(COMMON_USER_AGENT),
     );
     if (result.data.code !== 200) {
-      console.error(result.data);
+      logger.error(result.data);
     }
     assert.strictEqual(result.status, 200);
     assert.strictEqual(result.data.code, 200);
