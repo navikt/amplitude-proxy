@@ -23,7 +23,7 @@ if (!fs.existsSync(secretsPath)) {
   }));
   logger.info('Created a new project keys file.');
   logger.info(JSON.stringify({
-    test: '*',
+    [test]: '*',
   }))
 } else {
   logger.info('Project keys file already exists.');
