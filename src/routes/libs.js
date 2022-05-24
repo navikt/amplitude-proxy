@@ -8,7 +8,7 @@ const handler = async function(req, reply) {
   try {
     if (!cached[hostname]) {
       const content = await fetchUrl(url);
-      cached[hostname] = content.replace('api.amplitude.com', req.hostname + '/collect');
+      cached[hostname] = content.replace('api.eu.amplitude.com', req.hostname + '/collect');
     }
     reply.header('Content-Type', 'text/javascript; charset=utf-8').send(cached[hostname]);
   } catch (e) {

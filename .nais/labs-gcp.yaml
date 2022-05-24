@@ -9,7 +9,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: api.amplitude.com
+        - host: api.eu.amplitude.com
         - host: cdn.amplitude.com
   image: {{image}}
   port: 4242
