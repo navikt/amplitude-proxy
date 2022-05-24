@@ -71,9 +71,9 @@ describe('server tests', async () => {
         collectRequestHeader(COMMON_USER_AGENT),
     );
     
-    console.log("TEST RESULT")
-    console.log(result.data)
-    console.log("TEST RESULT")
+    console.error("TEST RESULT")
+    console.error(result.data)
+    console.error("TEST RESULT")
 
 
     if (result.data.code !== 200) {
