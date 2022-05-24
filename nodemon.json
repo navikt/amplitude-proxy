@@ -1,6 +1,6 @@
 {
   "env": {
-    "AMPLITUDE_URL": "https://api.eu.amplitude.com",
+    "AMPLITUDE_URL": "https://api.amplitude.com",
     "AUTO_TRACK_KEY": "default",
     "KAFKA_BROKERS": "localhost:9092",
     "KAFKA_INGRESS_TOPIC": "dataplattform.ingress-topic-v2",

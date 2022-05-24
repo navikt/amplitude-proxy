@@ -9,7 +9,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: api.eu.amplitude.com
+        - host: api.amplitude.com
         - host: cdn.amplitude.com
   image: {{image}}
   port: 4242
@@ -43,7 +43,7 @@ spec:
     - "https://amplitude.nav.no"
   env:
     - name: AMPLITUDE_URL
-      value: https://api.eu.amplitude.com
+      value: https://api.amplitude.com
     - name: KAFKA_INGRESS_TOPIC
       value: dataplattform.ingress-topic-v2
     - name: PROJECT_KEYS_FILE
