@@ -87,6 +87,7 @@ describe('server tests', async () => {
     );
     if (result.data.code !== 200) {
       logger.error(result.data);
+      logger.error(result)
     }
     assert.strictEqual(result.status, 200);
     assert.strictEqual(result.data.code, 200);
