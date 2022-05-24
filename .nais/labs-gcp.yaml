@@ -9,7 +9,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: api.amplitude.com
+        - host: api.eu.amplitude.com
         - host: cdn.amplitude.com
   image: {{image}}
   port: 4242
@@ -41,7 +41,7 @@ spec:
     - "https://amplitude.labs.nais.io"
   env:
     - name: AMPLITUDE_URL
-      value: https://api.amplitude.com
+      value: https://api.eu.amplitude.com
     - name: KAFKA_DISABLED
       value: "true"
     - name: PROJECT_KEYS_FILE
