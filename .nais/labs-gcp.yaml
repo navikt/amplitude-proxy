@@ -41,7 +41,7 @@ spec:
     - "https://amplitude.labs.nais.io"
   env:
     - name: AMPLITUDE_URL
-      value: https://api.amplitude.com
+      value: https://api.eu.amplitude.com
     - name: KAFKA_DISABLED
       value: "true"
     - name: PROJECT_KEYS_FILE
