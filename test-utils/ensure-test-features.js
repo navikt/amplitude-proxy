@@ -20,6 +20,9 @@ if (!fs.existsSync(secretsPath)) {
     [process.env.TEST_PROJECT_KEY]: '*',
   }));
   logger.info('Created a new project keys file.');
+  logger.info(JSON.stringify({
+    [process.env.TEST_PROJECT_KEY]: '*',
+  }))
 } else {
   logger.info('Project keys file already exists.');
 }
