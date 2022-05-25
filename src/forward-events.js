@@ -5,10 +5,5 @@ module.exports = function (events, api_key, amplitudeUrl) {
   return axios.post(url, {
     api_key,
     events,
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': '*/*'
-    },
   });
 };
