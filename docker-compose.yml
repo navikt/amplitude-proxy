@@ -17,6 +17,6 @@ services:
     volumes:
       - ./secrets/:/secrets/
   echo:
-    image: mendhak/http-https-echo
+    image: mendhak/http-https-echo:24
     ports:
       - '8484:80'
