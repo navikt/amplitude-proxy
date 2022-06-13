@@ -1,5 +1,5 @@
 const Ajv = require('ajv');
-const ajv = new Ajv();
+const ajv = new Ajv({ allowUnionTypes: true });
 const validateEvent = ajv.compile(require('./schemas/event'));
 
 module.exports = function(events) {
