@@ -11,6 +11,7 @@ const pinoConfig = {
 
 if (!isOnNais()) {
   pinoConfig.transport = {
+    target: 'pino-pretty',
     options: {
       colorize: true
     }
