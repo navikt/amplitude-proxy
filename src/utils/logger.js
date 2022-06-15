@@ -1,9 +1,6 @@
 const { isOnNais } = require('./is-on-nais');
 
 const pinoConfig = {
-  transport: {
-    target: 'pino-pretty'
-  },
   timestamp: false,
   formatters: {
     level(label, number) {
@@ -14,7 +11,6 @@ const pinoConfig = {
 
 if (!isOnNais()) {
   pinoConfig.transport = {
-    target: 'pino-pretty',
     options: {
       colorize: true
     }
