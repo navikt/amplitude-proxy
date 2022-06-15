@@ -15,7 +15,7 @@ spec:
       send_resolved: false
   alerts:
     - alert: Amplitude-proxy nede
-      expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="dataplattform"})==0
+      expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="dataplattform"}) < 4
       for: 2m
       description: "App {{ $labels.app }} er nede i namespace {{ $labels.kubernetes_namespace }}"
       action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
