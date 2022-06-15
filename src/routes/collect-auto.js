@@ -40,7 +40,7 @@ const customHandler = function(request, reply, ingresses) {
   const realApiKey = apiKeyMap.has(appContext)
       ? apiKeyMap.get(appContext)
       : apiKeyMap.get('*');
-  const log = createRequestLog(realApiKey, events[0].event_type, events[0].device_id, request.headers['user-agent']);
+  const log = createRequestLog(realApiKey, events[0].event_type, events[0].device_id, request.headers['user-agent'], events[0].platform);
   const autoTrackKey = process.env.AUTO_TRACK_KEY || 'default';
   if (apiKey !== autoTrackKey) {
     collectCounter.labels('wrong_api_key', appName, teamName).inc();

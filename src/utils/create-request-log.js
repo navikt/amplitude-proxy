@@ -1,4 +1,4 @@
-module.exports = (projectKey, eventType, deviceId, userAgent) => {
+module.exports = (projectKey, eventType, deviceId, userAgent, platform = '') => {
   return function(msg) {
     return {
       msg,
@@ -6,6 +6,7 @@ module.exports = (projectKey, eventType, deviceId, userAgent) => {
       event_type: eventType,
       device_id: deviceId,
       user_agent: userAgent,
+      platform : platform,
     };
   };
 };

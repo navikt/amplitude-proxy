@@ -22,7 +22,7 @@ const handler = function(request, reply) {
   const apiKey = request.body.client;
   const shortApiKey = request.body.client.substring(0, 6)
   const errors = validateEvents(inputEvents);
-  const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'])
+  const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'], inputEvents[0].platform)
   if (errors.length > 0) {
     collectCounter.labels('events_had_errors', shortApiKey).inc();
     reply.code(400).send(errors);
