@@ -1,7 +1,9 @@
 const paths = require('../paths');
+const logger = require('../utils/logger');
 
 const isAlive = async function(req, reply, isAliveStatus) {
   if (!isAliveStatus.status) {
+    logger.error('IsAlive error: ' + isAliveStatus.message)
     reply.code(500).send(isAliveStatus.message);
   } else {
     reply.send('ok');

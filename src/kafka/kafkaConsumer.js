@@ -18,7 +18,7 @@ module.exports = async function(consumer, ingressList, isAliveStatus, isReadySta
     });
   } catch (e) {
     logger.error('Kafka error: ' + e.message);
-    isAliveStatus.status = false;
     isAliveStatus.message = e;
+    isAliveStatus.status = false;
   }
 };

@@ -15,6 +15,6 @@ const serve = async (port) => {
 try {
   serve(process.env.PORT || 4242).then();
 } catch (e) {
-  logger.error(e.message);
+  logger.error('Server error: ' + e.message);
 }
 
