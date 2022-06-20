@@ -20,10 +20,10 @@ spec:
     pool: nav-infrastructure
   liveness:
     path: /health/is-alive
-    initialDelay: 10
+    initialDelay: 5
     timeout: 1
     periodSeconds: 5
-    failureThreshold: 3
+    failureThreshold: 30
   readiness:
     path: /health/is-ready
     initialDelay: 30
