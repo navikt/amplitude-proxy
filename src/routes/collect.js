@@ -44,7 +44,12 @@ const handler = function(request, reply) {
         reply.send(constants.SUCCESS);
       }
     }).catch(function(error) {
-      let errorCode = error.status ? error.status : error.response.status ? error.response.status : 502
+      let errorCode = 502
+      if(error.status) {
+        errorCode = error.status
+      } else if ( error.response.status) {
+        errorCode = error.response.status
+      }
       logger.error({...log(error.message), status_code: errorCode});
       collectCounter.labels('failed_proxy_events', shortApiKey).inc();
       reply.code(errorCode).send({
