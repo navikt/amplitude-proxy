@@ -81,7 +81,7 @@ const customHandler = function (request, reply, ingresses) {
       let errorCode = 502
       if(error.status) {
         errorCode = error.status
-      } else if ( error.response.status) {
+      } else if ( error.response && error.response.status) {
         errorCode = error.response.status
       }
       logger.error({...log(error.message), status_code: errorCode});
