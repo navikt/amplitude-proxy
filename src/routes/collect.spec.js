@@ -46,7 +46,7 @@ describe('collect', function() {
     scope.done();
   });
 
-  it('should return 502 when proxying failes', async function() {
+  it('should return 419 when proxying failes', async function() {
     const scope = nock(process.env.AMPLITUDE_URL).persist().post(paths.HTTPAPI, body => {
       const requestEvents = body.events;
       assert.strictEqual(requestEvents.length, 1);
@@ -63,7 +63,7 @@ describe('collect', function() {
       payload: collectRequestBody([generateTestEvent()]),
       headers: collectRequestHeader(COMMON_USER_AGENT).headers,
     });
-    assert.strictEqual(response.statusCode, 502);
+    assert.strictEqual(response.statusCode, 419);
     scope.done();
   });
 
