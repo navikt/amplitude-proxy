@@ -79,7 +79,7 @@ const customHandler = function (request, reply, ingresses) {
     }).catch(function (error) {
       collectCounter.labels('failed_proxy_events', appName, teamName).inc();
       let errorCode = error.status ? error.status : error.response.status ? error.response.status : 502
-      logger.error({...log(error.message), status: errorCode});
+      logger.error({...log(error.message), status_code: errorCode});
       reply.code(errorCode).send({
         statusCode: errorCode,
         message: 'Failed to proxy request',
