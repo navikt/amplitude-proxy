@@ -34,7 +34,7 @@
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
     "mocha": "^10.0.0",
-    "nock": "^13.2.8",
+    "nock": "^13.2.9",
     "nodemon": "^2.0.19",
     "pino-pretty": "^8.1.0",
     "uuid": "^8.3.2",
