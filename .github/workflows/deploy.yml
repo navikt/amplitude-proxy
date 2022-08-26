@@ -68,7 +68,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{IMAGE}}
+          tags: ${{env.IMAGE}}
 
   # Deployer til labs-gcp på alle merges til master
   deploy-labs-gcp:
