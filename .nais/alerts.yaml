@@ -8,7 +8,7 @@ metadata:
 spec:
   receivers:
     slack:
-      channel: amplitude-proxy-alerts
+      channel: amplitude-proxy-alert
       prependText: '<!here> | '
     email:
       to: lord.andre.groseth@nav.no
