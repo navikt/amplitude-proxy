@@ -64,6 +64,7 @@ jobs:
         with:
           push: true
           tags: ${{env.IMAGE}}
+          context: .
 
   # Deployer til labs-gcp på alle merges til master
   deploy-labs-gcp:
