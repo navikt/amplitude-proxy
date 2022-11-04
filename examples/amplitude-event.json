@@ -14,7 +14,7 @@
   "api_properties": {
     "tracking_options": {
       "city": false,
-      "ip_address": false
+      "ip_address": true
     }
   },
   "event_properties": {},
