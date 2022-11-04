@@ -33,7 +33,7 @@ const handler = function(request, reply) {
   } else {
     const eventsWithProxyData = addProxyData(inputEvents, process.env.NAIS_APP_IMAGE);
     let eventsWithGeoData;
-    if(request.api_properties && !request.api_properties.ip_address) {
+    if(request.api_properties && request.api_properties.tracking_options  && !request.api_properties.ip_address) {
       eventsWithGeoData = addGeoData(eventsWithProxyData, null);
     } else {
       eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
