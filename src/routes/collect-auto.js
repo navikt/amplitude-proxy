@@ -62,7 +62,7 @@ const customHandler = function (request, reply, ingresses) {
   } else {
     const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
     let eventsWithGeoData;
-    if(request.api_properties && request.api_properties.tracking_options && request.api_properties.ip_address) {
+    if(request.api_properties && request.api_properties.tracking_options && request.api_properties.tracking_options.ip_address === false) {
       eventsWithGeoData = addGeoData(eventsWithProxyData, null);
     } else {
       eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
