@@ -32,7 +32,10 @@ const handler = function(request, reply) {
     reply.send(constants.IGNORED);
   } else {
     const eventsWithProxyData = addProxyData(inputEvents, process.env.NAIS_APP_IMAGE);
-    const eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    let eventsWithGeoData = eventsWithProxyData
+    if(request.api_properties && request.api_properties.ip_address) {
+      eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    }
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
     forwardEvents(eventsWithUrlsCleaned, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
