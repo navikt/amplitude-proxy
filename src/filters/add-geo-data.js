@@ -1,8 +1,8 @@
 const geoLookup = require('geoip-lite').lookup;
 module.exports = function(inputEvents, ip) {
   const outputEvents = [];
+  const geoData = geoLookup(ip);
   if(ip){
-    const geoData = geoLookup(ip);
     inputEvents.forEach(event => {
       const cloneEvent = Object.assign({}, event);
       cloneEvent.user_agent = null;
@@ -15,7 +15,6 @@ module.exports = function(inputEvents, ip) {
       outputEvents.push(cloneEvent);
     });
   } else {
-    const geoData = geoLookup(ip);
     inputEvents.forEach(event => {
       const cloneEvent = Object.assign({}, event);
       cloneEvent.user_agent = null;

@@ -61,9 +61,11 @@ const customHandler = function (request, reply, ingresses) {
 
   } else {
     const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
-    let eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    let eventsWithGeoData;
     if(request.api_properties && request.api_properties.ip_address) {
       eventsWithGeoData = addGeoData(eventsWithProxyData, undefined);
+    } else {
+      eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
     }
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
 
