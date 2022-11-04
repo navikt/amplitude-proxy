@@ -1,8 +1,8 @@
 const geoLookup = require('geoip-lite').lookup;
 module.exports = function(inputEvents, ip) {
   const outputEvents = [];
-  const geoData = geoLookup(ip);
   if(ip){
+    const geoData = geoLookup(ip);
     inputEvents.forEach(event => {
       const cloneEvent = Object.assign({}, event);
       cloneEvent.user_agent = null;
@@ -19,11 +19,11 @@ module.exports = function(inputEvents, ip) {
       const cloneEvent = Object.assign({}, event);
       cloneEvent.user_agent = null;
       cloneEvent.os_version = null;
-      if (geoData && geoData.country) cloneEvent.country = null;
-      if (geoData && geoData.region) cloneEvent.region = null;
-      if (geoData && geoData.city) cloneEvent.city = null;
-      if (geoData && geoData.ll) cloneEvent.location_lat = null;
-      if (geoData && geoData.ll) cloneEvent.location_lng = null;
+      cloneEvent.country = null;
+      cloneEvent.region = null;
+      cloneEvent.city = null;
+      cloneEvent.location_lat = null;
+      cloneEvent.location_lng = null;
       outputEvents.push(cloneEvent);
     });
   }

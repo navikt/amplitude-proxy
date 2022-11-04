@@ -12,4 +12,19 @@ describe('add-tracking-options', function() {
       assert.notStrictEqual(event.os_version, events[0].os_version);
     });
   });
+
+  it('should not add tracking options', function() {
+    let events = [generateTestEvent(), generateTestEvent()];
+    const result = addGeoData(events, undefined);
+    assert.strictEqual(result.length, 2);
+    result.forEach(event => {
+      assert.strictEqual(event.city, null);
+      assert.strictEqual(event.country, null);
+      assert.strictEqual(event.location_lat, null);
+      assert.strictEqual(event.location_lng, null);
+      assert.strictEqual(event.region, null);
+      assert.notStrictEqual(event.user_agent, events[0].user_agent);
+      assert.notStrictEqual(event.os_version, events[0].user_agent);
+    });
+  });
 });
