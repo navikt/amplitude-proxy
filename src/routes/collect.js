@@ -32,9 +32,9 @@ const handler = function(request, reply) {
     reply.send(constants.IGNORED);
   } else {
     const eventsWithProxyData = addProxyData(inputEvents, process.env.NAIS_APP_IMAGE);
-    let eventsWithGeoData = addGeoData(eventsWithProxyData, undefined);
-    if(request.api_properties && request.api_properties.ip_address) {
-      eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    let eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip);
+    if(request.api_properties && !request.api_properties.ip_address) {
+      eventsWithGeoData = addGeoData(eventsWithProxyData, undefined);
     }
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
     forwardEvents(eventsWithUrlsCleaned, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
