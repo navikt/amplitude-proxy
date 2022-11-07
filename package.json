@@ -20,7 +20,7 @@
     "ajv": "^8.11.0",
     "axios": "^0.27.2",
     "fastify": "^4.9.2",
-    "@fastify/cors": "^8.1.0",
+    "@fastify/cors": "^8.1.1",
     "@fastify/formbody": "^7.3.0",
     "fastify-metrics": "^10.0.0",
     "@fastify/static": "^6.5.0",
