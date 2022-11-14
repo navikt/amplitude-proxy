@@ -19,13 +19,12 @@ const collectCounter = new promClient.Counter({
 
 const handler = function(request, reply) {
   
-  let inputEvents
+  let inputEvents = JSON.parse(request.body.e);
   let errors = []
   if(request.body.events  && request.body.events !== null) {
     logger.info(log('Using amplitude v2 api'));
     inputEvents = request.body.events 
   } else {
-    inputEvents = JSON.parse(request.body.e);
     errors = validateEvents(events);
   }
 
