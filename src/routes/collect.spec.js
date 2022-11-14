@@ -42,6 +42,7 @@ describe('collect', function() {
       payload: collectRequestBody([generateTestEvent()]),
       headers: collectRequestHeader(COMMON_USER_AGENT).headers,
     });
+    console.log(response.body)
     assert.strictEqual(response.body, constants.SUCCESS);
     scope.done();
   });

@@ -21,12 +21,12 @@ const handler = function(request, reply) {
   
   let inputEvents = JSON.parse(request.body.e);
   let errors = []
-  // if(request.body.events  && request.body.events !== null) {
-  //   logger.info(log('Using amplitude v2 api'));
-  //   inputEvents = request.body.events 
-  // } else {
+  if(request.body.events  && request.body.events !== null) {
+    logger.info(log('Using amplitude v2 api'));
+    inputEvents = request.body.events 
+  } else {
     errors = validateEvents(events);
-  //}
+  }
 
   const apiKey = request.body.client;
   const shortApiKey = request.body.client.substring(0, 6)
