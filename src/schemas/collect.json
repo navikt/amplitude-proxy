@@ -5,6 +5,12 @@
     "e": {
       "type": ["string", "null"]
     },
+    "api_key": {
+      "type": ["string", "null"]
+    },
+    "options": {
+      "type":["object", "null"]
+    },
     "events": {
       "type": ["array", "null"]
     },
