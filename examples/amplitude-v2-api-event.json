@@ -3,16 +3,16 @@
   "events": [
     {
       "device_id": "6fc4f5bf-05cd-4605-bd6c-7211b6805c0aR",
-      "session_id": 1668428557104,
-      "time": 1668428557235,
+      "session_id": 1568981102098,
+      "time": 1568984110457,
       "platform": "Web",
-      "os_name": "Firefox",
-      "os_version": "106.0",
-      "device_model": "Linux",
-      "language": "en-US",
+      "os_name": "Chrome",
+      "os_version": "76",
+      "device_model": "Mac",
+      "language": "en-GB",
       "ip": "$remote",
       "insert_id": "128d23c3-a4b4-4013-9e08-d0f845fcd1db",
-      "event_type": "$identify",
+      "event_type": "start game",
       "user_properties": {
         "$setOnce": {
           "initial_utm_source": "EMPTY",
@@ -51,7 +51,7 @@
           "wbraid": "-"
         }
       },
-      "event_id": 0,
+      "event_id": 4,
       "library": "amplitude-ts/1.6.1"
     }
   ],
