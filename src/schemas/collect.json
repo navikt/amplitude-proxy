@@ -5,14 +5,15 @@
     "e": {
       "type": ["string", "null"]
     },
-    "api_key": {
-      "type": ["string", "null"]
-    },
-    "options": {
-      "type":["object", "null"]
-    },
     "events": {
-      "type": ["array", "null"]
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "device_id": "string"
+        }
+      }
     },
     "checksum": {
       "type": "string"
