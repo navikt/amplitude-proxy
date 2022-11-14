@@ -6,7 +6,7 @@
       "type": ["string", "null"]
     },
     "events": {
-      "type":[ "object", "null"]
+      "type": ["array", "null"]
     },
     "checksum": {
       "type": "string"

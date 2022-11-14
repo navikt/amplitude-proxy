@@ -1,0 +1,59 @@
+{
+  "api_key": "default",
+  "events": [
+    {
+      "device_id": "6fc4f5bf-05cd-4605-bd6c-7211b6805c0aR",
+      "session_id": 1668428557104,
+      "time": 1668428557235,
+      "platform": "Web",
+      "os_name": "Firefox",
+      "os_version": "106.0",
+      "device_model": "Linux",
+      "language": "en-US",
+      "ip": "$remote",
+      "insert_id": "128d23c3-a4b4-4013-9e08-d0f845fcd1db",
+      "event_type": "$identify",
+      "user_properties": {
+        "$setOnce": {
+          "initial_utm_source": "EMPTY",
+          "initial_utm_medium": "EMPTY",
+          "initial_utm_campaign": "EMPTY",
+          "initial_utm_term": "EMPTY",
+          "initial_utm_content": "EMPTY",
+          "initial_referrer": "EMPTY",
+          "initial_referring_domain": "EMPTY",
+          "initial_dclid": "EMPTY",
+          "initial_gbraid": "EMPTY",
+          "initial_gclid": "EMPTY",
+          "initial_fbclid": "EMPTY",
+          "initial_ko_click_id": "EMPTY",
+          "initial_msclkid": "EMPTY",
+          "initial_ttclid": "EMPTY",
+          "initial_twclid": "EMPTY",
+          "initial_wbraid": "EMPTY"
+        },
+        "$unset": {
+          "utm_source": "-",
+          "utm_medium": "-",
+          "utm_campaign": "-",
+          "utm_term": "-",
+          "utm_content": "-",
+          "referrer": "-",
+          "referring_domain": "-",
+          "dclid": "-",
+          "gbraid": "-",
+          "gclid": "-",
+          "fbclid": "-",
+          "ko_click_id": "-",
+          "msclkid": "-",
+          "ttclid": "-",
+          "twclid": "-",
+          "wbraid": "-"
+        }
+      },
+      "event_id": 0,
+      "library": "amplitude-ts/1.6.1"
+    }
+  ],
+  "options": {}
+}
