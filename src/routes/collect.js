@@ -18,13 +18,24 @@ const collectCounter = new promClient.Counter({
 });
 
 const handler = function(request, reply) {
-  const inputEvents = JSON.parse(request.body.e);
+  
+  let inputEvents
+  let errors = []
+  if(request.body.events) {
+    logger.info(log('Using amplitude v2 api'));
+    inputEvents = request.body.events 
+  } else {
+    inputEvents = JSON.parse(request.body.e);
+    errors = validateEvents(events);
+  }
+
   const apiKey = request.body.client;
   const shortApiKey = request.body.client.substring(0, 6)
-  const errors = validateEvents(inputEvents);
+  
   const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'], request.headers['origin'])
   if (errors.length > 0) {
     collectCounter.labels('events_had_errors', shortApiKey).inc();
+    logger.error(log(errors))
     reply.code(400).send(errors);
   } else if (isBot(request.headers['user-agent'])) {
     collectCounter.labels('ignored_as_bot_traffic', shortApiKey).inc();

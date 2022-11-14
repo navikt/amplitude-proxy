@@ -24,9 +24,16 @@ const collectCounter = new promClient.Counter({
 const apiKeyMap = getProjectKeys();
 
 const customHandler = function (request, reply, ingresses) {
-  const events = JSON.parse(request.body.e);
+  let events
+  let errors = []
+  if(request.body.events) {
+    logger.info(log('Using amplitude v2 api'));
+    events = request.body.events 
+  } else {
+    events = JSON.parse(request.body.e);
+    errors = validateEvents(events);
+  }
   const apiKey = request.body.client;
-  const errors = validateEvents(events);
   events.forEach(event => {
     if (!validUrl(event.platform)) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
@@ -44,10 +51,12 @@ const customHandler = function (request, reply, ingresses) {
   const autoTrackKey = process.env.AUTO_TRACK_KEY || 'default';
   if (apiKey !== autoTrackKey) {
     collectCounter.labels('wrong_api_key', appName, teamName).inc();
+    logger.error(log('Apikey is wrong... need do match the AUTO_TRACK_KEY.'))
     reply.code(400).send('Apikey is wrong... need do match the AUTO_TRACK_KEY.');
 
   } else if (errors.length > 0) {
     collectCounter.labels('events_had_errors', appName, teamName).inc();
+    logger.error(log(errors))
     reply.code(400).send(errors);
 
   } else if (isBot(request.headers['user-agent'])) {
