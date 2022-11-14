@@ -5,6 +5,9 @@
     "e": {
       "type": "string"
     },
+    "events": {
+      "type":[ "object", "null"]
+    },
     "checksum": {
       "type": "string"
     },

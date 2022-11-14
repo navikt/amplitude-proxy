@@ -21,7 +21,7 @@ const handler = function(request, reply) {
   
   let inputEvents
   let errors = []
-  if(request.body.events) {
+  if(request.body.events  && request.body.events !== null) {
     logger.info(log('Using amplitude v2 api'));
     inputEvents = request.body.events 
   } else {

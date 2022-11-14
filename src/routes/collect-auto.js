@@ -26,7 +26,7 @@ const apiKeyMap = getProjectKeys();
 const customHandler = function (request, reply, ingresses) {
   let events
   let errors = []
-  if(request.body.events) {
+  if(request.body.events && request.body.events !== null) {
     logger.info(log('Using amplitude v2 api'));
     events = request.body.events 
   } else {
