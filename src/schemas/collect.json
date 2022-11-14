@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "e": {
-      "type": "string"
+      "type": ["string", "null"]
     },
     "events": {
       "type":[ "object", "null"]
