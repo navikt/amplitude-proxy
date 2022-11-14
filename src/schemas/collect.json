@@ -11,7 +11,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "device_id": "string"
+          "device_id": { "type": "string" }
         }
       }
     },
