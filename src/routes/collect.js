@@ -25,7 +25,7 @@ const handler = function(request, reply) {
     logger.info(log('Using amplitude v2 api'));
     inputEvents = request.body.events 
   } else {
-    errors = validateEvents(events);
+    errors = validateEvents(inputEvents);
   }
 
   const apiKey = request.body.client;

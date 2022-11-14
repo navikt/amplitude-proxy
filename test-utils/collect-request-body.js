@@ -5,7 +5,6 @@ module.exports = (e, client) => {
   return qs.stringify({
     client: client || TEST_PROJECT_KEY,
     e: JSON.stringify(e),
-    events: null
   });
 };
 
