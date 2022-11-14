@@ -21,6 +21,11 @@ const handler = function(request, reply) {
   
   let inputEvents = JSON.parse(request.body.e);
   let errors = []
+  const apiKey = request.body.client;
+  const shortApiKey = request.body.client.substring(0, 6)
+
+  const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'], request.headers['origin'])
+  
   if(request.body.events  && request.body.events !== null) {
     logger.info(log('Using amplitude v2 api'));
     inputEvents = request.body.events 
@@ -28,10 +33,6 @@ const handler = function(request, reply) {
     errors = validateEvents(inputEvents);
   }
 
-  const apiKey = request.body.client;
-  const shortApiKey = request.body.client.substring(0, 6)
-  
-  const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'], request.headers['origin'])
   if (errors.length > 0) {
     collectCounter.labels('events_had_errors', shortApiKey).inc();
     logger.error(log(errors))

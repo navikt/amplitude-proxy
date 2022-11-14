@@ -14,6 +14,10 @@
       "insert_id": "128d23c3-a4b4-4013-9e08-d0f845fcd1db",
       "event_type": "start game",
       "user_properties": {
+        "initial_referrer": "https://www.nav.no/initial/00408048-7268-41d0-a82d-08d6e6f95189",
+        "referrer": "https://www.nav.no/21521311222",
+        "referring_domain": "www.nav.no",
+        "initial_referring_domain": "www.nav.no",
         "$setOnce": {
           "initial_utm_source": "EMPTY",
           "initial_utm_medium": "EMPTY",
