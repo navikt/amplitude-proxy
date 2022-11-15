@@ -37,6 +37,9 @@ const customHandler = function (request, reply, ingresses) {
   }
   
   events.forEach(event => {
+    if(event.platform === 'Web') {
+      event.platform = request.headers['origin']
+    }
     if (!validUrl(event.platform)) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
     }
