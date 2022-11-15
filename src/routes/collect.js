@@ -19,16 +19,22 @@ const collectCounter = new promClient.Counter({
 
 const handler = function(request, reply) {
   
-  let inputEvents = JSON.parse(request.body.e);
-  let errors = []
+  let inputEvents;
+  let errors = [];
+  let apiKey;
+  let shortApiKey;
+  
   if(request.body.events  && request.body.events !== null) {
     inputEvents = request.body.events 
+    apiKey = request.body.api_key
+    shortApiKey = request.body.api_key.substring(0, 6)
   } else {
+   inputEvents = JSON.parse(request.body.e)
     errors = validateEvents(inputEvents);
+    apiKey = request.body.client;
+    shortApiKey = request.body.client.substring(0, 6)
   }
-  const apiKey = request.body.client;
-  const shortApiKey = request.body.client.substring(0, 6)
-
+  
   const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'], request.headers['origin'])
   
   if (errors.length > 0) {

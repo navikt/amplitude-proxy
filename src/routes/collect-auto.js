@@ -24,14 +24,18 @@ const collectCounter = new promClient.Counter({
 const apiKeyMap = getProjectKeys();
 
 const customHandler = function (request, reply, ingresses) {
-  let events = JSON.parse(request.body.e);
+  let events;
   let errors = []
+  let apiKey;
   if(request.body.events && request.body.events !== null) {
-    events = request.body.events 
+    events = request.body.events
+    apiKey = request.body.api_key;
   } else {
+    events = JSON.parse(request.body.e);
+    apiKey = request.body.client;
     errors = validateEvents(events);
   }
-  const apiKey = request.body.client;
+  
   events.forEach(event => {
     if (!validUrl(event.platform)) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
