@@ -3,7 +3,8 @@
   "type": "object",
   "properties": {
     "e": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "nullable": true
     },
     "events": {
       "type": "array",
@@ -16,16 +17,20 @@
       }
     },
     "checksum": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "client": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "upload_time": {
-      "type": "integer"
+      "type": "integer",
+      "nullable": true
     },
     "v": {
-      "type": "integer"
+      "type": "integer",
+      "nullable": true
     }
   }
 }
