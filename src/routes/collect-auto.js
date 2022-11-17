@@ -89,7 +89,11 @@ const customHandler = function (request, reply, ingresses) {
         reply.send(response.data);
       } else {
         collectCounter.labels('success', appName, teamName).inc();
-        reply.send(constants.SUCCESS);
+        if(request.body.events && request.body.events !== null) {
+          reply.send({message: constants.SUCCESS});
+        } else {
+          reply.send(constants.SUCCESS);
+        }
       }
     }).catch(function (error) {
       collectCounter.labels('failed_proxy_events', appName, teamName).inc();

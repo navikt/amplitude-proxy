@@ -56,7 +56,11 @@ const handler = function(request, reply) {
         reply.send(response.data);
       } else {
         collectCounter.labels('success',shortApiKey).inc();
-        reply.send(constants.SUCCESS);
+        if(request.body.events && request.body.events !== null) {
+          reply.send({message: constants.SUCCESS});
+        } else {
+          reply.send(constants.SUCCESS);
+        }
       }
     }).catch(function(error) {
       let errorCode = 502
