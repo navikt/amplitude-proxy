@@ -38,9 +38,9 @@ const customHandler = function (request, reply, ingresses) {
   
   events.forEach(event => {
     if(event.platform === 'Web') {
-      if(event.ingestionMetadata && event.ingestionMetadata.sourceName){
-        event.platform = event.ingestionMetadata.sourceName
-        event.ingestionMetadata.sourceName = undefined
+      if(event.ingestion_metadata && event.ingestion_metadata.source_name){
+        event.platform = event.ingestion_metadata.source_name
+        event.ingestion_metadata.source_name = undefined
       } else {
         errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');
       }
