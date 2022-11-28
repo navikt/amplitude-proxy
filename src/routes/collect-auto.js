@@ -38,7 +38,12 @@ const customHandler = function (request, reply, ingresses) {
   
   events.forEach(event => {
     if(event.platform === 'Web') {
-      event.platform = request.headers['origin']
+      if(event.ingestionMetadata && event.ingestionMetadata.sourceName){
+        event.platform = event.ingestionMetadata.sourceName
+        event.ingestionMetadata.sourceName = undefined
+      } else {
+        errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');
+      }
     }
     if (!validUrl(event.platform)) {
       errors.push('For auto-collect må \'platform\' være satt til window.location');
