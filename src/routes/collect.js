@@ -57,7 +57,7 @@ const handler = function(request, reply) {
       } else {
         collectCounter.labels('success',shortApiKey).inc();
         if(request.body.events && request.body.events !== null) {
-          reply.send({message: constants.SUCCESS});
+          reply.send(response.data);
         } else {
           reply.send(constants.SUCCESS);
         }

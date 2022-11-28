@@ -90,7 +90,7 @@ const customHandler = function (request, reply, ingresses) {
       } else {
         collectCounter.labels('success', appName, teamName).inc();
         if(request.body.events && request.body.events !== null) {
-          reply.send({message: constants.SUCCESS});
+          reply.send(response.data);
         } else {
           reply.send(constants.SUCCESS);
         }
