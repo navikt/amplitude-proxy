@@ -28,8 +28,31 @@ Test with postman against: `http://localhost:4242/collect`
 
 
 ## The auto-collect endpoint
-This endpoint require some config. The projects will be mapped
-to urls. Atm this is not done in a very generic way.
+This endpoint require some config. 
+
+To properly use this endpoint the user must change some config when initialising amplitude.
+
+When using the old SDK (example: "amplitude-js"), the user must set `Platfrom` to `window.location.toString()`
+
+```
+amplitude.getInstance().init('default', undefined, {
+  apiEndpoint: 'amplitude.nav.no/collect-auto',
+  platform: window.location.toString(),
+})
+```
+
+When using the new SDK (example: "@amplitude/analytics-browser"), the user must set `source name` to `window.location.toString()` under the `Ingestion metadata` config
+
+```
+init('default', undefined, {
+  apiEndpoint: 'amplitude.nav.no/collect-auto',
+  ingestionMetadata: {
+    sourceName: window.location.toString()
+    },
+})
+```
+
+The projects will be mapped to urls. Atm this is not done in a very generic way.
 ```
 {
   "project-key-prod": "prod-sbs,prod-fss,prod-gcp",
