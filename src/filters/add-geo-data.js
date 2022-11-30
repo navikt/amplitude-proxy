@@ -1,12 +1,19 @@
 const geoLookup = require('geoip-lite').lookup;
-module.exports = function(inputEvents, ip) {
+module.exports = function(inputEvents, ip, usingNewSdk) {
   const outputEvents = [];
     const geoData = geoLookup(ip);
     inputEvents.forEach(event => {
       const cloneEvent = Object.assign({}, event);
       cloneEvent.user_agent = null;
       cloneEvent.os_version = null;
-      if(event.api_properties && event.api_properties.tracking_options && event.api_properties.tracking_options.ip_address === false) {
+      
+      if( usingNewSdk && !event.ip) {
+        cloneEvent.country = null;
+        cloneEvent.region = null;
+        cloneEvent.city = null;
+        cloneEvent.location_lat = null;
+        cloneEvent.location_lng = null;
+      } else if(!usingNewSdk && event.api_properties && event.api_properties.tracking_options && event.api_properties.tracking_options.ip_address === false) {
         cloneEvent.country = null;
         cloneEvent.region = null;
         cloneEvent.city = null;

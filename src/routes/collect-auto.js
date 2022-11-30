@@ -27,13 +27,16 @@ const customHandler = function (request, reply, ingresses) {
   let events;
   let errors = []
   let apiKey;
+  let usingNewSdk = false
   if(request.body.events && request.body.events !== null) {
     events = request.body.events
     apiKey = request.body.api_key;
+    usingNewSdk = true
   } else {
     events = JSON.parse(request.body.e);
     apiKey = request.body.client;
     errors = validateEvents(events);
+    usingNewSdk = false
   }
   
   events.forEach(event => {
@@ -81,7 +84,7 @@ const customHandler = function (request, reply, ingresses) {
 
   } else {
     const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
-    const eventsWithGeoData= addGeoData(eventsWithProxyData, request.ip);
+    const eventsWithGeoData= addGeoData(eventsWithProxyData, request.ip, usingNewSdk);
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
 
     forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function (response) {

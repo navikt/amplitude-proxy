@@ -23,16 +23,19 @@ const handler = function(request, reply) {
   let errors = [];
   let apiKey;
   let shortApiKey;
+  let usingNewSdk = false
   
   if(request.body.events  && request.body.events !== null) {
     inputEvents = request.body.events 
     apiKey = request.body.api_key
     shortApiKey = request.body.api_key.substring(0, 6)
+    usingNewSdk = true
   } else {
    inputEvents = JSON.parse(request.body.e)
     errors = validateEvents(inputEvents);
     apiKey = request.body.client;
     shortApiKey = request.body.client.substring(0, 6)
+    usingNewSdk = false
   }
   
   const log = createRequestLog(apiKey,inputEvents[0].event_type,inputEvents[0].device_id,request.headers['user-agent'], request.headers['origin'])
@@ -47,7 +50,7 @@ const handler = function(request, reply) {
     reply.send(constants.IGNORED);
   } else {
     const eventsWithProxyData = addProxyData(inputEvents, process.env.NAIS_APP_IMAGE);
-    const eventsWithGeoData= addGeoData(eventsWithProxyData, request.ip);
+    const eventsWithGeoData= addGeoData(eventsWithProxyData, request.ip, usingNewSdk);
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
     forwardEvents(eventsWithUrlsCleaned, apiKey, process.env.AMPLITUDE_URL).then(function(response) {
       // Amplitude servers will return a result object which is explisitt set result code
