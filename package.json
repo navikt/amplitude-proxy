@@ -24,7 +24,7 @@
     "@fastify/formbody": "^7.4.0",
     "fastify-metrics": "^10.0.2",
     "@fastify/static": "^6.6.1",
-    "geoip-lite": "^1.4.6",
+    "geoip-lite": "^1.4.7",
     "isbot": "^3.6.5",
     "kafkajs": "^2.2.3",
     "pino": "^8.8.0",
