@@ -23,7 +23,7 @@
     "@fastify/cors": "^8.2.0",
     "@fastify/formbody": "^7.4.0",
     "fastify-metrics": "^10.0.2",
-    "@fastify/static": "^6.6.1",
+    "@fastify/static": "^6.10.0",
     "geoip-lite": "^1.4.6",
     "isbot": "^3.6.5",
     "kafkajs": "^2.2.3",
