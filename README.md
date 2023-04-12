@@ -8,7 +8,7 @@ The application translates IP-adresses to locations, using [geoip-lite](https://
 The proxy uses [isbot](https://www.npmjs.com/package/isbot) to filter out
 bot traffic at the source.
 
-The application uses regex and goes through all urls in the event object and cleans it of sensitive data (uuid and personid).
+The application uses regex and goes through all urls in the event object and cleans it of sensitive data(uuid and personid). the sensitive data is replaced with the word '[redacted]'.
 
 # Prerequisites
 - Install node.js
