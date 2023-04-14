@@ -23,9 +23,9 @@ module.exports = (url) => {
 // replacers: regex to find tempValue to be able to replace them later
 const exceptions = [
   // replaces a string that matches 'nav123456' with 'nav*', will be restored to original value when using cleanUrlWithExceptions
-  {regex: /nav[0-9]{6,}/g, tempValue: 'nav*', replacer: /nav\*/g},
+  {regex: /nav[0-9]{6}/g, tempValue: 'nav*', replacer: /nav\*/g},
   // test replacer to check if method can handle multiple exceptions
-  {regex: /test[0-9]{6,}/g, tempValue: 'test*', replacer: /test\*/g}
+  {regex: /test[0-9]{6}/g, tempValue: 'test*', replacer: /test\*/g}
 ]
 
 // replaces the matched string with a temp value before cleaning url. After url is cleaned restores the temp value to its original state
