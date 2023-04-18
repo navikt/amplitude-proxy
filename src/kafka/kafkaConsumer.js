@@ -1,6 +1,7 @@
 const logger = require('../utils/logger');
 const fetchKafkaIngresses = require('./fetchKafkaIngresses');
 const ignoreList = require('../resources/ignoreList.json');
+const promClient = require('prom-client');
 const ignoreAppList = new Map();
 
 const kafkaErrorCounter = new promClient.Counter({
