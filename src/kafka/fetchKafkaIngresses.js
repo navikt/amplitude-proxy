@@ -18,6 +18,14 @@ module.exports = function(ingresses, kafkaMessage, isReadyStatus, ignoreAppList)
       const ingress = ingressRaw.replace(/\/$/, '').replace(/\#$/, '');
       newIngresses.push({...data, ingress});
     });
+  } else {
+    const logStatusNoIngress = ingressLog(
+      data.app,
+      data.context,
+      'no ingress',
+      data.creationTimestamp
+    )
+    logStatusNoIngress('Ignored because no ingresses found')
   }
 
   newIngresses.forEach((newIngress) => {
@@ -41,10 +49,7 @@ module.exports = function(ingresses, kafkaMessage, isReadyStatus, ignoreAppList)
           logStatus('Ignored because of creationTimestamp');
         }
       } else {
-        if (isReadyStatus.status) {
-// Just logg after app is successfully started
-          logStatus('No duplicate found adding new app');
-        }
+        logStatus('No duplicate found adding new app');
         ingresses.set(newIngress.ingress, newIngress);
       }
     }
