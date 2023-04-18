@@ -68,3 +68,15 @@ spec:
         labels:
           namespace: dataplattform
           severity: critical
+
+      - alert: Kafka consumer error 
+        expr: sum(increase(amplitude_proxy_kafka_error{message="error_kafka_consumer"}[1m])) > 1
+        for: 3m
+        annotations:
+          consequence: Application is experiencing a kafka error while consuming topic
+          action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor kafka feiler"
+          summary: |-
+            App {{ $labels.app }} har lav traffik i namespace {{ $labels.kubernetes_namespace }}
+        labels:
+          namespace: dataplattform
+          severity: critical

@@ -6,7 +6,7 @@ const ignoreAppList = new Map();
 const kafkaErrorCounter = new promClient.Counter({
   name: 'amplitude_proxy_kafka_error',
   help: 'Count of kafka error for amplitude proxy',
-  labelNames: ['message', 'error'],
+  labelNames: ['message'],
 });
 
 module.exports = async function(consumer, ingressList, isAliveStatus, isReadyStatus) {
@@ -24,7 +24,7 @@ module.exports = async function(consumer, ingressList, isAliveStatus, isReadySta
     });
   } catch (e) {
     logger.error('Kafka error: ' + e.message);
-    kafkaErrorCounter.labels('error_kafka_consumer', e.message).inc();
+    kafkaErrorCounter.labels('error_kafka_consumer').inc();
     isAliveStatus.message = e;
     isAliveStatus.status = false;
   }
