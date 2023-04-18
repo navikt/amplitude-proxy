@@ -6,7 +6,7 @@ module.exports = function(ingresses, kafkaMessage, isReadyStatus, ignoreAppList)
 
   const data = {
     app: kafkaMessage.object.metadata.name,
-    team: kafkaMessage.object.metadata.labels.team ? kafkaMessage.object.metadata.labels.team : '',
+    team: kafkaMessage.object.metadata.labels && kafkaMessage.object.metadata.labels.team !== undefined ? kafkaMessage.object.metadata.labels.team : '',
     namespace: kafkaMessage.object.metadata.namespace,
     version: kafkaMessage.object.spec.image.split(':').pop(),
     context: kafkaMessage.cluster,
