@@ -1,50 +1,5 @@
 [
   {
-    "app": "enonicxp",
-    "team": "enonic",
-    "namespace": "enonic",
-    "version": "unknown",
-    "context": "prod",
-    "ingress": "https://www.nav.no/no",
-    "creationTimeStamp": "2020-12-27T10:10:17.084575"
-  },
-  {
-    "app": "enonicxp",
-    "team": "enonic",
-    "namespace": "enonic",
-    "version": "unknown",
-    "context": "prod",
-    "ingress": "https://www.nav.no/en",
-    "creationTimeStamp": "2020-12-27T10:10:17.084575"
-  },
-  {
-    "app": "enonicxp",
-    "team": "enonic",
-    "namespace": "enonic",
-    "version": "unknown",
-    "context": "prod",
-    "ingress": "https://www.nav.no/se",
-    "creationTimeStamp": "2020-12-27T10:10:17.084575"
-  },
-  {
-    "app": "enonicxp",
-    "team": "enonic",
-    "namespace": "enonic",
-    "version": "unknown",
-    "context": "prod",
-    "ingress": "https://www.nav.no",
-    "creationTimeStamp": "2020-12-27T10:10:17.084575"
-  },
-  {
-    "app": "enonicxp",
-    "team": "enonic",
-    "namespace": "enonic",
-    "version": "unknown",
-    "context": "prod",
-    "ingress": "https://tjenester.nav.no/nav-sok",
-    "creationTimeStamp": "2020-12-27T10:10:17.084575"
-  },
-  {
     "app": "iaweb",
     "team": "arbeidsgiver",
     "namespace": "iaweb",
