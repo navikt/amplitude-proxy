@@ -12,11 +12,11 @@ describe('add-cluster-data', function() {
 
   it('should enrich data when existing', function() {
     const testEvent = generateTestEvent('auto')
-    testEvent.platform = 'https://www.nav.no/foo/bar?query=param';
+    testEvent.platform = 'https://design.nav.no/foo/bar?query=param';
     const outputEvents = addClusterData([testEvent], getIngressDate, ingressList);
     assert.strictEqual(outputEvents[0].platform, 'Web');
-    assert.strictEqual(outputEvents[0].event_properties.namespace, 'enonic');
-    assert.strictEqual(outputEvents[0].event_properties.hostname, 'www.nav.no');
+    assert.strictEqual(outputEvents[0].event_properties.namespace, 'default');
+    assert.strictEqual(outputEvents[0].event_properties.hostname, 'design.nav.no');
     assert.strictEqual(outputEvents[0].event_properties.context, 'prod');
     assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar');
     assert.strictEqual(outputEvents[0].event_properties.creationTimestamp, undefined);
