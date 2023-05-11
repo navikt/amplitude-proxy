@@ -2,6 +2,7 @@ const validUrl = require('./valid-url');
 const transposeKeyString = require('./transpose-key-string');
 const getProjectKeysPath = require('../data/get-project-keys-path');
 const fs = require('fs');
+const logger = require('./logger');
 
 const checkEnvVars = (envVars) => {
 
@@ -16,6 +17,10 @@ const checkEnvVars = (envVars) => {
   if (!envVars['PROJECT_KEYS_FILE'] && !envVars['PROJECT_KEYS']) {
     throw Error('PROJECT_KEYS_FILE or PROJECT_KEYS is not set.');
   }
+
+  logger.info("# ENV - PROJECT_KEYS: " + envVars['PROJECT_KEYS']);
+  logger.info("# ENV - PROJECT_KEYS_FILE: " + envVars['PROJECT_KEYS_FILE']);
+  logger.info("# ENV - AMPLITUDE_URL: " + envVars['AMPLITUDE_URL']);
 
   let projectKeysString;
 
@@ -33,6 +38,7 @@ const checkEnvVars = (envVars) => {
   try {
     JSON.parse(projectKeysString);
   } catch (e) {
+    logger.error(e);
     throw Error('Cannot parse project key string.');
   }
   if (!transposeKeyString(projectKeysString).has('*')) {
