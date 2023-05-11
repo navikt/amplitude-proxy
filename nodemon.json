@@ -5,6 +5,6 @@
     "KAFKA_BROKERS": "localhost:9092",
     "KAFKA_INGRESS_TOPIC": "dataplattform.ingress-topic-v2",
     "NAIS_CLUSTER_NAME": "test",
-    "PROJECT_KEYS_FILE": "./secrets/project-keys.json"
+    "PROJECT_KEYS_FILE": ""
   }
 }
