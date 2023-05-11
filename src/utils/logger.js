@@ -13,7 +13,7 @@ if (!isOnNais()) {
   pinoConfig.transport = {
     target: 'pino-pretty',
     options: {
-      colorize: true
+      colorize: false
     }
   };
 }
