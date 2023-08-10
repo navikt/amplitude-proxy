@@ -19,26 +19,26 @@
   "dependencies": {
     "ajv": "^8.12.0",
     "axios": "^1.4.0",
-    "fastify": "^4.17.0",
-    "@fastify/cors": "^8.2.1",
+    "fastify": "^4.20.0",
+    "@fastify/cors": "^8.3.0",
     "@fastify/formbody": "^7.4.0",
     "fastify-metrics": "^10.3.0",
-    "@fastify/static": "^6.10.1",
+    "@fastify/static": "^6.10.2",
     "geoip-lite": "^1.4.7",
-    "isbot": "^3.6.10",
+    "isbot": "^3.6.12",
     "kafkajs": "^2.2.4",
     "pino": "^8.14.1",
     "prom-client": "^14.2.0",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.1",
+    "@faker-js/faker": "^8.0.2",
     "mocha": "^10.2.0",
-    "nock": "^13.3.1",
-    "nodemon": "^2.0.22",
-    "pino-pretty": "^10.0.0",
+    "nock": "^13.3.2",
+    "nodemon": "^3.0.1",
+    "pino-pretty": "^10.0.1",
     "uuid": "^9.0.0",
     "wait-on": "^7.0.1",
-    "yaml": "^2.3.0"
+    "yaml": "^2.3.1"
   }
 }
