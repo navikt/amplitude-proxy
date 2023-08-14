@@ -94,11 +94,7 @@ const customHandler = function (request, reply, ingresses) {
         reply.send(response.data);
       } else if (request.query.debug) {
         collectCounter.labels('success_with_debug', appName, teamName).inc();
-        let data = {}
-        if(response && response.data){
-          data = {...response.data}
-        }
-        reply.send({...data, extraMetaData: {...response}});
+        reply.send(response.data);
       } else {
         collectCounter.labels('success', appName, teamName).inc();
         if(request.body.events && request.body.events !== null) {
