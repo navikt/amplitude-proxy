@@ -86,6 +86,7 @@ const customHandler = function (request, reply, ingresses) {
     const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
     const eventsWithGeoData= addGeoData(eventsWithProxyData, request.ip, usingNewSdk);
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
+    logger.info({cleanedEvents: eventsWithUrlsCleaned})
 
     forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function (response) {
       // Amplitude servers will return a result object which is explisitt set result code
