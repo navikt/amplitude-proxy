@@ -67,20 +67,6 @@ jobs:
           tags: ${{env.IMAGE}}
           context: .
 
-  # # Deployer til labs-gcp på alle merges til master
-  # deploy-labs-gcp:
-  #   name: Deploy to nais labs-gcp
-  #   needs: test
-  #   if: github.ref == 'refs/heads/main' && github.event_name != 'release'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: nais/deploy/actions/deploy@v1
-  #       env:
-  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-  #         CLUSTER: labs-gcp
-  #         RESOURCE: .nais/labs-gcp.yaml
-
 
   # Deployer til dev-gcp på alle merges til main
   deploy-dev-gcp:
