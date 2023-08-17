@@ -45,7 +45,7 @@ spec:
     - name: AMPLITUDE_URL
       value: https://api.eu.amplitude.com
     - name: KAFKA_INGRESS_TOPIC
-      value: dataplattform.ingress-topic-v2
+      value: team-researchops.ingress-topic-v2
     - name: PROJECT_KEYS_FILE
       value: /var/run/secrets/project-keys.json
   filesFrom:
