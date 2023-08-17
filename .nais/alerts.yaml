@@ -2,15 +2,15 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: amplitude-proxy-alerts
-  namespace: dataplattform
+  namespace: team-researchops
   labels:
-    team: dataplattform
+    team: team-researchops
 spec:
   groups:
     - name: amplitude-proxy-system-alerts
       rules:
       - alert:  Amplitude-proxy nede
-        expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="dataplattform"}) < 2
+        expr: count(kube_pod_container_status_running{container="amplitude-proxy", namespace="team-researchops"}) < 2
         for: 2m
         annotations:
           consequence: Application is unavailable
@@ -18,7 +18,7 @@ spec:
           summary: |-
             App {{ $labels.app }} er nede i namespace {{ $labels.kubernetes_namespace }}.
         labels:
-          namespace: dataplattform
+          namespace: team-researchops
           severity: critical
 
       - alert: høy feilrate i collect auto endepunkte
@@ -30,7 +30,7 @@ spec:
           summary: |-
             App {{ $labels.app }} har høy feilrate bruk i namespace {{ $labels.kubernetes_namespace }}
         labels:
-          namespace: dataplattform
+          namespace: team-researchops
           severity: warning
 
       - alert: høy feilrate i collect endepunkte
@@ -42,7 +42,7 @@ spec:
           summary: |-
             App {{ $labels.app }} har høy feilrate bruk i namespace {{ $labels.kubernetes_namespace }}
         labels:
-          namespace: dataplattform
+          namespace: team-researchops
           severity: warning          
 
       - alert: Lav trafikk (respose code 200 er < 1 ) for collect auto
@@ -54,7 +54,7 @@ spec:
           summary: |-
             App {{ $labels.app }} har lav traffik i namespace {{ $labels.kubernetes_namespace }}
         labels:
-          namespace: dataplattform
+          namespace: team-researchops
           severity: critical
 
       - alert: Lav trafikk (respose code 200 er < 1 ) for collect
@@ -66,7 +66,7 @@ spec:
           summary: |-
             App {{ $labels.app }} har lav traffik i namespace {{ $labels.kubernetes_namespace }}
         labels:
-          namespace: dataplattform
+          namespace: team-researchops
           severity: critical
 
       - alert: Kafka consumer error 
@@ -78,5 +78,5 @@ spec:
           summary: |-
             App {{ $labels.app }} har lav traffik i namespace {{ $labels.kubernetes_namespace }}
         labels:
-          namespace: dataplattform
+          namespace: team-researchops
           severity: critical

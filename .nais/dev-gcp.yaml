@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   labels:
-    team: dataplattform
+    team: team-researchops
   name: amplitude-proxy
-  namespace: dataplattform
+  namespace: team-researchops
 spec:
   accessPolicy:
     outbound:
@@ -49,5 +49,5 @@ spec:
     - name: PROJECT_KEYS_FILE
       value: /var/run/secrets/project-keys.json
   filesFrom:
-    - secret: project-keys
+    - secret: amplitude-project-keys
 
