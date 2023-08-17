@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   labels:
-    team: dataplattform
+    team: team-researchops
   name: amplitude-proxy
-  namespace: dataplattform
+  namespace: team-researchops
 spec:
   accessPolicy:
     outbound:
@@ -45,7 +45,7 @@ spec:
     - name: AMPLITUDE_URL
       value: https://api.eu.amplitude.com
     - name: KAFKA_INGRESS_TOPIC
-      value: dataplattform.ingress-topic-v2
+      value: team-researchops.ingress-topic-v2
     - name: PROJECT_KEYS_FILE
       value: /var/run/secrets/project-keys.json
   filesFrom:
