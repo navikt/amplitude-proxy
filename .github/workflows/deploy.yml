@@ -24,6 +24,9 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    permissions:
+      packages: write
+      contents: read    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
