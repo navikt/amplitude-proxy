@@ -41,12 +41,9 @@ const customHandler = function (request, reply, ingresses) {
   }
 
   events.forEach(event => {
-    if (event.event_properties.platform) {
-      if (!validUrl(event.event_properties.platform)) {
-        errors.push('For auto-collect må window.location settes i \'platform\' eller være satt i \'event_properties\' i \'platform\'');
-      }
+    if (event.event_properties.platform && !validUrl(event.event_properties.platform)) {
+      errors.push('For auto-collect må window.location settes i \'platform\' eller være satt i \'event_properties\' i \'platform\'');
     } else {
-
       if (usingNewSdk) {
         if (!event.ingestion_metadata && !event.ingestion_metadata.source_name) {
           errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');
@@ -60,7 +57,6 @@ const customHandler = function (request, reply, ingresses) {
           errors.push('For auto-collect må window.location settes i \'platform\' eller være satt i \'event_properties\' i \'platform\'');
         }
       }
-
     }
   });
 
