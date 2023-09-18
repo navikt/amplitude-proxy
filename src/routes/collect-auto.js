@@ -41,9 +41,15 @@ const customHandler = function (request, reply, ingresses) {
   }
 
   events.forEach(event => {
+
+    //Sjekker om platform er satt i event_properties og validerer url
     if (event.event_properties.platform && !validUrl(event.event_properties.platform)) {
       errors.push('For auto-collect må window.location settes i \'platform\' eller være satt i \'event_properties\' i \'platform\'');
-    } else {
+    } 
+    
+    //dersom platform er ikke satt i event_properties vil den da hente validere url fra platform eller 
+    //ingestion_metadata ut ifra om du bruker den nye sdk-et
+    else {
       if (usingNewSdk) {
         if (!event.ingestion_metadata && !event.ingestion_metadata.source_name) {
           errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');

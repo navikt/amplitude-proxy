@@ -7,12 +7,16 @@ const addClusterData = (inputEvents, getIngressData, ingresses, usingNewSdk) => 
     cloneEvent.event_properties = event.event_properties || {};
     let eventUrl;
 
+    //sjekker om platform i event_properties er satt og bruker den istedet
     if(event.event_properties.platform) {
       eventUrl = event.event_properties.platform
-    } else {
+    } 
+    //dersom platform i event_prorties er ikke satt vil koden hente url utifra om ny sdk-et er brukt
+    else {
       if(usingNewSdk){ 
         eventUrl = event.ingestion_metadata.source_name
       } else {
+        //Setter platfrom til Web kun om du bruker den gamle måte (dvs. endrer setter platform under initialisering)
         eventUrl = event.platform
         cloneEvent.platform = 'Web'; // Correct this back to the original.
       }
