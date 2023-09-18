@@ -1,11 +1,23 @@
 const cleanUrl = require('../utils/clean-url');
-const addClusterData = (inputEvents, getIngressData, ingresses) => {
+
+const addClusterData = (inputEvents, getIngressData, ingresses, usingNewSdk) => {
   const outputEvents = [];
   inputEvents.forEach(event => {
-    const cloneEvent = { ...event };
-    cloneEvent.platform = 'Web'; // Correct this back to the original.
+    const cloneEvent = { ...event };  
     cloneEvent.event_properties = event.event_properties || {};
-    let eventUrl = event.platform;
+    let eventUrl;
+
+    if(event.event_properties.platform) {
+      eventUrl = event.event_properties.platform
+    } else {
+      if(usingNewSdk){ 
+        eventUrl = event.ingestion_metadata.source_name
+      } else {
+        eventUrl = event.platform
+        cloneEvent.platform = 'Web'; // Correct this back to the original.
+      }
+    }
+
     if(eventUrl.includes('localhost')) {
       eventUrl = eventUrl.replace(/\:[0-9]+/g,'')
     }
@@ -17,6 +29,9 @@ const addClusterData = (inputEvents, getIngressData, ingresses) => {
         }
       });
     }
+
+
+
     const cleanedEventUrl = cleanUrl(eventUrl);
     const eventUrlObj = new URL(cleanedEventUrl);
     cloneEvent.event_properties.url = eventUrlObj.hostname + eventUrlObj.pathname;
