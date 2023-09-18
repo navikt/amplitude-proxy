@@ -5,7 +5,10 @@ const addClusterData = (inputEvents, getIngressData, ingresses) => {
     const cloneEvent = { ...event };
     cloneEvent.platform = 'Web'; // Correct this back to the original.
     cloneEvent.event_properties = event.event_properties || {};
-    let eventUrl = event.platform;
+
+    // Prefer the platform field from event properties, for correct url parsing
+    // from single-page apps
+    let eventUrl = cloneEvent.event_properties.platform || event.platform;
     if(eventUrl.includes('localhost')) {
       eventUrl = eventUrl.replace(/\:[0-9]+/g,'')
     }
