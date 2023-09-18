@@ -6,14 +6,14 @@ const addClusterData = require('./add-cluster-data');
 const getIngressDate = require('../data/lookup-function')
 const constants = require('../constants');
 
-describe('add-cluster-data', function() {
+describe('add-cluster-data', function () {
   const ingressList = new Map()
   ingressException.forEach(data => ingressList.set(data.ingress, data))
 
-  it('should enrich data when existing', function() {
+  it('should enrich data when existing', function () {
     const testEvent = generateTestEvent('auto')
     testEvent.platform = 'https://design.nav.no/foo/bar?query=param';
-    const outputEvents = addClusterData([testEvent], getIngressDate, ingressList);
+    const outputEvents = addClusterData([testEvent], getIngressDate, ingressList, false);
     assert.strictEqual(outputEvents[0].platform, 'Web');
     assert.strictEqual(outputEvents[0].event_properties.namespace, 'default');
     assert.strictEqual(outputEvents[0].event_properties.hostname, 'design.nav.no');
@@ -22,10 +22,10 @@ describe('add-cluster-data', function() {
     assert.strictEqual(outputEvents[0].event_properties.creationTimestamp, undefined);
   });
 
-  it('should enrich data when existing and is localhost', function() {
+  it('should enrich data when existing and is localhost', function () {
     const testEvent = generateTestEvent('auto')
     testEvent.platform = 'https://localhost:3000';
-    const outputEvents = addClusterData([testEvent], getIngressDate, ingressList);
+    const outputEvents = addClusterData([testEvent], getIngressDate, ingressList, false);
     assert.strictEqual(outputEvents[0].platform, 'Web');
     assert.strictEqual(outputEvents[0].event_properties.namespace, 'local');
     assert.strictEqual(outputEvents[0].event_properties.hostname, 'localhost');
@@ -34,19 +34,19 @@ describe('add-cluster-data', function() {
     assert.strictEqual(outputEvents[0].event_properties.creationTimestamp, undefined);
   });
 
-  it('should ignore data when not fetched', function() {
+  it('should ignore data when not fetched', function () {
     const testEvent = generateTestEvent()
     testEvent.platform = 'http://localhost/foo/bar?query=param';
-    const outputEvents = addClusterData([testEvent], () => {});
+    const outputEvents = addClusterData([testEvent], () => { }, false);
     assert.strictEqual(outputEvents[0].platform, 'Web');
     assert.strictEqual(outputEvents[0].event_properties.namespace, undefined);
     assert.strictEqual(outputEvents[0].event_properties.hostname, 'localhost');
     assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar');
   });
-  it('should clean eventUrl', function() {
+  it('should clean eventUrl', function () {
     const testEvent = generateTestEvent();
     testEvent.platform = 'http://localhost/foo/bar/3932934293939?query=param';
-    const outputEvents = addClusterData([testEvent], () => {});
+    const outputEvents = addClusterData([testEvent], () => { }, false);
     assert.strictEqual(outputEvents[0].platform, 'Web');
     assert.strictEqual(outputEvents[0].event_properties.pagePath, '/foo/bar/' + constants.REDACTED);
   });
