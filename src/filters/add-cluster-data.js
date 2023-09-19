@@ -1,15 +1,20 @@
 const cleanUrl = require('../utils/clean-url');
+const validUrl = require('../utils/valid-url');
 
 const addClusterData = (inputEvents, getIngressData, ingresses, usingNewSdk) => {
   const outputEvents = [];
   inputEvents.forEach(event => {
     const cloneEvent = { ...event };  
     cloneEvent.event_properties = event.event_properties || {};
+    
     let eventUrl;
-
     //sjekker om platform i event_properties er satt og bruker den istedet
     if(event.event_properties.platform) {
       eventUrl = event.event_properties.platform
+      //sjekker om url ble også satt i platform og nullstiller det til 'Web'
+      if(validUrl(cloneEvent.platform)){
+        cloneEvent.platform = 'Web'
+      }
     } 
     //dersom platform i event_prorties er ikke satt vil koden hente url utifra om ny sdk-et er brukt
     else {
@@ -33,8 +38,6 @@ const addClusterData = (inputEvents, getIngressData, ingresses, usingNewSdk) => 
         }
       });
     }
-
-
 
     const cleanedEventUrl = cleanUrl(eventUrl);
     const eventUrlObj = new URL(cleanedEventUrl);
