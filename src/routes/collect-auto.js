@@ -28,7 +28,8 @@ const customHandler = function (request, reply, ingresses) {
   let errors = []
   let apiKey;
   let usingNewSdk = false
-  if(request.body.events && request.body.events !== null) {
+
+  if (request.body.events && request.body.events !== null) {
     events = request.body.events
     apiKey = request.body.api_key;
     usingNewSdk = true
@@ -38,21 +39,35 @@ const customHandler = function (request, reply, ingresses) {
     errors = validateEvents(events);
     usingNewSdk = false
   }
-  
+
   events.forEach(event => {
-    if(event.platform === 'Web') {
-      if(event.ingestion_metadata && event.ingestion_metadata.source_name){
-        event.platform = event.ingestion_metadata.source_name
-        event.ingestion_metadata.source_name = undefined
+
+    //Sjekker om platform er satt i event_properties og validerer url
+    if (event.event_properties.platform && !validUrl(event.event_properties.platform)) {
+      errors.push('For auto-collect må window.location settes i \'platform\' eller være satt i \'event_properties\' i \'platform\'');
+    } 
+    
+    //dersom platform er ikke satt i event_properties vil den da hente validere url fra platform eller 
+    //ingestion_metadata ut ifra om du bruker den nye sdk-et
+    else {
+      if (usingNewSdk) {
+        if (!event.ingestion_metadata && !event.ingestion_metadata.source_name) {
+          errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');
+        } else {
+          if (!validUrl(event.ingestion_metadata.source_name)) {
+            errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');
+          }
+        }
       } else {
-        errors.push('Når du bruker den nye skd for auto-collect må \'source name\' i \'ingestion metadata\' være satt til window.location');
+        if (!validUrl(event.platform)) {
+          errors.push('For auto-collect må window.location settes i \'platform\' eller være satt i \'event_properties\' i \'platform\'');
+        }
       }
     }
-    if (!validUrl(event.platform)) {
-      errors.push('For auto-collect må \'platform\' være satt til window.location');
-    }
   });
-  const eventsWithClusterData = addClusterData(events, getIngressData, ingresses);
+
+
+  const eventsWithClusterData = addClusterData(events, getIngressData, ingresses, usingNewSdk);
   const appName = eventsWithClusterData[0].event_properties.app;
   const teamName = eventsWithClusterData[0].event_properties.team;
   const eventHostname = eventsWithClusterData[0].event_properties.hostname;
@@ -84,7 +99,7 @@ const customHandler = function (request, reply, ingresses) {
 
   } else {
     const eventsWithProxyData = addProxyData(eventsWithClusterData, process.env.NAIS_APP_IMAGE);
-    const eventsWithGeoData= addGeoData(eventsWithProxyData, request.ip, usingNewSdk);
+    const eventsWithGeoData = addGeoData(eventsWithProxyData, request.ip, usingNewSdk);
     const eventsWithUrlsCleaned = cleanEventUrls(eventsWithGeoData);
 
     forwardEvents(eventsWithUrlsCleaned, realApiKey, process.env.AMPLITUDE_URL).then(function (response) {
@@ -97,7 +112,7 @@ const customHandler = function (request, reply, ingresses) {
         reply.send(response.data);
       } else {
         collectCounter.labels('success', appName, teamName).inc();
-        if(request.body.events && request.body.events !== null) {
+        if (request.body.events && request.body.events !== null) {
           reply.send(response.data);
         } else {
           reply.send(constants.SUCCESS);
@@ -106,12 +121,12 @@ const customHandler = function (request, reply, ingresses) {
     }).catch(function (error) {
       collectCounter.labels('failed_proxy_events', appName, teamName).inc();
       let errorCode = 502
-      if(error.status) {
+      if (error.status) {
         errorCode = error.status
-      } else if ( error.response && error.response.status) {
+      } else if (error.response && error.response.status) {
         errorCode = error.response.status
       }
-      logger.error({...log(error.message), status_code: errorCode});
+      logger.error({ ...log(error.message), status_code: errorCode });
       reply.code(errorCode).send({
         statusCode: errorCode,
         message: 'Failed to proxy request',
