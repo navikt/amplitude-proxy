@@ -29,6 +29,8 @@ const customHandler = function (request, reply, ingresses) {
   let apiKey;
   let usingNewSdk = false
 
+  isBot.extend(['CSS Validator:'])
+
   if (request.body.events && request.body.events !== null) {
     events = request.body.events
     apiKey = request.body.api_key;

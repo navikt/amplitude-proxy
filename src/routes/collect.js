@@ -24,6 +24,8 @@ const handler = function(request, reply) {
   let apiKey;
   let shortApiKey;
   let usingNewSdk = false
+
+  isBot.extend(['CSS Validator:'])
   
   if(request.body.events  && request.body.events !== null) {
     inputEvents = request.body.events 
