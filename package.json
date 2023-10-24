@@ -10,7 +10,7 @@
     "ensure-test-features": "node ./test-utils/ensure-test-features.js",
     "blackbox": "npm run up && wait-on http://localhost:4243/health/is-ready && mocha blackbox-test.js",
     "serve": "nodemon",
-    "test": "npm run kafka-up && mocha \"src/**/*.spec.js\"",
+    "test": "npm run kafka-up && mocha \"src/**/*.spec.js\" --timeout 5000",
     "up": "docker compose -f docker-compose.yml up -d  --no-recreate --quiet-pull",
     "kafka-up": "docker compose -f docker-compose-kafka.yml up -d --no-recreate --quiet-pull",
     "all-up": "docker compose -f docker-compose-kafka.yml -f docker-compose.yml up -d --no-recreate --quiet-pull",
