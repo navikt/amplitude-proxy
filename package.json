@@ -32,7 +32,7 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
+    "@faker-js/faker": "^8.2.0",
     "mocha": "^10.2.0",
     "nock": "13.3.6",
     "nodemon": "^3.0.1",
