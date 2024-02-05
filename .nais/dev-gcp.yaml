@@ -11,7 +11,7 @@ spec:
       external:
         - host: api.eu.amplitude.com
         - host: cdn.amplitude.com
-  image: {{image}}
+  image: { { image } }
   port: 4242
   prometheus:
     enabled: true
@@ -50,4 +50,26 @@ spec:
       value: /var/run/secrets/project-keys.json
   filesFrom:
     - secret: amplitude-project-keys
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: amplitude-proxy-eu-networkpolicy
+  namespace: team-researchops
+spec:
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 3.64.0.0/12
+        - ipBlock:
+            cidr: 18.154.0.0/15
+        - ipBlock:
+            cidr: 18.156.0.0/14
+        - ipBlock:
+            cidr: 35.156.0.0/14
+  podSelector:
+    matchLabels:
+      app: amplitude-proxy
+  policyTypes:
+    - Egress
 
