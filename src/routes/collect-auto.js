@@ -1,4 +1,3 @@
-import { isbot } from 'isbot';
 const addClusterData = require('../filters/add-cluster-data');
 const addGeoData = require('../filters/add-geo-data');
 const addProxyData = require('../filters/add-proxy-data');
@@ -9,6 +8,7 @@ const forwardEvents = require('../forward-events');
 const getIngressData = require('../data/lookup-function');
 const getProjectKeys = require('../data/get-project-keys');
 const ignoredHost = require('../utils/ignored-host');
+const {isbot} = require('isbot');
 const logger = require('../utils/logger');
 const paths = require('../paths');
 const promClient = require('prom-client');
