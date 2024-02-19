@@ -8,7 +8,7 @@ const forwardEvents = require('../forward-events');
 const getIngressData = require('../data/lookup-function');
 const getProjectKeys = require('../data/get-project-keys');
 const ignoredHost = require('../utils/ignored-host');
-const isBot = require('isbot');
+const {isbot} = require('isbot');
 const logger = require('../utils/logger');
 const paths = require('../paths');
 const promClient = require('prom-client');
@@ -28,8 +28,6 @@ const customHandler = function (request, reply, ingresses) {
   let errors = []
   let apiKey;
   let usingNewSdk = false
-
-  isBot.extend(['CSS Validator:'])
 
   if (request.body.events && request.body.events !== null) {
     events = request.body.events
@@ -90,7 +88,7 @@ const customHandler = function (request, reply, ingresses) {
     logger.error(log(errors))
     reply.code(400).send(errors);
 
-  } else if (isBot(request.headers['user-agent'])) {
+  } else if (isbot(request.headers['user-agent'])) {
     collectCounter.labels('ignored_as_bot_traffic', appName, teamName).inc();
     logger.info(log('Request was ignored as bot traffic'));
     reply.send(constants.IGNORED);
