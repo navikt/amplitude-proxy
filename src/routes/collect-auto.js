@@ -1,3 +1,4 @@
+import { isbot } from 'isbot';
 const addClusterData = require('../filters/add-cluster-data');
 const addGeoData = require('../filters/add-geo-data');
 const addProxyData = require('../filters/add-proxy-data');
@@ -8,7 +9,6 @@ const forwardEvents = require('../forward-events');
 const getIngressData = require('../data/lookup-function');
 const getProjectKeys = require('../data/get-project-keys');
 const ignoredHost = require('../utils/ignored-host');
-const isBot = require('isbot');
 const logger = require('../utils/logger');
 const paths = require('../paths');
 const promClient = require('prom-client');
@@ -88,7 +88,7 @@ const customHandler = function (request, reply, ingresses) {
     logger.error(log(errors))
     reply.code(400).send(errors);
 
-  } else if (isBot(request.headers['user-agent'])) {
+  } else if (isbot(request.headers['user-agent'])) {
     collectCounter.labels('ignored_as_bot_traffic', appName, teamName).inc();
     logger.info(log('Request was ignored as bot traffic'));
     reply.send(constants.IGNORED);
