@@ -60,6 +60,8 @@ spec:
   egress:
     - to:
         - ipBlock:
+            cidr: 0.0.0.0/0
+        - ipBlock:
             cidr: 3.64.0.0/12
         - ipBlock:
             cidr: 18.154.0.0/15
