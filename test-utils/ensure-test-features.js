@@ -3,7 +3,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const setupTestEnvs = require('./setup-test-envs');
+const {TEST_NODE_ENV, TEST_PROJECT_KEY} = require('./constants');
 const logger = require('../src/utils/logger');
 
 const secretsPath = path.resolve(__dirname, '..', 'secrets', 'project-keys.json');
@@ -12,12 +12,8 @@ const secretsPath = path.resolve(__dirname, '..', 'secrets', 'project-keys.json'
  * Setting up test project keys
  */
 if (!fs.existsSync(secretsPath)) {
-  if (!process.env.TEST_PROJECT_KEY) {
-    logger.info('Need to set TEST_PROJECT_KEY in environment to create a project-keys file.');
-    process.exit(1);
-  }
   fs.writeFileSync(secretsPath, JSON.stringify({
-    [process.env.TEST_PROJECT_KEY]: '*',
+    [TEST_PROJECT_KEY]: '*',
   }));
   logger.info('Created a new project keys file.');
 } else {

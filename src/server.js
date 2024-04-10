@@ -57,6 +57,21 @@ module.exports = async (name) => {
     });
   }
 
+  // We parse text/plain as JSON, as the amplitude SDK does not set the content-type to json when
+  // using navigator.sendBeacon() to send events
+  fastify.addContentTypeParser(
+    "text/plain",
+    { parseAs: "string" },
+    (req, body, done) => {
+      try {
+        const json = JSON.parse(body);
+        done(null, json);
+      } catch (error) {
+        err.statusCode = 400;
+        done(err, undefined);
+      }
+    },
+  );
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
 
