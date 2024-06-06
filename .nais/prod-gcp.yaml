@@ -29,13 +29,15 @@ spec:
     initialDelay: 30
     timeout: 1
   replicas:
-    min: 6
-    max: 50
-    cpuThresholdPercentage: 75
+    min: 3
+    max: 9
+    cpuThresholdPercentage: 85
   resources:
+    limits:
+      memory: 2Gi
     requests:
-      cpu: 200m
-      memory: 256Mi
+      cpu: "1"
+      memory: 1Gi
   ingresses:
     - "https://amplitude.nav.no"
   env:
