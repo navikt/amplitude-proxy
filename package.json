@@ -18,27 +18,27 @@
   },
   "dependencies": {
     "ajv": "8.12.0",
-    "axios": "1.6.1",
-    "fastify": "4.24.3",
+    "axios": "1.6.8",
+    "fastify": "4.26.2",
     "@fastify/cors": "9.0.1",
     "@fastify/formbody": "^7.4.0",
     "fastify-metrics": "10.6.0",
     "@fastify/static": "7.0.1",
     "geoip-lite": "^1.4.10",
-    "isbot": "5.1.0",
+    "isbot": "5.1.6",
     "kafkajs": "^2.2.4",
     "pino": "^8.19.0",
     "prom-client": "^14.2.0",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.2.0",
-    "mocha": "^10.2.0",
-    "nock": "13.5.3",
-    "nodemon": "^3.0.1",
+    "@faker-js/faker": "^8.4.1",
+    "mocha": "^10.4.0",
+    "nock": "13.5.4",
+    "nodemon": "^3.1.0",
     "pino-pretty": "^10.2.3",
     "uuid": "9.0.1",
     "wait-on": "^7.2.0",
-    "yaml": "2.3.4"
+    "yaml": "2.4.2"
   }
 }

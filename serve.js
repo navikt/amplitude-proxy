@@ -4,7 +4,7 @@ const server = require('./src/server');
 const serve = async (port) => {
   const fastify = await server();
   logger.info(`Server is starting...`);
-  await fastify.listen(port, '0.0.0.0');
+  await fastify.listen({port, host: '0.0.0.0'});
   if(!process.env.NAIS_CLUSTER_NAME){
     logger.info(`Server listening on ${port}, visit http://localhost:${port}/`);
   } else {
