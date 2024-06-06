@@ -11,7 +11,7 @@ spec:
       external:
         - host: api.eu.amplitude.com
         - host: cdn.amplitude.com
-  image: { { image } }
+  image: {{image}}
   port: 4242
   prometheus:
     enabled: true
