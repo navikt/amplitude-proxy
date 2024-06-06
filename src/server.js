@@ -8,6 +8,7 @@ const getIngressExceptionPath = require('./data/ingressException-path');
 const ingressException = require(getIngressExceptionPath());
 const { ingressLogStream } = require('./utils/ingress-log');
 const { createKafkaConsumer } = require('./kafka/createKafkaConsumer');
+const promClient = require('prom-client');
 
 /**
  *
@@ -74,10 +75,11 @@ module.exports = async (name) => {
   );
   fastify.addSchema(require('./schemas/collect'));
   fastify.addSchema(require('./schemas/ingress'));
+  
 
   fastify.register(require('@fastify/cors'), { origin: '*', maxAge: 7200 });
   fastify.register(require('@fastify/formbody'));
-  fastify.register(require('fastify-metrics'), { endpoint: paths.METRICS });
+  fastify.register(require('fastify-metrics'), { endpoint: paths.METRICS, promClient: promClient });
   fastify.register(require('@fastify/static'), { root: path.join(__dirname, '..', 'public') });
 
   /**
