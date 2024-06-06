@@ -29,16 +29,15 @@ spec:
     initialDelay: 30
     timeout: 1
   replicas:
-    min: 2
-    max: 4
-    cpuThresholdPercentage: 75
+    min: 3
+    max: 9
+    cpuThresholdPercentage: 85
   resources:
     limits:
-      cpu: 2500m
-      memory: 4Gi
+      memory: 2Gi
     requests:
-      cpu: 200m
-      memory: 256Mi
+      cpu: "1"
+      memory: 1Gi
   ingresses:
     - "https://amplitude.nav.no"
   env:
@@ -74,4 +73,3 @@ spec:
       app: amplitude-proxy
   policyTypes:
     - Egress
-

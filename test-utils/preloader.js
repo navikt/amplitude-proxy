@@ -9,7 +9,7 @@ const launchPreloader = async () => {
     trustProxy: true,
   });
 
-  await fastify.listen(80);
+  await fastify.listen({port: 80});
   logger.info('Preloader started;');
   await generateKafkaMessages();
 };

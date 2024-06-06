@@ -77,7 +77,7 @@ The datasource looks like this and is taken from our kubernetes cluster:
   }]
 ```
 
-This way most of our urls can be mapped.
+This way most of our URLs can be mapped.
 
 ## Ingress log
 
