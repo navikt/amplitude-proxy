@@ -1,4 +1,4 @@
-FROM node:16.13.0-alpine3.14
+FROM node:20.14.0-alpine:3.20
 WORKDIR /app
 COPY package.* serve.* ./
 COPY public public/
