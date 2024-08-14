@@ -36,7 +36,7 @@ spec:
     limits:
       memory: 2Gi
     requests:
-      cpu: "1"
+      cpu: "2"
       memory: 1Gi
   ingresses:
     - "https://amplitude.nav.no"
