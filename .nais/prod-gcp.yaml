@@ -36,10 +36,10 @@ spec:
         thresholdPercentage: 85
   resources:
     requests:
-      cpu: "1"
+      cpu: 500m
       memory: 1Gi
     limits:
-      memory: 2Gi
+      memory: 1Gi
   ingresses:
     - "https://amplitude.nav.no"
   env:
