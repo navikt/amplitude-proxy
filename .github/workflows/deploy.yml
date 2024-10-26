@@ -90,7 +90,7 @@ jobs:
   deploy-prod-gcp:
     name: Deploy to nais prod-gcp
     needs: test
-    if: github.event_name == 'release'
+  #  if: github.event_name == 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
