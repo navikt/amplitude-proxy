@@ -37,9 +37,10 @@ spec:
   resources:
     requests:
       cpu: 500m
-      memory: 1Gi
+      memory: 256Mi
     limits:
-      memory: 1Gi
+      cpu: 200m
+      memory: 256Mi
   ingresses:
     - "https://amplitude.nav.no"
   env:
