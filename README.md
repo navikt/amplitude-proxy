@@ -1,7 +1,8 @@
 # amplitude-proxy
-Application that whitelists and forwards traffic to amplitudes servers. 
+
+An application that whitelists and forwards traffic to amplitudes servers.
 This improves privacy concerns related to tracking user behavior events.
-All applications must use this proxy and is not allowed to send events 
+All applications must use this proxy and is not allowed to send events
 directly to Amplitude.
 
 The application translates IP-adresses to locations, using [geoip-lite](https://www.npmjs.com/package/geoip-lite).
@@ -11,14 +12,17 @@ bot traffic at the source.
 The application uses regex and goes through all urls in the event object and cleans it of sensitive data(uuid and personid). the sensitive data is replaced with the word '[redacted]'.
 
 # Prerequisites
+
 - Install node.js
 - Install homebrew(for Mac)
 - Docker installed and running
 
 ## **Install**
+
 `npm install`
 
 ## **Run**
+
 `npm run-script serve`
 
 App runs on
@@ -27,9 +31,9 @@ App runs on
 
 Test with postman against: `http://localhost:4242/collect`
 
-
 ## The auto-collect endpoint
-This endpoint require some config. 
+
+This endpoint require some config.
 
 To properly use this endpoint the user must change some config when initialising amplitude.
 
@@ -54,6 +58,7 @@ init('default', undefined, {
 ```
 
 The projects will be mapped to urls. Atm this is not done in a very generic way.
+
 ```
 {
   "project-key-prod": "prod-sbs,prod-fss,prod-gcp",
@@ -61,8 +66,9 @@ The projects will be mapped to urls. Atm this is not done in a very generic way.
   "project-key-test": "*"
 }
 ```
-This config might either be in a json-file 
-`PROJECT_KEYS_FILE` or as stringified json in an envvar `PROJECT_KEYS` 
+
+This config might either be in a json-file
+`PROJECT_KEYS_FILE` or as stringified json in an envvar `PROJECT_KEYS`
 
 The datasource looks like this and is taken from our kubernetes cluster:
 
